@@ -59,6 +59,118 @@ EVT_TIMER(1000, SuperMouserApp::OnTimer)
 END_EVENT_TABLE()
 
 
+#define OS_MAC
+
+#ifdef OS_WIN
+void move_to(int x, int y) 
+{
+    SetCursorPos(x, y);
+}
+
+void click_left(int x, int y) 
+{
+    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+}
+
+void click_right(int x, int y) 
+{
+    mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+    mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+}
+
+void click_double(int x, int y) 
+{
+					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+					GetDoubleClickTime;
+					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+}
+#endif
+
+#ifdef OS_MAC
+#import <ApplicationServices/ApplicationServices.h>
+
+void move_to(int x, int y) 
+{
+    CGPoint newloc;
+    CGEventRef eventRef;
+    newloc.x = x;
+    newloc.y = y;
+
+    eventRef = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, newloc, kCGMouseButtonCenter);
+
+    //Apparently, a bug in xcode requires this next line
+    CGEventSetType(eventRef, kCGEventMouseMoved); // Apparently, a bug in xcode requires this line
+    CGEventPost(kCGSessionEventTap, eventRef);
+    CFRelease(eventRef);
+}
+
+void click_left(int x, int y) 
+{
+    CGPoint newloc;
+    CGEventRef eventRef;
+    newloc.x = x;
+    newloc.y = y;
+
+    // Mouse down
+    eventRef = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, newloc, kCGMouseButtonLeft);
+    CGEventSetType(eventRef, kCGEventLeftMouseDown); // Apparently, a bug in xcode requires this line
+    CGEventPost(kCGSessionEventTap, eventRef);
+    CFRelease(eventRef);
+
+    usleep(100);
+
+    // Mouse up
+    eventRef = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, newloc, kCGMouseButtonLeft);
+    CGEventSetType(eventRef, kCGEventLeftMouseUp); // Apparently, a bug in xcode requires this line
+    CGEventPost(kCGSessionEventTap, eventRef);
+    CFRelease(eventRef);
+}
+
+void click_right(int x, int y) 
+{
+    CGPoint newloc;
+    CGEventRef eventRef;
+    newloc.x = x;
+    newloc.y = y;
+
+    // Mouse down
+    eventRef = CGEventCreateMouseEvent(NULL, kCGEventRightMouseDown, newloc, kCGMouseButtonRight);
+    CGEventSetType(eventRef, kCGEventRightMouseDown); // Apparently, a bug in xcode requires this line
+    CGEventPost(kCGSessionEventTap, eventRef);
+    CFRelease(eventRef);
+
+    usleep(100);
+
+    // Mouse up
+    eventRef = CGEventCreateMouseEvent(NULL, kCGEventRightMouseUp, newloc, kCGMouseButtonRight);
+    CGEventSetType(eventRef, kCGEventRightMouseUp); // Apparently, a bug in xcode requires this line
+    CGEventPost(kCGSessionEventTap, eventRef);
+    CFRelease(eventRef);
+}
+
+void click_double(int x, int y) 
+{
+    CGEventRef theEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, CGPointMake(x, y), kCGMouseButtonLeft);  
+    CGEventPost(kCGHIDEventTap, theEvent);  
+    CGEventSetType(theEvent, kCGEventLeftMouseUp);  
+    CGEventPost(kCGHIDEventTap, theEvent);  
+
+    CGEventSetIntegerValueField(theEvent, kCGMouseEventClickState, 2);
+
+    CGEventSetType(theEvent, kCGEventLeftMouseDown);  
+    CGEventPost(kCGHIDEventTap, theEvent);  
+
+    CGEventSetType(theEvent, kCGEventLeftMouseUp); 
+    CGEventPost(kCGHIDEventTap, theEvent); 
+
+    CFRelease(theEvent); 
+}
+#endif
+
+
 /*
  * Constructor for SuperMouserApp
  */
@@ -235,7 +347,7 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 			if (wxGetKeyState(wxKeyCode('G'))) {
 				state_ = MouseRightClick;
 			}
-			SetCursorPos(currentPos_.x, currentPos_.y);
+            move_to(currentPos_.x, currentPos_.y);
 			break;
 		case MouseLeftClick:
 		case MouseRightClick:
@@ -249,19 +361,13 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 
 			switch (state_) {
 				case MouseLeftClick:
-					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                    click_left(currentPos_.x, currentPos_.y);
 					break;
 				case MouseRightClick:
-					mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-					mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+                    click_right(currentPos_.x, currentPos_.y);
 					break;
 				case MouseDoubleClick:
-					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-					GetDoubleClickTime;
-					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+                    click_double(currentPos_.x, currentPos_.y);
 					break;
 			}
 			state_ = WaitForShortcut;

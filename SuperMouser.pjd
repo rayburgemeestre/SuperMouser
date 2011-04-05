@@ -90,7 +90,7 @@
     <string name="app_class_name">"Application"</string>
     <bool name="generate_app_class">0</bool>
     <string name="external_symbol_filenames">""</string>
-    <string name="configuration">"VC++ Project Release"</string>
+    <string name="configuration">"GCC Release Mac"</string>
     <string name="source_encoding">"iso-8859-1"</string>
     <string name="xrc_encoding">"utf-8"</string>
     <string name="project_encoding">"utf-8"</string>
@@ -354,6 +354,84 @@
           <bool name="Enable .sln generation">1</bool>
           <bool name="Generate manifest">1</bool>
         </document>
+        <document>
+          <string name="title">"GCC Release Mac"</string>
+          <string name="type">"gcc-config-data-document"</string>
+          <string name="filename">""</string>
+          <string name="icon-name">""</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">1</long>
+          <long name="title-mode">0</long>
+          <long name="locked">0</long>
+          <string name="template-name">"GCC"</string>
+          <bool name="dirty">0</bool>
+          <long name="makefile-last-written">0</long>
+          <string name="Compiler name">"GCC"</string>
+          <string name="Build mode">"Debug"</string>
+          <string name="Unicode mode">"ANSI"</string>
+          <string name="Shared mode">"Static"</string>
+          <string name="Modularity">"Modular"</string>
+          <string name="GUI mode">"GUI"</string>
+          <string name="Toolkit">"wxMac"</string>
+          <string name="Processor type">"32-bit i386"</string>
+          <string name="Runtime linking">"Dynamic"</string>
+          <string name="Use exceptions">"Yes"</string>
+          <string name="Use ODBC">"No"</string>
+          <string name="Use XRC">"Yes"</string>
+          <string name="Use OpenGL">"No"</string>
+          <string name="Use wxMediaCtrl">"No"</string>
+          <string name="Use wxRichTextCtrl">"Yes"</string>
+          <string name="Use wxHTML">"Yes"</string>
+          <string name="Use wxPropertyGrid">"Yes"</string>
+          <string name="Use wxAUI">"Yes"</string>
+          <string name="Use wxSTC">"Yes"</string>
+          <string name="Use wxRegEx">"sys"</string>
+          <string name="Use wxRibbonControl">"Yes"</string>
+          <string name="Use wx-config">"Yes"</string>
+          <string name="Use installed wxWidgets">"No"</string>
+          <string name="Executable name">"%EXECUTABLE%"</string>
+          <string name="Program arguments">""</string>
+          <string name="Working path">"%AUTO%"</string>
+          <string name="Output path">"%AUTO%"</string>
+          <string name="Objects path">"%AUTO%"</string>
+          <string name="Project makefile">"%AUTO%"</string>
+          <string name="wxWidgets version">"%WXVERSION%"</string>
+          <string name="wxWidgets makefile">"%AUTO%"</string>
+          <string name="wxWidgets location">"%AUTO%"</string>
+          <string name="wxWidgets build path">"%AUTO%"</string>
+          <string name="wxWidgets build command">"%AUTO%"</string>
+          <string name="wxWidgets clean command">"%AUTO%"</string>
+          <string name="CFG">""</string>
+          <string name="Compiler location">"%AUTO%"</string>
+          <string name="Compiler bin path">"%AUTO%"</string>
+          <string name="Compiler include path">"%AUTO%"</string>
+          <string name="Compiler lib path">"%AUTO%"</string>
+          <string name="PATH variable">"%AUTO%"</string>
+          <string name="C++ command">"%AUTO%"</string>
+          <string name="C command">"%AUTO%"</string>
+          <string name="Linker command">"%AUTO%"</string>
+          <string name="Resource compiler">"%AUTO%"</string>
+          <string name="Make command">"%AUTO%"</string>
+          <string name="Preprocessor flags">"%AUTO%"</string>
+          <string name="Optimizations">"%AUTO%"</string>
+          <string name="Warnings">"%AUTO%"</string>
+          <string name="Debug flags">"%AUTO%"</string>
+          <string name="Extra compile flags">"%AUTO%"</string>
+          <string name="Libraries">"%AUTO%"</string>
+          <string name="Library path">"%AUTO%"</string>
+          <string name="Linker flags">"%AUTO%"</string>
+          <string name="Include path">"%AUTO%"</string>
+          <string name="Resource flags">"%AUTO%"</string>
+          <string name="Resource path">"%AUTO%"</string>
+          <bool name="Suppress source rules">0</bool>
+          <bool name="Enable makefile generation">1</bool>
+          <string name="Command for wx-config">"%AUTO%"</string>
+          <string name="Libiconv path">"%AUTO%"</string>
+          <string name="SDK path">"%AUTO%"</string>
+          <string name="Minimum OS version">"%AUTO%"</string>
+          <string name="Info.plist location">"%AUTO%"</string>
+          <string name="Icns location">"%AUTO%"</string>
+        </document>
       </document>
     </document>
   </data>
@@ -493,6 +571,18 @@
         <long name="owns-file">1</long>
         <long name="title-mode">0</long>
         <long name="locked">1</long>
+        <document>
+          <string name="title">"Makefile"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"Makefile"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"5/4/2011"</string>
+          <string name="language">""</string>
+        </document>
         <document>
           <string name="title">"SuperMouser.rc"</string>
           <string name="type">"source-editor-document"</string>

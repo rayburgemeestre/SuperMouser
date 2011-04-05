@@ -378,7 +378,7 @@
         <long name="title-mode">0</long>
         <long name="locked">1</long>
         <document>
-          <string name="title">"TrackballerApp"</string>
+          <string name="title">"SuperMouserApp"</string>
           <string name="type">"dialog-document"</string>
           <string name="filename">""</string>
           <string name="icon-name">"app"</string>
@@ -395,10 +395,10 @@
           <string name="app-kind">"Standard"</string>
           <long name="use-xrc">0</long>
           <long name="working-mode">0</long>
-          <string name="proxy-Class">"TrackballerApp"</string>
+          <string name="proxy-Class">"SuperMouserApp"</string>
           <string name="proxy-Base class">"wxApp"</string>
-          <string name="proxy-Implementation filename">"src/trackballerapp.cpp"</string>
-          <string name="proxy-Header filename">"src/trackballerapp.h"</string>
+          <string name="proxy-Implementation filename">"src/supermouserapp.cpp"</string>
+          <string name="proxy-Header filename">"src/supermouserapp.h"</string>
           <string name="proxy-Event sources">""</string>
           <string name="proxy-Main window">"ID_ABSTRACTWINDOW"</string>
           <string name="proxy-Help filename">""</string>
@@ -494,9 +494,9 @@
         <long name="title-mode">0</long>
         <long name="locked">1</long>
         <document>
-          <string name="title">"Trackballer.rc"</string>
+          <string name="title">"SuperMouser.rc"</string>
           <string name="type">"source-editor-document"</string>
-          <string name="filename">"Trackballer.rc"</string>
+          <string name="filename">"SuperMouser.rc"</string>
           <string name="icon-name">"source-editor"</string>
           <long name="is-transient">0</long>
           <long name="owns-file">0</long>
@@ -506,9 +506,9 @@
           <string name="language">""</string>
         </document>
         <document>
-          <string name="title">"Trackballer.vcproj"</string>
+          <string name="title">"SuperMouser.vcproj"</string>
           <string name="type">"source-editor-document"</string>
-          <string name="filename">"Trackballer.vcproj"</string>
+          <string name="filename">"SuperMouser.vcproj"</string>
           <string name="icon-name">"source-editor"</string>
           <long name="is-transient">0</long>
           <long name="owns-file">0</long>
@@ -518,9 +518,9 @@
           <string name="language">""</string>
         </document>
         <document>
-          <string name="title">"Trackballer.vcxproj"</string>
+          <string name="title">"SuperMouser.vcxproj"</string>
           <string name="type">"source-editor-document"</string>
-          <string name="filename">"Trackballer.vcxproj"</string>
+          <string name="filename">"SuperMouser.vcxproj"</string>
           <string name="icon-name">"source-editor"</string>
           <long name="is-transient">0</long>
           <long name="owns-file">0</long>

@@ -78,7 +78,7 @@ bool AbstractWindow::Create( wxWindow* parent, wxWindowID id, const wxString& ca
     Centre();
 ////@end AbstractWindow creation
 
-	SetTransparent(128);
+	// SetTransparent(128);
     return true;
 }
 
@@ -115,8 +115,6 @@ void AbstractWindow::CreateControls()
     AbstractWindow* itemFrame1 = this;
 
 ////@end AbstractWindow content construction
-
-    SetTransparent(128);
 }
 
 

@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////
-// Name:        trackballerapp.cpp
+// Name:        supermouserapp.cpp
 // Purpose:     
 // Author:      Ray Burgemeestre
 // Modified by: 
@@ -23,7 +23,7 @@
 ////@begin includes
 ////@end includes
 
-#include "trackballerapp.h"
+#include "supermouserapp.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -34,36 +34,36 @@
  */
 
 ////@begin implement app
-IMPLEMENT_APP( TrackballerApp )
+IMPLEMENT_APP( SuperMouserApp )
 ////@end implement app
 
 
 /*
- * TrackballerApp type definition
+ * SuperMouserApp type definition
  */
 
-IMPLEMENT_CLASS( TrackballerApp, wxApp )
+IMPLEMENT_CLASS( SuperMouserApp, wxApp )
 
 
 /*
- * TrackballerApp event table definition
+ * SuperMouserApp event table definition
  */
 
-BEGIN_EVENT_TABLE( TrackballerApp, wxApp )
+BEGIN_EVENT_TABLE( SuperMouserApp, wxApp )
 
-////@begin TrackballerApp event table entries
-////@end TrackballerApp event table entries
+////@begin SuperMouserApp event table entries
+////@end SuperMouserApp event table entries
 
-EVT_TIMER(1000, TrackballerApp::OnTimer)
+EVT_TIMER(1000, SuperMouserApp::OnTimer)
 
 END_EVENT_TABLE()
 
 
 /*
- * Constructor for TrackballerApp
+ * Constructor for SuperMouserApp
  */
 
-TrackballerApp::TrackballerApp()
+SuperMouserApp::SuperMouserApp()
 {
     Init();
 }
@@ -73,10 +73,10 @@ TrackballerApp::TrackballerApp()
  * Member initialisation
  */
 
-void TrackballerApp::Init()
+void SuperMouserApp::Init()
 {
-////@begin TrackballerApp member initialisation
-////@end TrackballerApp member initialisation
+////@begin SuperMouserApp member initialisation
+////@end SuperMouserApp member initialisation
 
 	timer_ = NULL;
 	state_ = WaitForShortcut;
@@ -96,12 +96,12 @@ void TrackballerApp::Init()
 }
 
 /*
- * Initialisation for TrackballerApp
+ * Initialisation for SuperMouserApp
  */
 #include <wx/utils.h>
-bool TrackballerApp::OnInit()
+bool SuperMouserApp::OnInit()
 {    
-////@begin TrackballerApp initialisation
+////@begin SuperMouserApp initialisation
 	// Remove the comment markers above and below this block
 	// to make permanent changes to the code.
 
@@ -119,7 +119,7 @@ bool TrackballerApp::OnInit()
 #endif
 	AbstractWindow* mainWindow = new AbstractWindow( NULL );
 	mainWindow->Show(true);
-////@end TrackballerApp initialisation
+////@end SuperMouserApp initialisation
 
 	mainWindow->Show(false);
 
@@ -139,17 +139,17 @@ bool TrackballerApp::OnInit()
 
 
 /*
- * Cleanup for TrackballerApp
+ * Cleanup for SuperMouserApp
  */
 
-int TrackballerApp::OnExit()
+int SuperMouserApp::OnExit()
 {    
-////@begin TrackballerApp cleanup
+////@begin SuperMouserApp cleanup
 	return wxApp::OnExit();
-////@end TrackballerApp cleanup
+////@end SuperMouserApp cleanup
 }
 
-void TrackballerApp::OnTimer(wxTimerEvent& event)
+void SuperMouserApp::OnTimer(wxTimerEvent& event)
 {
 	timer_->Stop();
 	

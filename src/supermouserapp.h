@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////
-// Name:        trackballerapp.h
+// Name:        supermouserapp.cpp
 // Purpose:     
 // Author:      Ray Burgemeestre
 // Modified by: 
@@ -9,8 +9,8 @@
 // Licence:     
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _TRACKBALLERAPP_H_
-#define _TRACKBALLERAPP_H_
+#ifndef _SUPERMOUSERAPP_H_
+#define _SUPERMOUSERAPP_H_
 
 
 /*!
@@ -46,17 +46,17 @@ enum State {
 };
 
 /*!
- * TrackballerApp class declaration
+ * SuperMouserApp class declaration
  */
 
-class TrackballerApp: public wxApp
+class SuperMouserApp: public wxApp
 {    
-    DECLARE_CLASS( TrackballerApp )
+    DECLARE_CLASS( SuperMouserApp )
     DECLARE_EVENT_TABLE()
 
 public:
     /// Constructor
-    TrackballerApp();
+    SuperMouserApp();
 
     void Init();
 
@@ -68,16 +68,16 @@ public:
 
 	void OnTimer(wxTimerEvent& event);
 
-////@begin TrackballerApp event handler declarations
+////@begin SuperMouserApp event handler declarations
 
-////@end TrackballerApp event handler declarations
+////@end SuperMouserApp event handler declarations
 
-////@begin TrackballerApp member function declarations
+////@begin SuperMouserApp member function declarations
 
-////@end TrackballerApp member function declarations
+////@end SuperMouserApp member function declarations
 
-////@begin TrackballerApp member variables
-////@end TrackballerApp member variables
+////@begin SuperMouserApp member variables
+////@end SuperMouserApp member variables
 
 	wxTimer *timer_;
 	State state_;
@@ -101,8 +101,8 @@ public:
  */
 
 ////@begin declare app
-DECLARE_APP(TrackballerApp)
+DECLARE_APP(SuperMouserApp)
 ////@end declare app
 
 #endif
-    // _TRACKBALLERAPP_H_
+    // _SUPERMOUSERAPP_H_

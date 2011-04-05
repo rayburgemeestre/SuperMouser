@@ -59,9 +59,7 @@ EVT_TIMER(1000, SuperMouserApp::OnTimer)
 END_EVENT_TABLE()
 
 
-#define OS_MAC
-
-#ifdef OS_WIN
+#ifdef __WXMSW__
 void move_to(int x, int y) 
 {
     SetCursorPos(x, y);
@@ -81,15 +79,38 @@ void click_right(int x, int y)
 
 void click_double(int x, int y) 
 {
-					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-					GetDoubleClickTime;
-					mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-					mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+    GetDoubleClickTime;
+    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 }
-#endif
+#endif // __WXMSW__
 
-#ifdef OS_MAC
+#ifdef __WXGTK__
+#include <X11/Xlib.h>
+void move_to(int x, int y) 
+{
+    Display *display = XOpenDisplay(0);
+    Window root = XRootWindow(display, 0);
+    XSelectInput(display, root, KeyReleaseMask);
+    XWarpPointer(display, NULL, root, 0, 0, 0, 0, x, y);
+}
+
+void click_left(int x, int y) 
+{
+}
+
+void click_right(int x, int y) 
+{
+}
+
+void click_double(int x, int y) 
+{
+}
+#endif // __WXGTK__
+
+#ifdef __WXMAC__
 #import <ApplicationServices/ApplicationServices.h>
 
 void move_to(int x, int y) 
@@ -168,7 +189,7 @@ void click_double(int x, int y)
 
     CFRelease(theEvent); 
 }
-#endif
+#endif //__WXMAC__
 
 
 /*
@@ -195,7 +216,13 @@ void SuperMouserApp::Init()
 	screenWidth_ = 0;
 	screenHeight_ = 0;
 
+    #ifndef __WXGTK__
 	wxDisplaySize(&screenWidth_, &screenHeight_);
+    #else
+    // TBD, find alternative for wxDisplaySize(), becuase it crashes the program.
+    screenWidth_ = 1280;
+    screenHeight_ = 1024;
+    #endif
 
 	mainWindow_ = NULL;
 	windowUp_ = NULL;
@@ -292,6 +319,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 			}
 
 			if (wxGetKeyState(wxKeyCode('H'))) {
+                #ifdef __WXGTK__
+                windowLeft_->Hide();
+                #endif
 				windowLeft_->SetSize(currentPos_.x, 0, screenWidth_ - currentPos_.x, screenHeight_);
 				windowLeft_->Show();
 
@@ -304,6 +334,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 				while (wxGetKeyState(wxKeyCode('H')));
 			}
 			if (wxGetKeyState(wxKeyCode('J'))) {
+                #ifdef __WXGTK__
+                windowDown_->Hide();
+                #endif
 				windowDown_->SetSize(0, 0, screenWidth_, currentPos_.y);
 				windowDown_->Show();
 				
@@ -316,6 +349,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 				while (wxGetKeyState(wxKeyCode('J')));
 			}
 			if (wxGetKeyState(wxKeyCode('K'))) {
+                #ifdef __WXGTK__
+                windowUp_->Hide();
+                #endif
 				windowUp_->SetSize(0, currentPos_.y, screenWidth_, screenHeight_ - currentPos_.y);
 				windowUp_->Show();
 
@@ -328,6 +364,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 				while (wxGetKeyState(wxKeyCode('K')));
 			}
 			if (wxGetKeyState(wxKeyCode('L'))) {
+                #ifdef __WXGTK__
+                windowRight_->Hide();
+                #endif
 				windowRight_->SetSize(0, 0, currentPos_.x, screenHeight_);
 				windowRight_->Show();
 				if (travelLeftRight_ == -1) {

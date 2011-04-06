@@ -66,7 +66,10 @@ public:
     /// Called on exit
     virtual int OnExit();
 
+	//void OnKeyDown(wxKeyEvent& event);
 	void OnTimer(wxTimerEvent& event);
+
+	void Activate();
 
 ////@begin SuperMouserApp event handler declarations
 

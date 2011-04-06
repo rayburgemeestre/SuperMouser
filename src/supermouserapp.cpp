@@ -37,14 +37,6 @@
 IMPLEMENT_APP( SuperMouserApp )
 ////@end implement app
 
-
-/*
- * SuperMouserApp type definition
- */
-
-IMPLEMENT_CLASS( SuperMouserApp, wxApp )
-
-
 /*
  * SuperMouserApp event table definition
  */
@@ -52,11 +44,24 @@ IMPLEMENT_CLASS( SuperMouserApp, wxApp )
 BEGIN_EVENT_TABLE( SuperMouserApp, wxApp )
 
 ////@begin SuperMouserApp event table entries
+    EVT_TIMER(wxID_ANY, SuperMouserApp::OnTimer)
+
+#ifdef __WXMSW__
+    EVT_HOTKEY(wxID_ANY, SuperMouserApp::Activate)
+#endif
+
 ////@end SuperMouserApp event table entries
 
-EVT_TIMER(1000, SuperMouserApp::OnTimer)
+
 
 END_EVENT_TABLE()
+
+
+/*
+ * SuperMouserApp type definition
+ */
+
+IMPLEMENT_CLASS( SuperMouserApp, wxApp )
 
 
 #ifdef __WXMSW__
@@ -112,6 +117,7 @@ void click_double(int x, int y)
 
 #ifdef __WXMAC__
 #import <ApplicationServices/ApplicationServices.h>
+#import <Carbon/carbon.h>
 
 void move_to(int x, int y) 
 {
@@ -189,6 +195,18 @@ void click_double(int x, int y)
 
     CFRelease(theEvent); 
 }
+
+OSStatus OnHotKeyEvent(EventHandlerCallRef nextHandler,EventRef theEvent,void *userData)
+{
+    EventHotKeyID hkCom;
+
+    GetEventParameter(theEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hkCom), NULL, &hkCom);
+    SuperMouserApp *app = (SuperMouserApp*)userData; 
+
+    app->Activate();
+
+    return noErr;
+}
 #endif //__WXMAC__
 
 
@@ -211,7 +229,7 @@ void SuperMouserApp::Init()
 ////@begin SuperMouserApp member initialisation
 ////@end SuperMouserApp member initialisation
 
-	timer_ = NULL;
+    timer_ = NULL;
 	state_ = WaitForShortcut;
 	screenWidth_ = 0;
 	screenHeight_ = 0;
@@ -232,6 +250,8 @@ void SuperMouserApp::Init()
 
 	travelUpDown_ = 0;
 	travelLeftRight_ = 0;
+
+
 }
 
 /*
@@ -261,7 +281,6 @@ bool SuperMouserApp::OnInit()
 ////@end SuperMouserApp initialisation
 
 	mainWindow->Show(false);
-
 	mainWindow_ = mainWindow;
 
 	windowUp_ = new AbstractWindow(NULL);
@@ -269,10 +288,33 @@ bool SuperMouserApp::OnInit()
 	windowLeft_ = new AbstractWindow(NULL);
 	windowRight_ = new AbstractWindow(NULL);
 
-	static const int INTERVAL = 30; // milliseconds
-	timer_ = new wxTimer(this, 1000);
-	timer_->Start(INTERVAL);
+    // Create timer and set the interval
+    static const int INTERVAL = 30; // milliseconds
+    timer_ = new wxTimer(this, wxID_ANY);
+    timer_->Start(INTERVAL);
+    timer_->Stop();
 
+
+    // Register hotkey event
+#ifdef __WXMSW__
+    mainWindow_->RegisterHotKey(wxID_ANY, wxMOD_CONTROL | wxMOD_SHIFT, 'M');
+#endif
+
+#ifdef __WXMAC__
+    EventHotKeyRef gMyHotKeyRef;
+    EventHotKeyID gMyHotKeyID;
+    EventTypeSpec eventType;
+    eventType.eventClass=kEventClassKeyboard;
+    eventType.eventKind=kEventHotKeyPressed;   
+
+    InstallApplicationEventHandler(&OnHotKeyEvent, 1, &eventType, (void *)this, NULL);
+
+    gMyHotKeyID.signature='htk1';
+    gMyHotKeyID.id=1;
+    // windows+alt+space
+    RegisterEventHotKey(49, cmdKey+optionKey, gMyHotKeyID, GetApplicationEventTarget(), 0, &gMyHotKeyRef); 
+#endif
+    
     return true;
 }
 
@@ -288,30 +330,30 @@ int SuperMouserApp::OnExit()
 ////@end SuperMouserApp cleanup
 }
 
+void SuperMouserApp::Activate()
+{
+    state_ = InMouserState;
+
+    beginPos_ = wxGetMousePosition();
+    currentPos_ = wxGetMousePosition();
+
+    travelUpDown_ = -1;
+    travelLeftRight_ = -1;
+
+    mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
+    mainWindow_->SetSize(5, 5);
+    mainWindow_->SetFocus();
+
+    timer_->Start();
+}
+
+//void SuperMouserApp::OnKeyDown(wxKeyEvent& event)
 void SuperMouserApp::OnTimer(wxTimerEvent& event)
 {
-	timer_->Stop();
-	
 	switch (state_) {
-		case WaitForShortcut:
-			if (wxGetKeyState(WXK_CONTROL) && wxGetKeyState(WXK_SHIFT) && wxGetKeyState(wxKeyCode('M'))) {
-				state_ = InMouserState;
-				
-				beginPos_ = wxGetMousePosition();
-				currentPos_ = wxGetMousePosition();
-
-				travelUpDown_ = -1;
-				travelLeftRight_ = -1;
-
-				mainWindow_->SetSize(5, 5);
-				mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-				mainWindow_->Show(true);
-			}
-			break;
 		case InMouserState:
 			mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
 			mainWindow_->Show();
-
 
 			if (wxGetKeyState(WXK_ESCAPE)) {
 				state_ = AbortMouserState;
@@ -410,7 +452,7 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 					break;
 			}
 			state_ = WaitForShortcut;
+            timer_->Stop();
  			break;
 	}
-	timer_->Start();
 }

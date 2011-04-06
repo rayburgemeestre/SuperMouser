@@ -90,7 +90,7 @@
     <string name="app_class_name">"Application"</string>
     <bool name="generate_app_class">0</bool>
     <string name="external_symbol_filenames">""</string>
-    <string name="configuration">"GCC Debug Mac"</string>
+    <string name="configuration">"VC++ Project Release"</string>
     <string name="source_encoding">"iso-8859-1"</string>
     <string name="xrc_encoding">"utf-8"</string>
     <string name="project_encoding">"utf-8"</string>
@@ -200,7 +200,7 @@
           <long name="title-mode">0</long>
           <long name="locked">0</long>
           <string name="template-name">"VC++ Project"</string>
-          <bool name="dirty">1</bool>
+          <bool name="dirty">0</bool>
           <long name="makefile-last-written">-8519680</long>
           <string name="Compiler name">"VC++ Project"</string>
           <string name="Build mode">"Debug"</string>
@@ -282,7 +282,7 @@
           <long name="title-mode">0</long>
           <long name="locked">0</long>
           <string name="template-name">"VC++ Project"</string>
-          <bool name="dirty">1</bool>
+          <bool name="dirty">0</bool>
           <long name="makefile-last-written">-8519680</long>
           <string name="Compiler name">"VC++ Project"</string>
           <string name="Build mode">"Release"</string>
@@ -577,6 +577,9 @@
           <string name="app-kind">"Standard"</string>
           <long name="use-xrc">0</long>
           <long name="working-mode">0</long>
+          <string name="event-handler-0">"wxEVT_CHAR|OnChar|NONE||AbstractWindow"</string>
+          <string name="event-handler-1">"wxEVT_KEY_DOWN|OnKeyDown|NONE||"</string>
+          <string name="event-handler-2">"wxEVT_KEY_UP|OnKeyUp|NONE||AbstractWindow"</string>
           <string name="proxy-Id name">"ID_ABSTRACTWINDOW"</string>
           <long name="proxy-Id value">10000</long>
           <string name="proxy-Class">"AbstractWindow"</string>
@@ -701,6 +704,54 @@
           <string name="title">"abstractwindow.cpp"</string>
           <string name="type">"source-editor-document"</string>
           <string name="filename">"src/abstractwindow.cpp"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"6/4/2011"</string>
+          <string name="language">""</string>
+        </document>
+        <document>
+          <string name="title">"impl_gtk2.cpp"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"src/impl_gtk2.cpp"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"6/4/2011"</string>
+          <string name="language">""</string>
+        </document>
+        <document>
+          <string name="title">"impl_osx.cpp"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"src/impl_osx.cpp"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"6/4/2011"</string>
+          <string name="language">""</string>
+        </document>
+        <document>
+          <string name="title">"impl_windows.cpp"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"src/impl_windows.cpp"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"6/4/2011"</string>
+          <string name="language">""</string>
+        </document>
+        <document>
+          <string name="title">"peripheral_api.h"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"src/peripheral_api.h"</string>
           <string name="icon-name">"source-editor"</string>
           <long name="is-transient">0</long>
           <long name="owns-file">0</long>

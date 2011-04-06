@@ -24,6 +24,8 @@
 ////@end includes
 
 #include "supermouserapp.h"
+#include "peripheral_api.h"
+#include <wx/utils.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -44,15 +46,11 @@ IMPLEMENT_APP( SuperMouserApp )
 BEGIN_EVENT_TABLE( SuperMouserApp, wxApp )
 
 ////@begin SuperMouserApp event table entries
-    EVT_TIMER(wxID_ANY, SuperMouserApp::OnTimer)
-
-#ifdef __WXMSW__
-    EVT_HOTKEY(wxID_ANY, SuperMouserApp::Activate)
-#endif
-
 ////@end SuperMouserApp event table entries
 
+EVT_TIMER(wxID_ANY, SuperMouserApp::OnTimer)
 
+EVT_HOTKEY(wxID_ANY, SuperMouserApp::OnHotKey)
 
 END_EVENT_TABLE()
 
@@ -62,152 +60,6 @@ END_EVENT_TABLE()
  */
 
 IMPLEMENT_CLASS( SuperMouserApp, wxApp )
-
-
-#ifdef __WXMSW__
-void move_to(int x, int y) 
-{
-    SetCursorPos(x, y);
-}
-
-void click_left(int x, int y) 
-{
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-}
-
-void click_right(int x, int y) 
-{
-    mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
-}
-
-void click_double(int x, int y) 
-{
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-    GetDoubleClickTime;
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-}
-#endif // __WXMSW__
-
-#ifdef __WXGTK__
-#include <X11/Xlib.h>
-void move_to(int x, int y) 
-{
-    Display *display = XOpenDisplay(0);
-    Window root = XRootWindow(display, 0);
-    XSelectInput(display, root, KeyReleaseMask);
-    XWarpPointer(display, NULL, root, 0, 0, 0, 0, x, y);
-}
-
-void click_left(int x, int y) 
-{
-}
-
-void click_right(int x, int y) 
-{
-}
-
-void click_double(int x, int y) 
-{
-}
-#endif // __WXGTK__
-
-#ifdef __WXMAC__
-#import <ApplicationServices/ApplicationServices.h>
-#import <Carbon/carbon.h>
-
-void move_to(int x, int y) 
-{
-    CGPoint newloc;
-    CGEventRef eventRef;
-    newloc.x = x;
-    newloc.y = y;
-
-    eventRef = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, newloc, kCGMouseButtonCenter);
-
-    //Apparently, a bug in xcode requires this next line
-    CGEventSetType(eventRef, kCGEventMouseMoved); // Apparently, a bug in xcode requires this line
-    CGEventPost(kCGSessionEventTap, eventRef);
-    CFRelease(eventRef);
-}
-
-void click_left(int x, int y) 
-{
-    CGPoint newloc;
-    CGEventRef eventRef;
-    newloc.x = x;
-    newloc.y = y;
-
-    // Mouse down
-    eventRef = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, newloc, kCGMouseButtonLeft);
-    CGEventSetType(eventRef, kCGEventLeftMouseDown); // Apparently, a bug in xcode requires this line
-    CGEventPost(kCGSessionEventTap, eventRef);
-    CFRelease(eventRef);
-
-    usleep(100);
-
-    // Mouse up
-    eventRef = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, newloc, kCGMouseButtonLeft);
-    CGEventSetType(eventRef, kCGEventLeftMouseUp); // Apparently, a bug in xcode requires this line
-    CGEventPost(kCGSessionEventTap, eventRef);
-    CFRelease(eventRef);
-}
-
-void click_right(int x, int y) 
-{
-    CGPoint newloc;
-    CGEventRef eventRef;
-    newloc.x = x;
-    newloc.y = y;
-
-    // Mouse down
-    eventRef = CGEventCreateMouseEvent(NULL, kCGEventRightMouseDown, newloc, kCGMouseButtonRight);
-    CGEventSetType(eventRef, kCGEventRightMouseDown); // Apparently, a bug in xcode requires this line
-    CGEventPost(kCGSessionEventTap, eventRef);
-    CFRelease(eventRef);
-
-    usleep(100);
-
-    // Mouse up
-    eventRef = CGEventCreateMouseEvent(NULL, kCGEventRightMouseUp, newloc, kCGMouseButtonRight);
-    CGEventSetType(eventRef, kCGEventRightMouseUp); // Apparently, a bug in xcode requires this line
-    CGEventPost(kCGSessionEventTap, eventRef);
-    CFRelease(eventRef);
-}
-
-void click_double(int x, int y) 
-{
-    CGEventRef theEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, CGPointMake(x, y), kCGMouseButtonLeft);  
-    CGEventPost(kCGHIDEventTap, theEvent);  
-    CGEventSetType(theEvent, kCGEventLeftMouseUp);  
-    CGEventPost(kCGHIDEventTap, theEvent);  
-
-    CGEventSetIntegerValueField(theEvent, kCGMouseEventClickState, 2);
-
-    CGEventSetType(theEvent, kCGEventLeftMouseDown);  
-    CGEventPost(kCGHIDEventTap, theEvent);  
-
-    CGEventSetType(theEvent, kCGEventLeftMouseUp); 
-    CGEventPost(kCGHIDEventTap, theEvent); 
-
-    CFRelease(theEvent); 
-}
-
-OSStatus OnHotKeyEvent(EventHandlerCallRef nextHandler,EventRef theEvent,void *userData)
-{
-    EventHotKeyID hkCom;
-
-    GetEventParameter(theEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hkCom), NULL, &hkCom);
-    SuperMouserApp *app = (SuperMouserApp*)userData; 
-
-    app->Activate();
-
-    return noErr;
-}
-#endif //__WXMAC__
 
 
 /*
@@ -234,13 +86,7 @@ void SuperMouserApp::Init()
 	screenWidth_ = 0;
 	screenHeight_ = 0;
 
-    #ifndef __WXGTK__
-	wxDisplaySize(&screenWidth_, &screenHeight_);
-    #else
-    // TBD, find alternative for wxDisplaySize(), becuase it crashes the program.
-    screenWidth_ = 1280;
-    screenHeight_ = 1024;
-    #endif
+    init_screensize(&screenWidth_, &screenHeight_);
 
 	mainWindow_ = NULL;
 	windowUp_ = NULL;
@@ -250,14 +96,12 @@ void SuperMouserApp::Init()
 
 	travelUpDown_ = 0;
 	travelLeftRight_ = 0;
-
-
 }
 
 /*
  * Initialisation for SuperMouserApp
  */
-#include <wx/utils.h>
+
 bool SuperMouserApp::OnInit()
 {    
 ////@begin SuperMouserApp initialisation
@@ -288,32 +132,18 @@ bool SuperMouserApp::OnInit()
 	windowLeft_ = new AbstractWindow(NULL);
 	windowRight_ = new AbstractWindow(NULL);
 
+	windowUp_->SetTransparent(128);
+    windowDown_->SetTransparent(128);
+    windowLeft_->SetTransparent(128);
+    windowRight_->SetTransparent(128);
+
     // Create timer and set the interval
     static const int INTERVAL = 30; // milliseconds
     timer_ = new wxTimer(this, wxID_ANY);
     timer_->Start(INTERVAL);
     timer_->Stop();
 
-
-    // Register hotkey event
-#ifdef __WXMSW__
-    mainWindow_->RegisterHotKey(wxID_ANY, wxMOD_CONTROL | wxMOD_SHIFT, 'M');
-#endif
-
-#ifdef __WXMAC__
-    EventHotKeyRef gMyHotKeyRef;
-    EventHotKeyID gMyHotKeyID;
-    EventTypeSpec eventType;
-    eventType.eventClass=kEventClassKeyboard;
-    eventType.eventKind=kEventHotKeyPressed;   
-
-    InstallApplicationEventHandler(&OnHotKeyEvent, 1, &eventType, (void *)this, NULL);
-
-    gMyHotKeyID.signature='htk1';
-    gMyHotKeyID.id=1;
-    // windows+alt+space
-    RegisterEventHotKey(49, cmdKey+optionKey, gMyHotKeyID, GetApplicationEventTarget(), 0, &gMyHotKeyRef); 
-#endif
+    register_hotkey(mainWindow_);
     
     return true;
 }
@@ -325,9 +155,21 @@ bool SuperMouserApp::OnInit()
 
 int SuperMouserApp::OnExit()
 {    
+    timer_->Stop();
+    mainWindow_->Destroy();
+    windowUp_->Destroy();
+    windowDown_->Destroy();
+    windowLeft_->Destroy();
+    windowRight_->Destroy();
+
 ////@begin SuperMouserApp cleanup
 	return wxApp::OnExit();
 ////@end SuperMouserApp cleanup
+}
+
+void SuperMouserApp::OnHotKey(wxKeyEvent& event)
+{
+    Activate();
 }
 
 void SuperMouserApp::Activate()
@@ -347,7 +189,6 @@ void SuperMouserApp::Activate()
     timer_->Start();
 }
 
-//void SuperMouserApp::OnKeyDown(wxKeyEvent& event)
 void SuperMouserApp::OnTimer(wxTimerEvent& event)
 {
 	switch (state_) {
@@ -359,6 +200,13 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 				state_ = AbortMouserState;
 				break;
 			}
+
+            if (wxGetKeyState(wxKeyCode('Q'))) {
+                timer_->Stop();
+                wxMessageBox("Exiting");
+                Exit();
+                return;
+            }
 
 			if (wxGetKeyState(wxKeyCode('H'))) {
                 #ifdef __WXGTK__

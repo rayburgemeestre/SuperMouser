@@ -90,7 +90,7 @@
     <string name="app_class_name">"Application"</string>
     <bool name="generate_app_class">0</bool>
     <string name="external_symbol_filenames">""</string>
-    <string name="configuration">"GCC Release Linux"</string>
+    <string name="configuration">"GCC Debug Mac"</string>
     <string name="source_encoding">"iso-8859-1"</string>
     <string name="xrc_encoding">"utf-8"</string>
     <string name="project_encoding">"utf-8"</string>
@@ -355,7 +355,7 @@
           <bool name="Generate manifest">1</bool>
         </document>
         <document>
-          <string name="title">"GCC Release Mac"</string>
+          <string name="title">"GCC Debug Mac"</string>
           <string name="type">"gcc-config-data-document"</string>
           <string name="filename">""</string>
           <string name="icon-name">""</string>
@@ -443,7 +443,7 @@
           <long name="locked">0</long>
           <string name="template-name">"GCC"</string>
           <bool name="dirty">1</bool>
-          <long name="makefile-last-written">0</long>
+          <long name="makefile-last-written">-8519680</long>
           <string name="Compiler name">"GCC"</string>
           <string name="Build mode">"Release"</string>
           <string name="Unicode mode">"ANSI"</string>

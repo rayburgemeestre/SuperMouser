@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|Win32">
+			<Configuration>Debug</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|Win32">
+			<Configuration>Release</Configuration>
+			<Platform>Win32</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectGuid>{FAE29035-75E4-4F76-BF2D-B3537B0BF9CC}</ProjectGuid>
+		<Keyword>Win32Proj</Keyword>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+		<Configuration>Debug</Configuration>
+		<ConfigurationType>Application</ConfigurationType>
+		<UseDebugLibraries>true</UseDebugLibraries>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+		<Configuration>Release</Configuration>
+		<ConfigurationType>Application</ConfigurationType>
+		<UseDebugLibraries>false</UseDebugLibraries>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+	<ImportGroup Label="ExtensionSettings">
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros" />
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<LinkIncremental>true</LinkIncremental>
+		<EmbedManifest>false</EmbedManifest>
+		<OutDir>$(SolutionDir)VCProjectDebug\</OutDir>
+		<IntDir>$(SolutionDir)VCProjectDebug\</IntDir>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<LinkIncremental>false</LinkIncremental>
+		<EmbedManifest>false</EmbedManifest>
+		<OutDir>$(SolutionDir)VCProjectRelease\</OutDir>
+		<IntDir>$(SolutionDir)VCProjectRelease\</IntDir>
+	</PropertyGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<ClCompile>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<Optimization>Disabled</Optimization>
+			<PreprocessorDefinitions>NOPCH;WIN32;__WXMSW__;_WINDOWS;__WXDEBUG__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalIncludeDirectories>C:\wxWidgets-2.8.11/include;C:\wxWidgets-2.8.11/contrib/include;C:\wxWidgets-2.8.11/lib/vc_lib/mswd;C:\Program Files\Microsoft SDKs\Windows\v7.0A\include;C:\Program Files\Microsoft Visual Studio 10.0\vc\include</AdditionalIncludeDirectories>
+		</ClCompile>
+		<Link>
+			<SubSystem>Windows</SubSystem>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<AdditionalLibraryDirectories>C:\wxWidgets-2.8.11/lib/vc_lib;C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib;C:\Program Files\Microsoft Visual Studio 10.0\vc\lib</AdditionalLibraryDirectories>
+			<AdditionalDependencies>;wxmsw28d_richtext.lib;wxmsw28d_aui.lib;wxmsw28d_html.lib;wxmsw28d_core.lib;wxbase28d.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexd.lib;wxmsw28d_adv.lib;wxmsw28d_html.lib;wxmsw28d_xrc.lib;wxbase28d_net.lib;wxbase28d_xml.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<TargetMachine>MachineX86</TargetMachine>
+		</Link>
+		<ResourceCompile>
+			<AdditionalIncludeDirectories>C:\wxWidgets-2.8.11/include;C:\wxWidgets-2.8.11/contrib/include;C:\wxWidgets-2.8.11/lib/vc_lib/mswd;C:\Program Files\Microsoft SDKs\Windows\v7.0A\include;C:\Program Files\Microsoft Visual Studio 10.0\vc\include</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>NOPCH;WIN32;__WXMSW__;_WINDOWS;__WXDEBUG__;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+		</ResourceCompile>
+	</ItemDefinitionGroup>
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<ClCompile>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<WarningLevel>Level3</WarningLevel>
+			<Optimization>MaxSpeed</Optimization>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<PreprocessorDefinitions>NOPCH;WIN32;__WXMSW__;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalOptions> %(AdditionalOptions)</AdditionalOptions>
+			<AdditionalIncludeDirectories>C:\wxWidgets-2.8.11/include;C:\wxWidgets-2.8.11/contrib/include;C:\wxWidgets-2.8.11/lib/vc_lib/msw;C:\Program Files\Microsoft SDKs\Windows\v7.0A\include;C:\Program Files\Microsoft Visual Studio 10.0\vc\include</AdditionalIncludeDirectories>
+		</ClCompile>
+		<Link>
+			<SubSystem>Windows</SubSystem>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<OptimizeReferences>true</OptimizeReferences>
+			<AdditionalLibraryDirectories>C:\wxWidgets-2.8.11/lib/vc_lib;C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib;C:\Program Files\Microsoft Visual Studio 10.0\vc\lib</AdditionalLibraryDirectories>
+			<AdditionalDependencies>;wxmsw28_richtext.lib;wxmsw28_aui.lib;wxmsw28_html.lib;wxmsw28_core.lib;wxbase28.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregex.lib;wxmsw28_adv.lib;wxmsw28_html.lib;wxmsw28_xrc.lib;wxbase28_net.lib;wxbase28_xml.lib;wxexpat.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<TargetMachine>MachineX86</TargetMachine>
+		</Link>
+		<ResourceCompile>
+			<AdditionalIncludeDirectories>C:\wxWidgets-2.8.11/include;C:\wxWidgets-2.8.11/contrib/include;C:\wxWidgets-2.8.11/lib/vc_lib/msw;C:\Program Files\Microsoft SDKs\Windows\v7.0A\include;C:\Program Files\Microsoft Visual Studio 10.0\vc\include</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>NOPCH;WIN32;__WXMSW__;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+		</ResourceCompile>
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClInclude Include="src\abstractwindow.h" />
+		<ClInclude Include="src\peripheral_api.h" />
+		<ClInclude Include="src\settingswindow.h" />
+		<ClInclude Include="src\supermouserapp.h" />
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="src\abstractwindow.cpp" />
+		<ClCompile Include="src\impl_gtk2.cpp" />
+		<ClCompile Include="src\impl_osx.cpp" />
+		<ClCompile Include="src\impl_windows.cpp" />
+		<ClCompile Include="src\settingswindow.cpp" />
+		<ClCompile Include="src\supermouserapp.cpp" />
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="SuperMouser.rc" />
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+	<ImportGroup Label="ExtensionTargets">
+	</ImportGroup>
+</Project>

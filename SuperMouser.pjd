@@ -697,6 +697,30 @@
           <string name="created">"4/4/2011"</string>
           <string name="language">""</string>
         </document>
+        <document>
+          <string name="title">"abstractwindow.cpp"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"src/abstractwindow.cpp"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"6/4/2011"</string>
+          <string name="language">""</string>
+        </document>
+        <document>
+          <string name="title">"supermouserapp.cpp"</string>
+          <string name="type">"source-editor-document"</string>
+          <string name="filename">"src/supermouserapp.cpp"</string>
+          <string name="icon-name">"source-editor"</string>
+          <long name="is-transient">0</long>
+          <long name="owns-file">0</long>
+          <long name="title-mode">1</long>
+          <long name="locked">0</long>
+          <string name="created">"6/4/2011"</string>
+          <string name="language">""</string>
+        </document>
       </document>
       <document>
         <string name="title">"Images"</string>

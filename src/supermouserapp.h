@@ -29,6 +29,8 @@
 ////@begin forward declarations
 ////@end forward declarations
 
+class SettingsWindow;
+
 /*!
  * Control identifiers
  */
@@ -71,7 +73,7 @@ public:
     void OnHotKey(wxKeyEvent& event);
 
 	void Activate();
-    
+
 ////@begin SuperMouserApp event handler declarations
 
 ////@end SuperMouserApp event handler declarations
@@ -98,6 +100,8 @@ public:
 	AbstractWindow* windowDown_;
 	AbstractWindow* windowLeft_;
 	AbstractWindow* windowRight_;
+    
+    SettingsWindow * windowSettings_;
 };
 
 /*!

@@ -26,6 +26,7 @@
 #include "supermouserapp.h"
 #include "peripheral_api.h"
 #include <wx/utils.h>
+#include "settingswindow.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -124,6 +125,7 @@ bool SuperMouserApp::OnInit()
 	mainWindow->Show(true);
 ////@end SuperMouserApp initialisation
 
+
 	mainWindow->Show(false);
 	mainWindow_ = mainWindow;
 
@@ -143,8 +145,15 @@ bool SuperMouserApp::OnInit()
     timer_->Start(INTERVAL);
     timer_->Stop();
 
-    register_hotkey(mainWindow_);
-    
+	windowSettings_ = new SettingsWindow(NULL);
+	windowSettings_->SetParentWindow(mainWindow);
+
+	#ifdef __WXMSW__
+		windowSettings_->Show();
+	#else
+		register_hotkey(mainWindow_);
+	#endif
+
     return true;
 }
 
@@ -201,6 +210,11 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 				break;
 			}
 
+			#ifdef __WXMSW__
+			if (wxGetKeyState(wxKeyCode('C'))) {
+				windowSettings_->Show();
+			}
+			#endif
             if (wxGetKeyState(wxKeyCode('Q'))) {
                 timer_->Stop();
                 wxMessageBox("Exiting");
@@ -208,7 +222,7 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
                 return;
             }
 
-			if (wxGetKeyState(wxKeyCode('H'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft))) {
                 #ifdef __WXGTK__
                 windowLeft_->Hide();
                 #endif
@@ -221,9 +235,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 					travelLeftRight_ /= 2.0;
 				}
 				currentPos_.x -= travelLeftRight_;
-				while (wxGetKeyState(wxKeyCode('H')));
+				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft)));
 			}
-			if (wxGetKeyState(wxKeyCode('J'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown))) {
                 #ifdef __WXGTK__
                 windowDown_->Hide();
                 #endif
@@ -236,9 +250,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 					travelUpDown_ /= 2.0;
 				}
 				currentPos_.y += travelUpDown_;
-				while (wxGetKeyState(wxKeyCode('J')));
+				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown)));
 			}
-			if (wxGetKeyState(wxKeyCode('K'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp))) {
                 #ifdef __WXGTK__
                 windowUp_->Hide();
                 #endif
@@ -251,9 +265,9 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 					travelUpDown_ /= 2.0;
 				}
 				currentPos_.y -= travelUpDown_;
-				while (wxGetKeyState(wxKeyCode('K')));
+				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp)));
 			}
-			if (wxGetKeyState(wxKeyCode('L'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight))) {
                 #ifdef __WXGTK__
                 windowRight_->Hide();
                 #endif
@@ -265,15 +279,15 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 					travelLeftRight_ /= 2.0;
 				}
 				currentPos_.x += travelLeftRight_;
-				while (wxGetKeyState(wxKeyCode('L')));
+				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight)));
 			}
-			if (wxGetKeyState(wxKeyCode('F'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyMouseSingleClick))) {
 				state_ = MouseLeftClick;
 			}
-			if (wxGetKeyState(wxKeyCode('D'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyMouseDoubleClick))) {
 				state_ = MouseDoubleClick;
 			}
-			if (wxGetKeyState(wxKeyCode('G'))) {
+			if (wxGetKeyState(wxKeyCode(windowSettings_->keyMouseRightClick))) {
 				state_ = MouseRightClick;
 			}
             move_to(currentPos_.x, currentPos_.y);

@@ -69,6 +69,15 @@ public:
 
 ////@begin AbstractWindow event handler declarations
 
+    /// wxEVT_CHAR event handler for ID_ABSTRACTWINDOW
+    void OnChar( wxKeyEvent& event );
+
+    /// wxEVT_KEY_DOWN event handler for ID_ABSTRACTWINDOW
+    void OnKeyDown( wxKeyEvent& event );
+
+    /// wxEVT_KEY_UP event handler for ID_ABSTRACTWINDOW
+    void OnKeyUp( wxKeyEvent& event );
+
 ////@end AbstractWindow event handler declarations
 
 ////@begin AbstractWindow member function declarations

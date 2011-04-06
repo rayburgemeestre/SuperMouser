@@ -43,6 +43,10 @@ IMPLEMENT_CLASS( AbstractWindow, wxFrame )
 BEGIN_EVENT_TABLE( AbstractWindow, wxFrame )
 
 ////@begin AbstractWindow event table entries
+    EVT_CHAR( AbstractWindow::OnChar )
+    EVT_KEY_DOWN( AbstractWindow::OnKeyDown )
+    EVT_KEY_UP( AbstractWindow::OnKeyUp )
+
 ////@end AbstractWindow event table entries
 
 END_EVENT_TABLE()
@@ -152,3 +156,36 @@ wxIcon AbstractWindow::GetIconResource( const wxString& name )
     return wxNullIcon;
 ////@end AbstractWindow icon retrieval
 }
+
+
+/*
+ * wxEVT_CHAR event handler for ID_ABSTRACTWINDOW
+ */
+
+void AbstractWindow::OnChar( wxKeyEvent& event )
+{
+    event.StopPropagation();
+}
+
+
+/*
+ * wxEVT_KEY_DOWN event handler for ID_ABSTRACTWINDOW
+ */
+
+void AbstractWindow::OnKeyDown( wxKeyEvent& event )
+{
+    event.StopPropagation();
+}
+
+
+/*
+ * wxEVT_KEY_UP event handler for ID_ABSTRACTWINDOW
+ */
+
+void AbstractWindow::OnKeyUp( wxKeyEvent& event )
+{
+    event.StopPropagation();
+}
+
+
+

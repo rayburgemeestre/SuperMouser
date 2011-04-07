@@ -98,12 +98,14 @@
 	</ItemDefinitionGroup>
 	<ItemGroup>
 		<ClInclude Include="src\abstractwindow.h" />
+		<ClInclude Include="src\cursorwindow.h" />
 		<ClInclude Include="src\peripheral_api.h" />
 		<ClInclude Include="src\settingswindow.h" />
 		<ClInclude Include="src\supermouserapp.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClCompile Include="src\abstractwindow.cpp" />
+		<ClCompile Include="src\cursorwindow.cpp" />
 		<ClCompile Include="src\impl_gtk2.cpp" />
 		<ClCompile Include="src\impl_osx.cpp" />
 		<ClCompile Include="src\impl_windows.cpp" />

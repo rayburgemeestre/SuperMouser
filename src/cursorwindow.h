@@ -70,7 +70,7 @@ public:
     /// Creates the controls and sizers
     void CreateControls();
 
-	void SetApplication2(SuperMouserApp *app);
+	void SetApplication(SuperMouserApp *app);
     
 ////@begin CursorWindow event handler declarations
 

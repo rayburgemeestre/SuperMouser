@@ -190,7 +190,7 @@ void CursorWindow::OnKeyDown( wxKeyEvent& event )
 	app_->Test(event.GetKeyCode());
 }
 
-void CursorWindow::SetApplication2(SuperMouserApp *app)
+void CursorWindow::SetApplication(SuperMouserApp *app)
 {
     app_ = app;
 }

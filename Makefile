@@ -73,7 +73,7 @@ RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include
 MACPACKAGEINFO=
 endif
 
-OBJECTS=$(OBJECTPATH)/abstractwindow.o $(OBJECTPATH)/supermouserapp.o $(RESOURCEOBJECT)
+OBJECTS=$(OBJECTPATH)/abstractwindow.o $(OBJECTPATH)/impl_gtk2.o $(OBJECTPATH)/impl_osx.o $(OBJECTPATH)/impl_windows.o $(OBJECTPATH)/settingswindow.o $(OBJECTPATH)/supermouserapp.o $(RESOURCEOBJECT)
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 
@@ -114,7 +114,19 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 $(OBJECTPATH)/abstractwindow.o:	src/abstractwindow.cpp src/abstractwindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/abstractwindow.cpp
 
-$(OBJECTPATH)/supermouserapp.o:	src/supermouserapp.cpp src/supermouserapp.h src/abstractwindow.h
+$(OBJECTPATH)/impl_gtk2.o:	src/impl_gtk2.cpp src/peripheral_api.h
+	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_gtk2.cpp
+
+$(OBJECTPATH)/impl_osx.o:	src/impl_osx.cpp src/peripheral_api.h src/supermouserapp.h src/abstractwindow.h
+	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_osx.cpp
+
+$(OBJECTPATH)/impl_windows.o:	src/impl_windows.cpp src/AbstractWindow.h
+	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_windows.cpp
+
+$(OBJECTPATH)/settingswindow.o:	src/settingswindow.cpp src/settingswindow.h src/abstractwindow.h
+	$(CXX) -c -o $@ $(CPPFLAGS) src/settingswindow.cpp
+
+$(OBJECTPATH)/supermouserapp.o:	src/supermouserapp.cpp src/supermouserapp.h src/abstractwindow.h src/peripheral_api.h src/settingswindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/supermouserapp.cpp
 
 .PHONY:	all clean

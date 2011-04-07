@@ -112,5 +112,6 @@ public:
 DECLARE_APP(SuperMouserApp)
 ////@end declare app
 
+
 #endif
     // _SUPERMOUSERAPP_H_

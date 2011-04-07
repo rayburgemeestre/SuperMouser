@@ -11,16 +11,38 @@
 
 #include "peripheral_api.h"
 
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
 #ifdef __WXMAC__
 
+#include "abstractwindow.h"
 #include "supermouserapp.h"
+
+#import <ApplicationServices/ApplicationServices.h>
+#import <Carbon/carbon.h>
+
 
 void init_screensize(int *width, int *height)
 {
 	wxDisplaySize(width, height);
 }
 
-void register_hotkey(AbstractWindow *window)
+
+OSStatus OnHotKeyEvent(EventHandlerCallRef nextHandler,EventRef theEvent,void *userData)
+{
+    EventHotKeyID hkCom;
+
+    GetEventParameter(theEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hkCom), NULL, &hkCom);
+    SuperMouserApp *app = (SuperMouserApp*)userData; 
+
+    app->Activate();
+
+    return noErr;
+}
+
+void register_hotkey(AbstractWindow *window, SuperMouserApp *superMouser)
 {
     EventHotKeyRef gMyHotKeyRef;
     EventHotKeyID gMyHotKeyID;
@@ -28,16 +50,13 @@ void register_hotkey(AbstractWindow *window)
     eventType.eventClass=kEventClassKeyboard;
     eventType.eventKind=kEventHotKeyPressed;   
 
-    InstallApplicationEventHandler(&OnHotKeyEvent, 1, &eventType, (void *)this, NULL);
+    InstallApplicationEventHandler(&OnHotKeyEvent, 1, &eventType, (void *)superMouser, NULL);
 
     gMyHotKeyID.signature='htk1';
     gMyHotKeyID.id=1;
     // windows+alt+space
     RegisterEventHotKey(49, cmdKey+optionKey, gMyHotKeyID, GetApplicationEventTarget(), 0, &gMyHotKeyRef); 
 }
-
-#import <ApplicationServices/ApplicationServices.h>
-#import <Carbon/carbon.h>
 
 void move_to(int x, int y) 
 {
@@ -116,15 +135,4 @@ void click_double(int x, int y)
     CFRelease(theEvent); 
 }
 
-OSStatus OnHotKeyEvent(EventHandlerCallRef nextHandler,EventRef theEvent,void *userData)
-{
-    EventHotKeyID hkCom;
-
-    GetEventParameter(theEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hkCom), NULL, &hkCom);
-    SuperMouserApp *app = (SuperMouserApp*)userData; 
-
-    app->Activate();
-
-    return noErr;
-}
 #endif //__WXMAC__

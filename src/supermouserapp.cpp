@@ -23,9 +23,9 @@
 ////@begin includes
 ////@end includes
 
+#include <wx/utils.h>
 #include "supermouserapp.h"
 #include "peripheral_api.h"
-#include <wx/utils.h>
 #include "settingswindow.h"
 
 ////@begin XPM images
@@ -51,7 +51,9 @@ BEGIN_EVENT_TABLE( SuperMouserApp, wxApp )
 
 EVT_TIMER(wxID_ANY, SuperMouserApp::OnTimer)
 
+#ifdef __WXMSW__
 EVT_HOTKEY(wxID_ANY, SuperMouserApp::OnHotKey)
+#endif
 
 END_EVENT_TABLE()
 
@@ -134,10 +136,10 @@ bool SuperMouserApp::OnInit()
 	windowLeft_ = new AbstractWindow(NULL);
 	windowRight_ = new AbstractWindow(NULL);
 
-	windowUp_->SetTransparent(128);
-    windowDown_->SetTransparent(128);
-    windowLeft_->SetTransparent(128);
-    windowRight_->SetTransparent(128);
+	windowUp_->SetTransparent(196);
+    windowDown_->SetTransparent(196);
+    windowLeft_->SetTransparent(196);
+    windowRight_->SetTransparent(196);
 
     // Create timer and set the interval
     static const int INTERVAL = 30; // milliseconds
@@ -151,7 +153,7 @@ bool SuperMouserApp::OnInit()
 	#ifdef __WXMSW__
 		windowSettings_->Show();
 	#else
-		register_hotkey(mainWindow_);
+		register_hotkey(mainWindow_, this);
 	#endif
 
     return true;
@@ -210,11 +212,10 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 				break;
 			}
 
-			#ifdef __WXMSW__
 			if (wxGetKeyState(wxKeyCode('C'))) {
 				windowSettings_->Show();
 			}
-			#endif
+
             if (wxGetKeyState(wxKeyCode('Q'))) {
                 timer_->Stop();
                 wxMessageBox("Exiting");

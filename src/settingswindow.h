@@ -19,6 +19,7 @@
 
 ////@begin includes
 #include "wx/frame.h"
+#include "wx/clrpicker.h"
 #include "wx/statusbr.h"
 ////@end includes
 
@@ -27,9 +28,10 @@
  */
 
 ////@begin forward declarations
+class wxColourPickerCtrl;
 class wxStatusBar;
 ////@end forward declarations
-class AbstractWindow;
+class SuperMouserApp;
 
 /*!
  * Control identifiers
@@ -39,6 +41,9 @@ class AbstractWindow;
 #define ID_SETTINGSWINDOW 10001
 #define ID_PANEL 10002
 #define ID_TEXTCTRL1 10004
+#define ID_COLOURCTRL 10014
+#define ID_CHECKBOX 10015
+#define ID_SLIDER 10016
 #define ID_TEXTCTRL 10005
 #define ID_TEXTCTRL2 10006
 #define ID_TEXTCTRL3 10007
@@ -51,7 +56,7 @@ class AbstractWindow;
 #define SYMBOL_SETTINGSWINDOW_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU
 #define SYMBOL_SETTINGSWINDOW_TITLE _("SettingsWindow")
 #define SYMBOL_SETTINGSWINDOW_IDNAME ID_SETTINGSWINDOW
-#define SYMBOL_SETTINGSWINDOW_SIZE wxSize(400, 400)
+#define SYMBOL_SETTINGSWINDOW_SIZE wxSize(400, 500)
 #define SYMBOL_SETTINGSWINDOW_POSITION wxDefaultPosition
 ////@end control identifiers
 
@@ -83,7 +88,7 @@ public:
 
 	void UpdateShortcutKeys();
 
-	void SetParentWindow(AbstractWindow *window);
+	void SetApplication(SuperMouserApp *app);
 
 ////@begin SettingsWindow event handler declarations
 
@@ -112,6 +117,9 @@ public:
 
 ////@begin SettingsWindow member variables
     wxTextCtrl* textctrlControlKeys;
+    wxColourPickerCtrl* colourctrl;
+    wxCheckBox* checkboxTransparency;
+    wxSlider* sliderTransparency;
     wxTextCtrl* textctrlKeyUp;
     wxTextCtrl* textctrlKeyLeft;
     wxTextCtrl* textctrlKeyRight;
@@ -142,7 +150,7 @@ public:
 
 	char shortcutKey;
 
-	AbstractWindow *mainWindow;
+	SuperMouserApp *app_;
 };
 
 #endif

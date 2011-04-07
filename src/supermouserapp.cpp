@@ -123,12 +123,12 @@ bool SuperMouserApp::OnInit()
 #if wxUSE_GIF
 	wxImage::AddHandler(new wxGIFHandler);
 #endif
-	AbstractWindow* mainWindow = new AbstractWindow( NULL );
+	CursorWindow* mainWindow = new CursorWindow( NULL );
 	mainWindow->Show(true);
 ////@end SuperMouserApp initialisation
 
-
 	mainWindow->Show(false);
+	mainWindow->SetApplication(this);
 	mainWindow_ = mainWindow;
 
 	windowUp_ = new AbstractWindow(NULL);
@@ -136,19 +136,21 @@ bool SuperMouserApp::OnInit()
 	windowLeft_ = new AbstractWindow(NULL);
 	windowRight_ = new AbstractWindow(NULL);
 
-	windowUp_->SetTransparent(196);
-    windowDown_->SetTransparent(196);
-    windowLeft_->SetTransparent(196);
-    windowRight_->SetTransparent(196);
+	windowUp_->SetTransparent(128);
+    windowDown_->SetTransparent(128);
+    windowLeft_->SetTransparent(128);
+    windowRight_->SetTransparent(128);
 
+	/*
     // Create timer and set the interval
     static const int INTERVAL = 30; // milliseconds
     timer_ = new wxTimer(this, wxID_ANY);
     timer_->Start(INTERVAL);
     timer_->Stop();
+	*/
 
 	windowSettings_ = new SettingsWindow(NULL);
-	windowSettings_->SetParentWindow(mainWindow);
+	windowSettings_->SetApplication(this);
 
 	#ifdef __WXMSW__
 		windowSettings_->Show();
@@ -166,7 +168,7 @@ bool SuperMouserApp::OnInit()
 
 int SuperMouserApp::OnExit()
 {    
-    timer_->Stop();
+//    timer_->Stop();
     mainWindow_->Destroy();
     windowUp_->Destroy();
     windowDown_->Destroy();
@@ -194,128 +196,156 @@ void SuperMouserApp::Activate()
     travelLeftRight_ = -1;
 
     mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-    mainWindow_->SetSize(5, 5);
+    //mainWindow_->SetSize(5, 5);
+	mainWindow_->Show();
     mainWindow_->SetFocus();
+	mainWindow_->textctrl->SetFocus();
 
-    timer_->Start();
+   // timer_->Start();
+}
+
+void SuperMouserApp::pre_click()
+{
+	mainWindow_->Hide();
+	windowLeft_->Hide();
+	windowRight_->Hide();
+	windowUp_->Hide();
+	windowDown_->Hide();
+}
+void SuperMouserApp::Test(int code)
+{
+	if (code == wxKeyCode(windowSettings_->keyNavLeft)) {
+#ifdef __WXGTK__
+		windowLeft_->Hide();
+#endif
+		windowLeft_->SetSize(screenWidth_ - currentPos_.x, screenHeight_);
+		windowLeft_->SetPosition(wxPoint(currentPos_.x, 0));
+		windowLeft_->Show();
+
+		if (travelLeftRight_ == -1) {
+			travelLeftRight_ = currentPos_.x / 2.0;
+		} else {
+			travelLeftRight_ /= 2.0;
+		}
+		currentPos_.x -= travelLeftRight_;
+		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft)));
+	}
+	if (code == wxKeyCode(windowSettings_->keyNavDown)) {
+#ifdef __WXGTK__
+		windowDown_->Hide();
+#endif
+		windowDown_->SetSize(screenWidth_, currentPos_.y);
+		windowDown_->SetPosition(wxPoint(0, 0));
+		windowDown_->Show();
+
+		if (travelUpDown_ == -1) {
+			travelUpDown_ = (screenHeight_ - currentPos_.y) / 2.0;
+		} else {
+			travelUpDown_ /= 2.0;
+		}
+		currentPos_.y += travelUpDown_;
+		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown)));
+	}
+	if (code == wxKeyCode(windowSettings_->keyNavUp)) {
+#ifdef __WXGTK__
+		windowUp_->Hide();
+#endif
+		windowUp_->SetSize(screenWidth_, screenHeight_ - currentPos_.y);
+		windowUp_->SetPosition(wxPoint(0, currentPos_.y));
+		windowUp_->Show();
+
+		if (travelUpDown_ == -1) {
+			travelUpDown_ = (currentPos_.y) / 2.0;
+		} else {
+			travelUpDown_ /= 2.0;
+		}
+		currentPos_.y -= travelUpDown_;
+		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp)));
+	}
+	if (code == wxKeyCode(windowSettings_->keyNavRight)) {
+#ifdef __WXGTK__
+		windowRight_->Hide();
+#endif
+		windowRight_->SetSize(0, 0, currentPos_.x, screenHeight_);
+		windowRight_->SetPosition(wxPoint(0, 0));
+		windowRight_->Show();
+		if (travelLeftRight_ == -1) {
+			travelLeftRight_ = (screenWidth_ - currentPos_.x) / 2.0;
+		} else {
+			travelLeftRight_ /= 2.0;
+		}
+		currentPos_.x += travelLeftRight_;
+		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight)));
+	}
+
+	move_to(currentPos_.x, currentPos_.y);
+	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
+	mainWindow_->SetFocus();
+	mainWindow_->textctrl->SetFocus();
+
+
+
+	if (code == 27 /* ESC */) {
+		pre_click();
+	}
+
+	if (code == wxKeyCode('C')) {
+		windowSettings_->Show();
+	}
+
+	if (code == wxKeyCode('Q')) {
+		wxMessageBox("Exiting");
+		Exit();
+		return;
+	}
+
+	if (code == wxKeyCode(windowSettings_->keyMouseSingleClick)) {
+		pre_click();
+		click_left(currentPos_.x, currentPos_.y);
+	}
+	else if (code == wxKeyCode(windowSettings_->keyMouseRightClick)) {
+		pre_click();
+		click_right(currentPos_.x, currentPos_.y);
+	}
+	else if (code == wxKeyCode(windowSettings_->keyMouseDoubleClick)) {
+		pre_click();
+		click_double(currentPos_.x, currentPos_.y);
+	}
+
 }
 
 void SuperMouserApp::OnTimer(wxTimerEvent& event)
 {
 	switch (state_) {
 		case InMouserState:
-			mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-			mainWindow_->Show();
-
-			if (wxGetKeyState(WXK_ESCAPE)) {
-				state_ = AbortMouserState;
-				break;
-			}
-
-			if (wxGetKeyState(wxKeyCode('C'))) {
-				windowSettings_->Show();
-			}
-
-            if (wxGetKeyState(wxKeyCode('Q'))) {
-                timer_->Stop();
-                wxMessageBox("Exiting");
-                Exit();
-                return;
-            }
-
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft))) {
-                #ifdef __WXGTK__
-                windowLeft_->Hide();
-                #endif
-				windowLeft_->SetSize(currentPos_.x, 0, screenWidth_ - currentPos_.x, screenHeight_);
-				windowLeft_->Show();
-
-				if (travelLeftRight_ == -1) {
-					travelLeftRight_ = currentPos_.x / 2.0;
-				} else {
-					travelLeftRight_ /= 2.0;
-				}
-				currentPos_.x -= travelLeftRight_;
-				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft)));
-			}
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown))) {
-                #ifdef __WXGTK__
-                windowDown_->Hide();
-                #endif
-				windowDown_->SetSize(0, 0, screenWidth_, currentPos_.y);
-				windowDown_->Show();
-				
-				if (travelUpDown_ == -1) {
-					travelUpDown_ = (screenHeight_ - currentPos_.y) / 2.0;
-				} else {
-					travelUpDown_ /= 2.0;
-				}
-				currentPos_.y += travelUpDown_;
-				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown)));
-			}
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp))) {
-                #ifdef __WXGTK__
-                windowUp_->Hide();
-                #endif
-				windowUp_->SetSize(0, currentPos_.y, screenWidth_, screenHeight_ - currentPos_.y);
-				windowUp_->Show();
-
-				if (travelUpDown_ == -1) {
-					travelUpDown_ = (currentPos_.y) / 2.0;
-				} else {
-					travelUpDown_ /= 2.0;
-				}
-				currentPos_.y -= travelUpDown_;
-				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp)));
-			}
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight))) {
-                #ifdef __WXGTK__
-                windowRight_->Hide();
-                #endif
-				windowRight_->SetSize(0, 0, currentPos_.x, screenHeight_);
-				windowRight_->Show();
-				if (travelLeftRight_ == -1) {
-					travelLeftRight_ = (screenWidth_ - currentPos_.x) / 2.0;
-				} else {
-					travelLeftRight_ /= 2.0;
-				}
-				currentPos_.x += travelLeftRight_;
-				while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight)));
-			}
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyMouseSingleClick))) {
-				state_ = MouseLeftClick;
-			}
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyMouseDoubleClick))) {
-				state_ = MouseDoubleClick;
-			}
-			if (wxGetKeyState(wxKeyCode(windowSettings_->keyMouseRightClick))) {
-				state_ = MouseRightClick;
-			}
-            move_to(currentPos_.x, currentPos_.y);
+			//Test();
 			break;
 		case MouseLeftClick:
 		case MouseRightClick:
 		case MouseDoubleClick:
 		case AbortMouserState:
-			windowLeft_->Hide();
-			windowRight_->Hide();
-			windowUp_->Hide();
-			windowDown_->Hide();
-			mainWindow_->Hide();
 
-			switch (state_) {
-				case MouseLeftClick:
-                    click_left(currentPos_.x, currentPos_.y);
-					break;
-				case MouseRightClick:
-                    click_right(currentPos_.x, currentPos_.y);
-					break;
-				case MouseDoubleClick:
-                    click_double(currentPos_.x, currentPos_.y);
-					break;
-			}
-			state_ = WaitForShortcut;
-            timer_->Stop();
  			break;
 	}
+}
+
+void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
+{
+	mainWindow_->UnregisterHotKey(wxID_ANY);
+	mainWindow_->RegisterHotKey(wxID_ANY, modifiers, shortcutKey);
+
+	wxColor &color = windowSettings_->colourctrl->GetColour();
+	windowLeft_->SetBackgroundColour(color);
+	windowRight_->SetBackgroundColour(color);
+	windowUp_->SetBackgroundColour(color);
+	windowDown_->SetBackgroundColour(color);
+	
+	wxByte trans(windowSettings_->sliderTransparency->GetValue());
+	if (!windowSettings_->checkboxTransparency->GetValue())
+		trans = 255;
+
+	windowUp_->SetTransparent(trans);
+	windowDown_->SetTransparent(trans);
+	windowLeft_->SetTransparent(trans);
+	windowRight_->SetTransparent(trans);
 }

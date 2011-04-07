@@ -19,8 +19,9 @@
 
 ////@begin includes
 #include "wx/image.h"
-#include "abstractwindow.h"
+#include "cursorwindow.h"
 ////@end includes
+#include "abstractwindow.h"
 
 /*!
  * Forward declarations
@@ -74,6 +75,12 @@ public:
 
 	void Activate();
 
+	void SettingsCallback( int modifiers, char shortcutKey );
+
+	void Test(int code);
+
+	void pre_click();
+
 ////@begin SuperMouserApp event handler declarations
 
 ////@end SuperMouserApp event handler declarations
@@ -95,7 +102,7 @@ public:
 	int travelUpDown_;
 	int travelLeftRight_;
 
-	AbstractWindow* mainWindow_;
+	CursorWindow* mainWindow_;
 	AbstractWindow* windowUp_;
 	AbstractWindow* windowDown_;
 	AbstractWindow* windowLeft_;

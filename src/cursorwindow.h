@@ -74,14 +74,14 @@ public:
     
 ////@begin CursorWindow event handler declarations
 
+    /// wxEVT_KEY_DOWN event handler for ID_CURSORWINDOW
+    void OnKeyDown( wxKeyEvent& event );
+
     /// wxEVT_COMMAND_TEXT_UPDATED event handler for ID_TEXTCTRL
     void OnTextctrlTextUpdated( wxCommandEvent& event );
 
     /// wxEVT_CHAR event handler for ID_TEXTCTRL
     void OnChar( wxKeyEvent& event );
-
-    /// wxEVT_KEY_DOWN event handler for ID_TEXTCTRL
-    void OnKeyDown( wxKeyEvent& event );
 
 ////@end CursorWindow event handler declarations
 

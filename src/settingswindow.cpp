@@ -294,6 +294,8 @@ void SettingsWindow::CreateControls()
 #endif
 ////@end SettingsWindow content construction
 
+
+#ifdef __WXMAC__
 	textctrlKeyUp->SetValue(_(new wxChar(keyNavUp)));
 	textctrlKeyDown->SetValue(_(new wxChar(keyNavDown)));
 	textctrlKeyLeft->SetValue(_(new wxChar(keyNavLeft)));
@@ -302,6 +304,16 @@ void SettingsWindow::CreateControls()
 	textctrlMouseLeftClick->SetValue(_(new wxChar(keyMouseSingleClick)));
 	textctrlMouseDoubleClick->SetValue(_(new wxChar(keyMouseDoubleClick)));
 	textctrlMouseRight->SetValue(_(new wxChar(keyMouseRightClick)));
+#else
+	textctrlKeyUp->SetValue(keyNavUp);
+	textctrlKeyDown->SetValue(keyNavDown);
+	textctrlKeyLeft->SetValue(keyNavLeft);
+	textctrlKeyRight->SetValue(keyNavRight);
+
+	textctrlMouseLeftClick->SetValue(keyMouseSingleClick);
+	textctrlMouseDoubleClick->SetValue(keyMouseDoubleClick);
+	textctrlMouseRight->SetValue(keyMouseRightClick);
+#endif
 
     buttonSave->SetFocus();
 }

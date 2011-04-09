@@ -2562,6 +2562,7 @@
           <string name="app-kind">"Standard"</string>
           <long name="use-xrc">0</long>
           <long name="working-mode">0</long>
+          <string name="event-handler-0">"wxEVT_KEY_DOWN|OnKeyDown|NONE||CursorWindow"</string>
           <string name="proxy-Id name">"ID_CURSORWINDOW"</string>
           <long name="proxy-Id value">10012</long>
           <string name="proxy-Class">"CursorWindow"</string>
@@ -2669,7 +2670,7 @@
               <string name="proxy-Background colour">""</string>
               <string name="proxy-Foreground colour">""</string>
               <string name="proxy-Font">""</string>
-              <bool name="proxy-Hidden">0</bool>
+              <bool name="proxy-Hidden">1</bool>
               <bool name="proxy-Enabled">1</bool>
               <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
               <string name="proxy-Data variable">""</string>

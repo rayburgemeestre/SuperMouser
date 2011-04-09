@@ -235,7 +235,7 @@ void SuperMouserApp::Activate()
 
     click_left(currentPos_.x, currentPos_.y);
 
-	mainWindow_->textctrl->SetFocus();
+	//mainWindow_->textctrl->SetFocus();
 }
 
 void SuperMouserApp::pre_click()
@@ -322,9 +322,8 @@ void SuperMouserApp::Test(int code)
     mainWindow_->Show(true);
     #endif
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
-	mainWindow_->SetSize(wxSize(1, 1));
 	mainWindow_->SetFocus();
-	mainWindow_->textctrl->SetFocus();
+	//mainWindow_->textctrl->SetFocus();
 
 	if (code == 27 /* ESC */) {
 		pre_click();

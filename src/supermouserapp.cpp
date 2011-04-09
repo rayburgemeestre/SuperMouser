@@ -222,11 +222,25 @@ void SuperMouserApp::Activate()
     travelUpDown_ = -1;
     travelLeftRight_ = -1;
 
-    mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-    mainWindow_->SetSize(5, 5);
+	windowLeft_->SetPosition(wxPoint(currentPos_.x - 10, currentPos_.y - 5));
+	windowLeft_->SetSize(3, 10);
+	windowLeft_->Show();
+	windowRight_->SetPosition(wxPoint(currentPos_.x + 7, currentPos_.y - 5));
+	windowRight_->SetSize(3, 10);
+	windowRight_->Show();
+	windowUp_->SetPosition(wxPoint(currentPos_.x - 5, currentPos_.y - 10));
+	windowUp_->SetSize(10, 3);
+	windowUp_->Show();
+	windowDown_->SetPosition(wxPoint(currentPos_.x - 5, currentPos_.y + 8));
+	windowDown_->SetSize(10, 3);
+	windowDown_->Show();
+
+	mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
+	mainWindow_->SetSize(5, 5);
 	mainWindow_->Show();
-    mainWindow_->SetFocus();
+	mainWindow_->SetFocus();
 	mainWindow_->textctrl->SetFocus();
+
 }
 
 void SuperMouserApp::pre_click()

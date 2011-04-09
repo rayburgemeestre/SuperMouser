@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "abstractwindow.h"
+#include "wx/display.h"
 
 ////@begin XPM images
 ////@end XPM images

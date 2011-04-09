@@ -25,6 +25,7 @@
 ////@end includes
 
 #include <wx/utils.h>
+#include <wx/display.h>
 #include "supermouserapp.h"
 #include "peripheral_api.h"
 #include "settingswindow.h"
@@ -152,7 +153,33 @@ bool SuperMouserApp::OnInit()
 	mainWindow_ = mainWindow;
 
 
-	EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, 0);
+	// EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, 0);
+	bool is_use_display =
+#if wxUSE_DISPLAY
+		true
+#else
+		false
+#endif
+		;
+	if( !is_use_display )
+	{
+		wxMessageBox( _T("This sample has to be compiled with wxUSE_DISPLAY"), _T("Building error"), wxOK);
+	}
+#if wxUSE_DISPLAY
+	else
+	{
+		unsigned count = wxDisplay::GetCount();
+		wxMessageBox (wxString::Format(_T("I detected %u display(s) on your system"), count) );
+		for (unsigned i = 0; i < count; i++)
+		{
+			wxDisplay display ( i );
+			wxRect r = display.GetGeometry();
+			wxMessageBox(wxString::Format(_T("Display #%u \"%s\" = ( %i, %i, %i, %i ) @ %i bits"),
+				i, display.GetName().c_str(), r.GetLeft(), r.GetTop(), r.GetWidth(), r.GetHeight(),
+				display.GetCurrentMode().GetDepth() ));
+		}
+	}
+#endif
 
 
 	windowUp_ = new AbstractWindow(NULL);

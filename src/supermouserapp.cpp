@@ -317,23 +317,26 @@ void SuperMouserApp::Test(int code)
 	}
 
 	move_to(currentPos_.x, currentPos_.y);
-    #ifndef __WXMSW__
+#ifndef __WXMSW__
     mainWindow_->Show(false);
     mainWindow_->Show(true);
-    #endif
+#endif
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
 	mainWindow_->SetFocus();
-	//mainWindow_->textctrl->SetFocus();
+
+#ifdef __WXMAC__
+	mainWindow_->textctrl->SetFocus();
+#endif
 
 	if (code == 27 /* ESC */) {
 		pre_click();
 	}
 
-	if (code == wxKeyCode('C') || code == wxKeyCode('c')) {
+	if (code == wxKeyCode('C')) {
 		windowSettings_->Show();
 	}
 
-	if (code == wxKeyCode('Q') || code == wxKeyCode('q')) {
+	if (code == wxKeyCode('Q')) {
 		wxMessageBox("Exiting");
 		Exit();
 		return;

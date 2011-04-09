@@ -157,7 +157,7 @@ bool SuperMouserApp::OnInit()
 	#else
 		register_hotkey(mainWindow_, this);
 	#endif
-
+    
     return true;
 }
 
@@ -279,10 +279,13 @@ void SuperMouserApp::Test(int code)
 	}
 
 	move_to(currentPos_.x, currentPos_.y);
+    #ifndef __WXMSW__
+    mainWindow_->Show(false);
+    mainWindow_->Show(true);
+    #endif
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
 	mainWindow_->SetFocus();
 	mainWindow_->textctrl->SetFocus();
-
 
 
 	if (code == 27 /* ESC */) {
@@ -331,10 +334,12 @@ void SuperMouserApp::OnTimer(wxTimerEvent& event)
 
 void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 {
+#ifdef __WXMSW__
 	mainWindow_->UnregisterHotKey(wxID_ANY);
 	mainWindow_->RegisterHotKey(wxID_ANY, modifiers, shortcutKey);
+#endif
 
-	wxColor &color = windowSettings_->colourctrl->GetColour();
+	const wxColor &color = windowSettings_->colourctrl->GetColour();
 	windowLeft_->SetBackgroundColour(color);
 	windowRight_->SetBackgroundColour(color);
 	windowUp_->SetBackgroundColour(color);

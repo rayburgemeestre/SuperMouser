@@ -186,7 +186,7 @@ void SettingsWindow::CreateControls()
     wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
     itemStaticBoxSizer4->Add(itemBoxSizer14, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-    textctrlKeyUp = new wxTextCtrl( itemPanel2, ID_TEXTCTRL, _("K"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlKeyUp = new wxTextCtrl( itemPanel2, wxID_ANY, _("K"), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlKeyUp->SetMaxLength(1);
     itemBoxSizer14->Add(textctrlKeyUp, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 

@@ -6,12 +6,18 @@
 void init_screensize(int *width, int *height)
 {
 	// TBD, find alternative for wxDisplaySize()
-	width = 1280;
-	height = 1024;
+	*width = 1280;
+	*height = 1024;
 }
 
-void register_hotkey(AbstractWindow *window)
+//#include "kaction.h"
+void register_hotkey(CursorWindow *window, SuperMouserApp *app)
 {
+    //KAction *newAct = actionCollection()->addAction("quick-connect");
+    //newAct->setText(i18n("Quick Connect"))
+    //newAct->setIcon(KIcon("quick-connect"));
+    //newAct->setShortcut(Qt::Key_F6);
+    //connect(newAct, SIGNAL(triggered()), this, SLOT(quickConnect()));
 }
 
 void move_to(int x, int y) 

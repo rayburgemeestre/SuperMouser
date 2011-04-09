@@ -32,7 +32,7 @@ class wxColourPickerCtrl;
 class wxStatusBar;
 ////@end forward declarations
 class SuperMouserApp;
-
+class wxTaskBarIcon;
 /*!
  * Control identifiers
  */
@@ -53,7 +53,7 @@ class SuperMouserApp;
 #define ID_TEXTCTRL7 10010
 #define ID_BUTTON_SAVE_SETTINGS 10011
 #define ID_STATUSBAR 10003
-#define SYMBOL_SETTINGSWINDOW_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU
+#define SYMBOL_SETTINGSWINDOW_STYLE wxCAPTION|wxSYSTEM_MENU|wxCLOSE_BOX
 #define SYMBOL_SETTINGSWINDOW_TITLE _("SettingsWindow")
 #define SYMBOL_SETTINGSWINDOW_IDNAME ID_SETTINGSWINDOW
 #define SYMBOL_SETTINGSWINDOW_SIZE wxSize(400, 500)
@@ -90,7 +90,12 @@ public:
 
 	void SetApplication(SuperMouserApp *app);
 
+	void RemoveTrayIcon();
+
 ////@begin SettingsWindow event handler declarations
+
+    /// wxEVT_CLOSE_WINDOW event handler for ID_SETTINGSWINDOW
+    void OnCloseWindow( wxCloseEvent& event );
 
     /// wxEVT_KEY_DOWN event handler for ID_TEXTCTRL1
     void OnKeyDown( wxKeyEvent& event );
@@ -127,6 +132,7 @@ public:
     wxTextCtrl* textctrlMouseLeftClick;
     wxTextCtrl* textctrlMouseDoubleClick;
     wxTextCtrl* textctrlMouseRight;
+    wxButton* buttonSave;
     wxStatusBar* statusbar;
 ////@end SettingsWindow member variables
 
@@ -151,6 +157,7 @@ public:
 	char shortcutKey;
 
 	SuperMouserApp *app_;
+	wxTaskBarIcon *taskbarIcon_;
 };
 
 #endif

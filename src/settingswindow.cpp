@@ -22,6 +22,7 @@
 
 ////@begin includes
 ////@end includes
+#include <wx/taskbar.h>
 
 #include "settingswindow.h"
 #include "cursorwindow.h"
@@ -47,6 +48,8 @@ IMPLEMENT_CLASS( SettingsWindow, wxFrame )
 BEGIN_EVENT_TABLE( SettingsWindow, wxFrame )
 
 ////@begin SettingsWindow event table entries
+    EVT_CLOSE( SettingsWindow::OnCloseWindow )
+
     EVT_BUTTON( ID_BUTTON_SAVE_SETTINGS, SettingsWindow::OnButtonSaveSettingsClick )
 
 ////@end SettingsWindow event table entries
@@ -80,6 +83,7 @@ bool SettingsWindow::Create( wxWindow* parent, wxWindowID id, const wxString& ca
     wxFrame::Create( parent, id, caption, pos, size, style );
 
     CreateControls();
+    SetIcon(GetIconResource(wxT("IDR_ICO_MAIN")));
     Centre();
 ////@end SettingsWindow creation
     return true;
@@ -115,6 +119,7 @@ void SettingsWindow::Init()
     textctrlMouseLeftClick = NULL;
     textctrlMouseDoubleClick = NULL;
     textctrlMouseRight = NULL;
+    buttonSave = NULL;
     statusbar = NULL;
 ////@end SettingsWindow member initialisation
 	isDownControl = false;
@@ -135,6 +140,8 @@ void SettingsWindow::Init()
 	keyMouseSingleClick = 'F';
 	keyMouseDoubleClick = 'D';
 	keyMouseRightClick = 'G';
+
+	taskbarIcon_ = new wxTaskBarIcon;
 }
 
 
@@ -245,8 +252,8 @@ void SettingsWindow::CreateControls()
 
     itemStaticBoxSizer4->Add(5, 5, 1, wxGROW|wxALL, 5);
 
-    wxButton* itemButton33 = new wxButton( itemPanel2, ID_BUTTON_SAVE_SETTINGS, _("Save settings"), wxDefaultPosition, wxDefaultSize, 0 );
-    itemStaticBoxSizer4->Add(itemButton33, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+    buttonSave = new wxButton( itemPanel2, ID_BUTTON_SAVE_SETTINGS, _("Save settings"), wxDefaultPosition, wxDefaultSize, 0 );
+    itemStaticBoxSizer4->Add(buttonSave, 0, wxALIGN_RIGHT|wxALL, 5);
 
     statusbar = new wxStatusBar( itemFrame1, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER );
     statusbar->SetFieldsCount(2);
@@ -256,8 +263,16 @@ void SettingsWindow::CreateControls()
     textctrlControlKeys->Connect(ID_TEXTCTRL1, wxEVT_KEY_DOWN, wxKeyEventHandler(SettingsWindow::OnKeyDown), NULL, this);
     textctrlControlKeys->Connect(ID_TEXTCTRL1, wxEVT_KEY_UP, wxKeyEventHandler(SettingsWindow::OnKeyUp), NULL, this);
 ////@end SettingsWindow content construction
+
+	taskbarIcon_->SetIcon(GetIconResource(wxT("IDR_ICO_MAIN")), "THIS ISSSSSSSSS SUPERMOUSER!!!!!!!!");
+
+    buttonSave->SetFocus();
 }
 
+void SettingsWindow::RemoveTrayIcon()
+{
+	taskbarIcon_->RemoveIcon();
+}
 
 /*
  * Should we show tooltips?
@@ -290,6 +305,11 @@ wxIcon SettingsWindow::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin SettingsWindow icon retrieval
     wxUnusedVar(name);
+    if (name == _T("IDR_ICO_MAIN"))
+    {
+        wxIcon icon(_T("IDR_ICO_MAIN"), wxBITMAP_TYPE_ICO_RESOURCE);
+        return icon;
+    }
     return wxNullIcon;
 ////@end SettingsWindow icon retrieval
 }
@@ -431,3 +451,16 @@ void SettingsWindow::SetApplication(SuperMouserApp *app)
 {
 	app_ = app;
 }
+
+
+/*
+ * wxEVT_CLOSE_WINDOW event handler for ID_SETTINGSWINDOW
+ */
+
+void SettingsWindow::OnCloseWindow( wxCloseEvent& event )
+{
+    Hide();
+}
+
+
+

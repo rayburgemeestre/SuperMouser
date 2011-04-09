@@ -1,3 +1,4 @@
+#define COMPILE_MULTIMON_STUBS
 /////////////////////////////////////////////////////////////////////////////
 // Name:        supermouserapp.cpp
 // Purpose:     
@@ -78,6 +79,25 @@ SuperMouserApp::SuperMouserApp()
 /*
  * Member initialisation
  */
+#include <algorithm>
+using std::min;
+using std::max;
+
+#include <windows.h>
+#include "multimon.h"
+
+BOOL CALLBACK MyMonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
+{
+	MONITORINFO monitorInfo;
+	if (GetMonitorInfo(
+		hMonitor,
+		&monitorInfo)) 
+	{
+		wxMessageBox("test");
+		monitorInfo;
+	}
+	return true;
+}
 
 void SuperMouserApp::Init()
 {
@@ -131,6 +151,10 @@ bool SuperMouserApp::OnInit()
 	mainWindow->SetApplication(this);
 	mainWindow_ = mainWindow;
 
+
+	EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, 0);
+
+
 	windowUp_ = new AbstractWindow(NULL);
 	windowDown_ = new AbstractWindow(NULL);
 	windowLeft_ = new AbstractWindow(NULL);
@@ -175,6 +199,9 @@ int SuperMouserApp::OnExit()
     windowLeft_->Destroy();
     windowRight_->Destroy();
 
+	windowSettings_->RemoveTrayIcon();
+	windowSettings_->Destroy();
+
 ////@begin SuperMouserApp cleanup
 	return wxApp::OnExit();
 ////@end SuperMouserApp cleanup
@@ -196,12 +223,10 @@ void SuperMouserApp::Activate()
     travelLeftRight_ = -1;
 
     mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-    //mainWindow_->SetSize(5, 5);
+    mainWindow_->SetSize(5, 5);
 	mainWindow_->Show();
     mainWindow_->SetFocus();
 	mainWindow_->textctrl->SetFocus();
-
-   // timer_->Start();
 }
 
 void SuperMouserApp::pre_click()
@@ -214,6 +239,10 @@ void SuperMouserApp::pre_click()
 }
 void SuperMouserApp::Test(int code)
 {
+	if (code == wxKeyCode('M')) {
+		mainWindow_->GetHandle();
+	}
+
 	if (code == wxKeyCode(windowSettings_->keyNavLeft)) {
 #ifdef __WXGTK__
 		windowLeft_->Hide();
@@ -280,10 +309,9 @@ void SuperMouserApp::Test(int code)
 
 	move_to(currentPos_.x, currentPos_.y);
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
+	mainWindow_->SetSize(wxSize(1, 1));
 	mainWindow_->SetFocus();
 	mainWindow_->textctrl->SetFocus();
-
-
 
 	if (code == 27 /* ESC */) {
 		pre_click();
@@ -311,7 +339,6 @@ void SuperMouserApp::Test(int code)
 		pre_click();
 		click_double(currentPos_.x, currentPos_.y);
 	}
-
 }
 
 void SuperMouserApp::OnTimer(wxTimerEvent& event)
@@ -349,3 +376,82 @@ void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 	windowLeft_->SetTransparent(trans);
 	windowRight_->SetTransparent(trans);
 }
+
+
+/*
+
+#include <algorithm>
+using std::min;
+using std::max;
+
+#include <windows.h>
+#include "multimon.h"    
+
+#define MONITOR_CENTER     0x0001        // center rect to monitor 
+#define MONITOR_CLIP     0x0000        // clip rect to monitor 
+#define MONITOR_WORKAREA 0x0002        // use monitor work area 
+#define MONITOR_AREA     0x0000        // use monitor entire area 
+
+// 
+//  ClipOrCenterRectToMonitor 
+// 
+//  The most common problem apps have when running on a 
+//  multimonitor system is that they "clip" or "pin" windows 
+//  based on the SM_CXSCREEN and SM_CYSCREEN system metrics. 
+//  Because of app compatibility reasons these system metrics 
+//  return the size of the primary monitor. 
+// 
+//  This shows how you use the multi-monitor functions 
+//  to do the same thing. 
+// 
+void ClipOrCenterRectToMonitor(LPRECT prc, UINT flags)
+{
+	HMONITOR hMonitor;
+	MONITORINFO mi;
+	RECT        rc;
+	int         w = prc->right  - prc->left;
+	int         h = prc->bottom - prc->top;
+
+	// 
+	// get the nearest monitor to the passed rect. 
+	// 
+	hMonitor = MonitorFromRect(prc, MONITOR_DEFAULTTONEAREST);
+
+	// 
+	// get the work area or entire monitor rect. 
+	// 
+	mi.cbSize = sizeof(mi);
+	GetMonitorInfo(hMonitor, &mi);
+
+	if (flags & MONITOR_WORKAREA)
+		rc = mi.rcWork;
+	else
+		rc = mi.rcMonitor;
+
+	// 
+	// center or clip the passed rect to the monitor rect 
+	// 
+	if (flags & MONITOR_CENTER)
+	{
+		prc->left   = rc.left + (rc.right  - rc.left - w) / 2;
+		prc->top    = rc.top  + (rc.bottom - rc.top  - h) / 2;
+		prc->right  = prc->left + w;
+		prc->bottom = prc->top  + h;
+	}
+	else
+	{
+		prc->left   = max(rc.left, min(rc.right-w,  prc->left));
+		prc->top    = max(rc.top,  min(rc.bottom-h, prc->top));
+		prc->right  = prc->left + w;
+		prc->bottom = prc->top  + h;
+	}
+}
+
+void ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
+{
+	RECT rc;
+	GetWindowRect(hwnd, &rc);
+	ClipOrCenterRectToMonitor(&rc, flags);
+	SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+}
+*/

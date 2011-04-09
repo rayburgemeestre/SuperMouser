@@ -24,6 +24,11 @@
 ////@end includes
 #include <wx/taskbar.h>
 
+#ifdef __WXMAC__
+#import <ApplicationServices/ApplicationServices.h>
+#import <Carbon/carbon.h>
+#endif 
+
 #include "settingswindow.h"
 #include "cursorwindow.h"
 #include "supermouserapp.h"
@@ -83,7 +88,11 @@ bool SettingsWindow::Create( wxWindow* parent, wxWindowID id, const wxString& ca
     wxFrame::Create( parent, id, caption, pos, size, style );
 
     CreateControls();
+
+    #ifndef __WXMAC__
     SetIcon(GetIconResource(wxT("IDR_ICO_MAIN")));
+    #endif 
+
     Centre();
 ////@end SettingsWindow creation
     return true;
@@ -127,6 +136,7 @@ void SettingsWindow::Init()
 	isDownWindows = false;
 	isDownShift = false;
 
+    #ifndef __WXMAC__
 	isShortcutDownControl = true;
 	isShortcutDownAlt = true;
 	isShortcutDownWindows = false;
@@ -140,6 +150,23 @@ void SettingsWindow::Init()
 	keyMouseSingleClick = 'F';
 	keyMouseDoubleClick = 'D';
 	keyMouseRightClick = 'G';
+    #endif
+
+    #ifdef __WXMAC__
+	isShortcutDownControl = false;
+	isShortcutDownAlt = false;
+	isShortcutDownWindows = true;
+	isShortcutDownShift = true;
+	shortcutKey = 'm';
+
+	keyNavUp = 'k';
+	keyNavDown = 'j';
+	keyNavLeft = 'h';
+	keyNavRight = 'l';
+	keyMouseSingleClick = 'f';
+	keyMouseDoubleClick = 'd';
+	keyMouseRightClick = 'g';
+    #endif
 
 	taskbarIcon_ = new wxTaskBarIcon;
 }
@@ -169,8 +196,10 @@ void SettingsWindow::CreateControls()
     wxStaticText* itemStaticText6 = new wxStaticText( itemPanel2, wxID_STATIC, _("Activate mouser:"), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+    #ifndef __WXMAC__
     textctrlControlKeys = new wxTextCtrl( itemPanel2, ID_TEXTCTRL1, _("Ctrl+Alt+M"), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer5->Add(textctrlControlKeys, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+    #endif
 
     wxBoxSizer* itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
     itemStaticBoxSizer4->Add(itemBoxSizer8, 0, wxGROW|wxALL, 5);
@@ -193,28 +222,28 @@ void SettingsWindow::CreateControls()
     wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
     itemStaticBoxSizer4->Add(itemBoxSizer14, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-    textctrlKeyUp = new wxTextCtrl( itemPanel2, wxID_ANY, _("K"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlKeyUp = new wxTextCtrl( itemPanel2, wxID_ANY, _(new wxChar(keyNavUp)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlKeyUp->SetMaxLength(1);
     itemBoxSizer14->Add(textctrlKeyUp, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
     wxBoxSizer* itemBoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
     itemStaticBoxSizer4->Add(itemBoxSizer16, 0, wxALIGN_CENTER_HORIZONTAL|wxLEFT|wxRIGHT, 5);
 
-    textctrlKeyLeft = new wxTextCtrl( itemPanel2, ID_TEXTCTRL2, _("H"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlKeyLeft = new wxTextCtrl( itemPanel2, ID_TEXTCTRL2, _(new wxChar(keyNavLeft)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlKeyLeft->SetMaxLength(1);
     itemBoxSizer16->Add(textctrlKeyLeft, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
     wxStaticText* itemStaticText18 = new wxStaticText( itemPanel2, wxID_STATIC, _("Navigation keys"), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer16->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-    textctrlKeyRight = new wxTextCtrl( itemPanel2, ID_TEXTCTRL3, _("L"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlKeyRight = new wxTextCtrl( itemPanel2, ID_TEXTCTRL3, _(new wxChar(keyNavRight)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlKeyRight->SetMaxLength(1);
     itemBoxSizer16->Add(textctrlKeyRight, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
     wxBoxSizer* itemBoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
     itemStaticBoxSizer4->Add(itemBoxSizer20, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-    textctrlKeyDown = new wxTextCtrl( itemPanel2, ID_TEXTCTRL4, _("J"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlKeyDown = new wxTextCtrl( itemPanel2, ID_TEXTCTRL4, _(new wxChar(keyNavDown)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlKeyDown->SetMaxLength(1);
     itemBoxSizer20->Add(textctrlKeyDown, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -226,7 +255,7 @@ void SettingsWindow::CreateControls()
     wxStaticText* itemStaticText24 = new wxStaticText( itemPanel2, wxID_STATIC, _("Mouse left click:"), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer23->Add(itemStaticText24, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-    textctrlMouseLeftClick = new wxTextCtrl( itemPanel2, ID_TEXTCTRL5, _("F"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlMouseLeftClick = new wxTextCtrl( itemPanel2, ID_TEXTCTRL5, _(new wxChar(keyMouseSingleClick)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlMouseLeftClick->SetMaxLength(1);
     itemBoxSizer23->Add(textctrlMouseLeftClick, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -236,7 +265,7 @@ void SettingsWindow::CreateControls()
     wxStaticText* itemStaticText27 = new wxStaticText( itemPanel2, wxID_STATIC, _("Mouse double click:"), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer26->Add(itemStaticText27, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-    textctrlMouseDoubleClick = new wxTextCtrl( itemPanel2, ID_TEXTCTRL6, _("D"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlMouseDoubleClick = new wxTextCtrl( itemPanel2, ID_TEXTCTRL6, _(new wxChar(keyMouseDoubleClick)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlMouseDoubleClick->SetMaxLength(1);
     itemBoxSizer26->Add(textctrlMouseDoubleClick, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -246,7 +275,7 @@ void SettingsWindow::CreateControls()
     wxStaticText* itemStaticText30 = new wxStaticText( itemPanel2, wxID_STATIC, _("Mouse right click:"), wxDefaultPosition, wxDefaultSize, 0 );
     itemBoxSizer29->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-    textctrlMouseRight = new wxTextCtrl( itemPanel2, ID_TEXTCTRL7, _("G"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlMouseRight = new wxTextCtrl( itemPanel2, ID_TEXTCTRL7, _(new wxChar(keyMouseRightClick)), wxDefaultPosition, wxDefaultSize, 0 );
     textctrlMouseRight->SetMaxLength(1);
     itemBoxSizer29->Add(textctrlMouseRight, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -259,12 +288,12 @@ void SettingsWindow::CreateControls()
     statusbar->SetFieldsCount(2);
     itemFrame1->SetStatusBar(statusbar);
 
+    #ifndef __WXMAC__
     // Connect events and objects
     textctrlControlKeys->Connect(ID_TEXTCTRL1, wxEVT_KEY_DOWN, wxKeyEventHandler(SettingsWindow::OnKeyDown), NULL, this);
     textctrlControlKeys->Connect(ID_TEXTCTRL1, wxEVT_KEY_UP, wxKeyEventHandler(SettingsWindow::OnKeyUp), NULL, this);
-////@end SettingsWindow content construction
-
 	taskbarIcon_->SetIcon(GetIconResource(wxT("IDR_ICO_MAIN")), "THIS ISSSSSSSSS SUPERMOUSER!!!!!!!!");
+    #endif 
 
     buttonSave->SetFocus();
 }
@@ -431,6 +460,7 @@ void SettingsWindow::OnButtonSaveSettingsClick( wxCommandEvent& event )
 
 	int modifiers = NULL;
 
+#ifdef __WXMSW__
 	if (isShortcutDownAlt)
 		modifiers |= wxMOD_ALT;
 	if (isShortcutDownControl)
@@ -440,7 +470,19 @@ void SettingsWindow::OnButtonSaveSettingsClick( wxCommandEvent& event )
 	if (isShortcutDownWindows)
 		modifiers |= wxMOD_WIN;
 
-#ifdef __WXMSW__
+	app_->SettingsCallback(modifiers, shortcutKey);
+#endif __WXMSW__
+
+#ifdef __WXMAC__
+	if (isShortcutDownAlt)
+		modifiers |= optionKey;
+	if (isShortcutDownControl)
+		modifiers |= controlKey;
+	if (isShortcutDownShift)
+		modifiers |= shiftKey;
+	if (isShortcutDownWindows)
+		modifiers |= cmdKey;
+
 	app_->SettingsCallback(modifiers, shortcutKey);
 #endif __WXMSW__
 

@@ -11,7 +11,7 @@ CONFIG=debugmac
 
 # debugmac
 ifeq ($(CONFIG),debugmac)
-WXWIN=/Users/joost/Downloads/wxWidgets-2.8.12/
+WXWIN=/Users/joost/Downloads/wxWidgets-2.8.12
 TOOLCHAINNAME=macd
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildDebugMac/wx-config --version`)
 CXX=g++
@@ -44,7 +44,7 @@ ICNSDEST=$(OUTPUTPATH)/$(PROGRAM).app/Contents/Resources/wxmac.icns
 
 # releaselinux
 else
-WXWIN=/Users/joost/Downloads/wxWidgets-2.8.12/
+WXWIN=/Users/joost/Downloads/wxWidgets-2.8.12
 TOOLCHAINNAME=gtk2
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildReleaseGTK2/wx-config --version`)
 CXX=g++
@@ -73,7 +73,7 @@ RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include
 MACPACKAGEINFO=
 endif
 
-OBJECTS=$(OBJECTPATH)/abstractwindow.o $(OBJECTPATH)/impl_gtk2.o $(OBJECTPATH)/impl_osx.o $(OBJECTPATH)/impl_windows.o $(OBJECTPATH)/settingswindow.o $(OBJECTPATH)/supermouserapp.o $(RESOURCEOBJECT)
+OBJECTS=$(OBJECTPATH)/abstractwindow.o $(OBJECTPATH)/cursorwindow.o $(OBJECTPATH)/impl_gtk2.o $(OBJECTPATH)/impl_osx.o $(OBJECTPATH)/settingswindow.o $(OBJECTPATH)/supermouserapp.o $(RESOURCEOBJECT)
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 
@@ -114,19 +114,19 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 $(OBJECTPATH)/abstractwindow.o:	src/abstractwindow.cpp src/abstractwindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/abstractwindow.cpp
 
+$(OBJECTPATH)/cursorwindow.o:	src/cursorwindow.cpp src/cursorwindow.h src/supermouserapp.h src/abstractwindow.h
+	$(CXX) -c -o $@ $(CPPFLAGS) src/cursorwindow.cpp
+
 $(OBJECTPATH)/impl_gtk2.o:	src/impl_gtk2.cpp src/peripheral_api.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_gtk2.cpp
 
-$(OBJECTPATH)/impl_osx.o:	src/impl_osx.cpp src/peripheral_api.h src/supermouserapp.h src/abstractwindow.h
+$(OBJECTPATH)/impl_osx.o:	src/impl_osx.cpp src/peripheral_api.h src/abstractwindow.h src/supermouserapp.h src/cursorwindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_osx.cpp
 
-$(OBJECTPATH)/impl_windows.o:	src/impl_windows.cpp src/AbstractWindow.h
-	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_windows.cpp
-
-$(OBJECTPATH)/settingswindow.o:	src/settingswindow.cpp src/settingswindow.h src/abstractwindow.h
+$(OBJECTPATH)/settingswindow.o:	src/settingswindow.cpp src/settingswindow.h src/cursorwindow.h src/supermouserapp.h src/abstractwindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/settingswindow.cpp
 
-$(OBJECTPATH)/supermouserapp.o:	src/supermouserapp.cpp src/supermouserapp.h src/abstractwindow.h src/peripheral_api.h src/settingswindow.h
+$(OBJECTPATH)/supermouserapp.o:	src/supermouserapp.cpp src/supermouserapp.h src/cursorwindow.h src/abstractwindow.h src/peripheral_api.h src/settingswindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/supermouserapp.cpp
 
 .PHONY:	all clean

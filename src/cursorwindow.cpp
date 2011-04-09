@@ -122,7 +122,7 @@ void CursorWindow::CreateControls()
     itemFrame1->SetSizer(itemBoxSizer2);
 
     textctrl = new wxTextCtrl( itemFrame1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-    itemBoxSizer2->Add(textctrl, 0, wxALIGN_TOP|wxALL, 5);
+    itemBoxSizer2->Add(textctrl, 1, wxALIGN_TOP|wxALL, 5);
 
     // Connect events and objects
     textctrl->Connect(ID_TEXTCTRL, wxEVT_CHAR, wxKeyEventHandler(CursorWindow::OnChar), NULL, this);

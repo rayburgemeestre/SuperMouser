@@ -97,7 +97,7 @@ public:
     /// wxEVT_CLOSE_WINDOW event handler for ID_SETTINGSWINDOW
     void OnCloseWindow( wxCloseEvent& event );
 
-#if defined(__WXMSW__) || defined(__WXMAC__)
+#if defined(__WXMSW__) || defined(__WXGTK__)
     /// wxEVT_KEY_DOWN event handler for ID_TEXTCTRL1
     void OnKeyDown( wxKeyEvent& event );
 
@@ -123,7 +123,7 @@ public:
     static bool ShowToolTips();
 
 ////@begin SettingsWindow member variables
-#if defined(__WXMSW__) || defined(__WXMAC__)
+#if defined(__WXMSW__) || defined(__WXGTK__)
     wxTextCtrl* textctrlControlKeys;
 #endif
     wxColourPickerCtrl* colourctrl;

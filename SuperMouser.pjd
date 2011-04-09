@@ -977,7 +977,7 @@
                     <string name="proxy-Font">""</string>
                     <bool name="proxy-Hidden">0</bool>
                     <bool name="proxy-Enabled">1</bool>
-                    <string name="proxy-Platform">"__WXMSW__,__WXMAC__"</string>
+                    <string name="proxy-Platform">"__WXMSW__,__WXGTK__"</string>
                     <string name="proxy-Data variable">""</string>
                     <string name="proxy-Data validator">""</string>
                     <string name="proxy-Data source">""</string>

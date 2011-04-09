@@ -173,7 +173,10 @@ wxIcon CursorWindow::GetIconResource( const wxString& name )
 
 void CursorWindow::OnTextctrlTextUpdated( wxCommandEvent& event )
 {
-	//textctrl->SetValue("");
+#ifdef __WXMAC__
+	app_->Test((int)textctrl->GetValue()[0]);
+	textctrl->SetValue("");
+#endif
 	event.Skip();
 }
 

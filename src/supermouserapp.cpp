@@ -77,29 +77,6 @@ SuperMouserApp::SuperMouserApp()
 }
 
 
-/*
- * Member initialisation
- */
-#include <algorithm>
-using std::min;
-using std::max;
-
-#include <windows.h>
-#include "multimon.h"
-
-BOOL CALLBACK MyMonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
-{
-	MONITORINFO monitorInfo;
-	if (GetMonitorInfo(
-		hMonitor,
-		&monitorInfo)) 
-	{
-		wxMessageBox("test");
-		monitorInfo;
-	}
-	return true;
-}
-
 void SuperMouserApp::Init()
 {
 ////@begin SuperMouserApp member initialisation
@@ -152,7 +129,6 @@ bool SuperMouserApp::OnInit()
 	mainWindow->SetApplication(this);
 	mainWindow_ = mainWindow;
 
-
 	// EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, 0);
 	bool is_use_display =
 #if wxUSE_DISPLAY
@@ -181,7 +157,6 @@ bool SuperMouserApp::OnInit()
 	}
 #endif
 
-
 	windowUp_ = new AbstractWindow(NULL);
 	windowDown_ = new AbstractWindow(NULL);
 	windowLeft_ = new AbstractWindow(NULL);
@@ -200,13 +175,14 @@ bool SuperMouserApp::OnInit()
     timer_->Stop();
 	*/
 
-	windowSettings_ = new SettingsWindow(NULL);
-	windowSettings_->SetApplication(this);
+    windowSettings_ = new SettingsWindow(NULL);
+    windowSettings_->SetApplication(this);
 
 	#ifdef __WXMSW__
-		windowSettings_->Show();
+        windowSettings_->Show();
 	#else
 		register_hotkey(mainWindow_, this);
+        windowSettings_->Show();
 	#endif
     
     return true;
@@ -249,25 +225,28 @@ void SuperMouserApp::Activate()
     travelUpDown_ = -1;
     travelLeftRight_ = -1;
 
-	windowLeft_->SetPosition(wxPoint(currentPos_.x - 10, currentPos_.y - 5));
-	windowLeft_->SetSize(3, 10);
-	windowLeft_->Show();
-	windowRight_->SetPosition(wxPoint(currentPos_.x + 7, currentPos_.y - 5));
-	windowRight_->SetSize(3, 10);
-	windowRight_->Show();
-	windowUp_->SetPosition(wxPoint(currentPos_.x - 5, currentPos_.y - 10));
-	windowUp_->SetSize(10, 3);
-	windowUp_->Show();
-	windowDown_->SetPosition(wxPoint(currentPos_.x - 5, currentPos_.y + 8));
-	windowDown_->SetSize(10, 3);
-	windowDown_->Show();
+    windowLeft_->SetPosition(wxPoint(currentPos_.x - 10, currentPos_.y - 5));
+    windowLeft_->SetSize(3, 10);
+    windowLeft_->Show();
+    windowRight_->SetPosition(wxPoint(currentPos_.x + 7, currentPos_.y - 5));
+    windowRight_->SetSize(3, 10);
+    windowRight_->Show();
+    windowUp_->SetPosition(wxPoint(currentPos_.x - 5, currentPos_.y - 10));
+    windowUp_->SetSize(10, 3);
+    windowUp_->Show();
+    windowDown_->SetPosition(wxPoint(currentPos_.x - 5, currentPos_.y + 8));
+    windowDown_->SetSize(10, 3);
+    windowDown_->Show();
 
-	mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-	mainWindow_->SetSize(5, 5);
+    mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
+    //amainWindow_->SetSize(5, 5);
+
 	mainWindow_->Show();
-	mainWindow_->SetFocus();
-	mainWindow_->textctrl->SetFocus();
+    mainWindow_->SetFocus();
 
+    click_left(currentPos_.x, currentPos_.y);
+
+	mainWindow_->textctrl->SetFocus();
 }
 
 void SuperMouserApp::pre_click()
@@ -354,7 +333,7 @@ void SuperMouserApp::Test(int code)
     mainWindow_->Show(true);
     #endif
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
-	mainWindow_->SetSize(wxSize(1, 1));
+	//amainWindow_->SetSize(wxSize(1, 1));
 	mainWindow_->SetFocus();
 	mainWindow_->textctrl->SetFocus();
 
@@ -362,11 +341,11 @@ void SuperMouserApp::Test(int code)
 		pre_click();
 	}
 
-	if (code == wxKeyCode('C')) {
+	if (code == wxKeyCode('C') || code == wxKeyCode('c')) {
 		windowSettings_->Show();
 	}
 
-	if (code == wxKeyCode('Q')) {
+	if (code == wxKeyCode('Q') || code == wxKeyCode('q')) {
 		wxMessageBox("Exiting");
 		Exit();
 		return;
@@ -410,7 +389,7 @@ void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 
 	const wxColor &color = windowSettings_->colourctrl->GetColour();
 	windowLeft_->SetBackgroundColour(color);
-	windowRight_->SetBackgroundColour(color);
+	windowRight_->SetBackgroundColour(color); 
 	windowUp_->SetBackgroundColour(color);
 	windowDown_->SetBackgroundColour(color);
 	

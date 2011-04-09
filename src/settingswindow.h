@@ -44,6 +44,7 @@ class wxTaskBarIcon;
 #define ID_COLOURCTRL 10014
 #define ID_CHECKBOX 10015
 #define ID_SLIDER 10016
+#define ID_TEXTCTRL 10005
 #define ID_TEXTCTRL2 10006
 #define ID_TEXTCTRL3 10007
 #define ID_TEXTCTRL4 10008
@@ -96,12 +97,14 @@ public:
     /// wxEVT_CLOSE_WINDOW event handler for ID_SETTINGSWINDOW
     void OnCloseWindow( wxCloseEvent& event );
 
+#if defined(__WXMSW__) || defined(__WXMAC__)
     /// wxEVT_KEY_DOWN event handler for ID_TEXTCTRL1
     void OnKeyDown( wxKeyEvent& event );
 
     /// wxEVT_KEY_UP event handler for ID_TEXTCTRL1
     void OnKeyUp( wxKeyEvent& event );
 
+#endif
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SAVE_SETTINGS
     void OnButtonSaveSettingsClick( wxCommandEvent& event );
 
@@ -120,7 +123,9 @@ public:
     static bool ShowToolTips();
 
 ////@begin SettingsWindow member variables
+#if defined(__WXMSW__) || defined(__WXMAC__)
     wxTextCtrl* textctrlControlKeys;
+#endif
     wxColourPickerCtrl* colourctrl;
     wxCheckBox* checkboxTransparency;
     wxSlider* sliderTransparency;

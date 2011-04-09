@@ -37,12 +37,12 @@ OSStatus OnHotKeyEvent(EventHandlerCallRef nextHandler,EventRef theEvent,void *u
     GetEventParameter(theEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hkCom), NULL, &hkCom);
     SuperMouserApp *app = (SuperMouserApp*)userData; 
 
-    app->Activate();
+    app->Activate();    
 
     return noErr;
 }
 
-void register_hotkey(AbstractWindow *window, SuperMouserApp *superMouser)
+void register_hotkey(CursorWindow *window, SuperMouserApp *superMouser)
 {
     EventHotKeyRef gMyHotKeyRef;
     EventHotKeyID gMyHotKeyID;
@@ -54,8 +54,8 @@ void register_hotkey(AbstractWindow *window, SuperMouserApp *superMouser)
 
     gMyHotKeyID.signature='htk1';
     gMyHotKeyID.id=1;
-    // windows+alt+space
-    RegisterEventHotKey(49, cmdKey+optionKey, gMyHotKeyID, GetApplicationEventTarget(), 0, &gMyHotKeyRef); 
+    // windows+shift+space
+    RegisterEventHotKey(49, cmdKey+shiftKey, gMyHotKeyID, GetApplicationEventTarget(), 0, &gMyHotKeyRef); 
 }
 
 void move_to(int x, int y) 

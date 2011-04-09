@@ -239,7 +239,7 @@ void SuperMouserApp::Activate()
     windowDown_->Show();
 
     mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-    //amainWindow_->SetSize(5, 5);
+    mainWindow_->SetSize(5, 5);
 
 	mainWindow_->Show();
     mainWindow_->SetFocus();
@@ -333,7 +333,7 @@ void SuperMouserApp::Test(int code)
     mainWindow_->Show(true);
     #endif
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
-	//amainWindow_->SetSize(wxSize(1, 1));
+	mainWindow_->SetSize(wxSize(1, 1));
 	mainWindow_->SetFocus();
 	mainWindow_->textctrl->SetFocus();
 

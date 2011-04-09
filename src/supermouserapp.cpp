@@ -1,4 +1,3 @@
-#define COMPILE_MULTIMON_STUBS
 /////////////////////////////////////////////////////////////////////////////
 // Name:        supermouserapp.cpp
 // Purpose:     
@@ -129,32 +128,22 @@ bool SuperMouserApp::OnInit()
 	mainWindow->SetApplication(this);
 	mainWindow_ = mainWindow;
 
-	// EnumDisplayMonitors(NULL, NULL, MyMonitorEnumProc, 0);
-	bool is_use_display =
 #if wxUSE_DISPLAY
-		true
-#else
-		false
-#endif
-		;
-	if( !is_use_display )
-	{
-		wxMessageBox( _T("This sample has to be compiled with wxUSE_DISPLAY"), _T("Building error"), wxOK);
-	}
-#if wxUSE_DISPLAY
-	else
-	{
-		unsigned count = wxDisplay::GetCount();
-		wxMessageBox (wxString::Format(_T("I detected %u display(s) on your system"), count) );
-		for (unsigned i = 0; i < count; i++)
-		{
-			wxDisplay display ( i );
-			wxRect r = display.GetGeometry();
-			wxMessageBox(wxString::Format(_T("Display #%u \"%s\" = ( %i, %i, %i, %i ) @ %i bits"),
-				i, display.GetName().c_str(), r.GetLeft(), r.GetTop(), r.GetWidth(), r.GetHeight(),
-				display.GetCurrentMode().GetDepth() ));
-		}
-	}
+    unsigned count = wxDisplay::GetCount();
+    for (unsigned i=0; i<count; i++)
+    {
+        wxDisplay display(i);
+        wxRect r = display.GetGeometry();
+        /*wxMessageBox(wxString::Format(_T("Display #%u \"%s\" = ( %i, %i, %i, %i ) @ %i bits"),
+            i, display.GetName().c_str(), r.GetLeft(), r.GetTop(), r.GetWidth(), r.GetHeight(),
+            display.GetCurrentMode().GetDepth() ));*/
+            
+        // TBD, store known displays in vector.
+        // TBD, keep reference to current display (determine using GetCursorPos)
+        // TBD, create toggle key, i.e., 'm', get x,y on current screen, normalize, move to next screen
+        // TBD, toggle updates screenWidth & -Height, some function simply adds the 
+        //  top & left of the new screen onto the position of the windows & cursor.
+    }
 #endif
 
 	windowUp_ = new AbstractWindow(NULL);
@@ -402,82 +391,3 @@ void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 	windowLeft_->SetTransparent(trans);
 	windowRight_->SetTransparent(trans);
 }
-
-
-/*
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#include <windows.h>
-#include "multimon.h"    
-
-#define MONITOR_CENTER     0x0001        // center rect to monitor 
-#define MONITOR_CLIP     0x0000        // clip rect to monitor 
-#define MONITOR_WORKAREA 0x0002        // use monitor work area 
-#define MONITOR_AREA     0x0000        // use monitor entire area 
-
-// 
-//  ClipOrCenterRectToMonitor 
-// 
-//  The most common problem apps have when running on a 
-//  multimonitor system is that they "clip" or "pin" windows 
-//  based on the SM_CXSCREEN and SM_CYSCREEN system metrics. 
-//  Because of app compatibility reasons these system metrics 
-//  return the size of the primary monitor. 
-// 
-//  This shows how you use the multi-monitor functions 
-//  to do the same thing. 
-// 
-void ClipOrCenterRectToMonitor(LPRECT prc, UINT flags)
-{
-	HMONITOR hMonitor;
-	MONITORINFO mi;
-	RECT        rc;
-	int         w = prc->right  - prc->left;
-	int         h = prc->bottom - prc->top;
-
-	// 
-	// get the nearest monitor to the passed rect. 
-	// 
-	hMonitor = MonitorFromRect(prc, MONITOR_DEFAULTTONEAREST);
-
-	// 
-	// get the work area or entire monitor rect. 
-	// 
-	mi.cbSize = sizeof(mi);
-	GetMonitorInfo(hMonitor, &mi);
-
-	if (flags & MONITOR_WORKAREA)
-		rc = mi.rcWork;
-	else
-		rc = mi.rcMonitor;
-
-	// 
-	// center or clip the passed rect to the monitor rect 
-	// 
-	if (flags & MONITOR_CENTER)
-	{
-		prc->left   = rc.left + (rc.right  - rc.left - w) / 2;
-		prc->top    = rc.top  + (rc.bottom - rc.top  - h) / 2;
-		prc->right  = prc->left + w;
-		prc->bottom = prc->top  + h;
-	}
-	else
-	{
-		prc->left   = max(rc.left, min(rc.right-w,  prc->left));
-		prc->top    = max(rc.top,  min(rc.bottom-h, prc->top));
-		prc->right  = prc->left + w;
-		prc->bottom = prc->top  + h;
-	}
-}
-
-void ClipOrCenterWindowToMonitor(HWND hwnd, UINT flags)
-{
-	RECT rc;
-	GetWindowRect(hwnd, &rc);
-	ClipOrCenterRectToMonitor(&rc, flags);
-	SetWindowPos(hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-}
-*/

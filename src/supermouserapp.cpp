@@ -135,7 +135,9 @@ void SuperMouserApp::InitDisplay()
 void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 {
 	POINT ptCursorPos;
+#ifdef __WXMSW__
 	GetCursorPos(&ptCursorPos);
+#endif
 
 	int cursorX = ptCursorPos.x;
 	int cursorY = ptCursorPos.y;
@@ -166,7 +168,9 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 void SuperMouserApp::ToggleDisplay()
 {
 	POINT ptCursorPos;
+	#ifdef __WXMSW__
 	GetCursorPos(&ptCursorPos);
+	#endif
 
 	int cursorX = ptCursorPos.x;
 	int cursorY = ptCursorPos.y;
@@ -183,9 +187,12 @@ void SuperMouserApp::ToggleDisplay()
 	Display newdisplay = monitors[currentMonitorIdx];
 
 	SetCurrentDisplay(true);
+	#ifdef __WXMSW__
 	SetCursorPos(newdisplay.topLeft.x + (newdisplay.width * ratioX), newdisplay.topLeft.y + (newdisplay.height * ratioY));
+	#endif
 
 	Activate();
+
 }
 
 /*
@@ -308,11 +315,13 @@ void SuperMouserApp::Test(int code)
 {
 	Display display = monitors[currentMonitorIdx];
 
+#ifdef __WXMSW__
 	if (code == wxKeyCode('M')) {
 		ToggleDisplay();
 		Activate();
 		return;
 	}
+#endif
 
 	if (code == wxKeyCode(windowSettings_->keyNavUndo)) {
         RestoreWindowState();

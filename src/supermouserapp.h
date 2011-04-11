@@ -23,6 +23,9 @@
 ////@end includes
 #include "abstractwindow.h"
 #include <stack>
+using std::stack;
+#include <vector>
+using std::vector;
 
 /*!
  * Forward declarations
@@ -66,6 +69,15 @@ struct WindowState {
     int travelLeftRight;
 };
 
+struct Display
+{
+	wxPoint topLeft;
+	wxPoint bottomRight;
+
+	int width;
+	int height;
+};
+
 /*!
  * SuperMouserApp class declaration
  */
@@ -88,7 +100,6 @@ public:
     virtual int OnExit();
 
 	//void OnKeyDown(wxKeyEvent& event);
-	void OnTimer(wxTimerEvent& event);
     void OnHotKey(wxKeyEvent& event);
 
 	void Activate();
@@ -103,6 +114,10 @@ public:
 	void RestoreWindowState();
 	void ClearWindowStateHistory();
 
+	void InitDisplay();
+	void SetCurrentDisplay(bool ignoreCursor = false);
+	void ToggleDisplay();
+
 ////@begin SuperMouserApp event handler declarations
 
 ////@end SuperMouserApp event handler declarations
@@ -115,10 +130,11 @@ public:
 ////@end SuperMouserApp member variables
 
 
-    std::stack<WindowState> windowStateHistory;
-     
+    stack<WindowState> windowStateHistory;
+    vector<Display> monitors;
+	int currentMonitorIdx;
+	bool toggleDisplay;
 
-	wxTimer *timer_;
 	State state_;
 	wxPoint beginPos_;
 	wxPoint currentPos_;

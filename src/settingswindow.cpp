@@ -125,6 +125,7 @@ void SettingsWindow::Init()
     textctrlKeyUp = NULL;
     textctrlKeyLeft = NULL;
     textctrlKeyRight = NULL;
+    textctrlKeyUndo = NULL;
     textctrlKeyDown = NULL;
     textctrlMouseLeftClick = NULL;
     textctrlMouseDoubleClick = NULL;
@@ -141,6 +142,7 @@ void SettingsWindow::Init()
 	keyNavDown = 'J';
 	keyNavLeft = 'H';
 	keyNavRight = 'L';
+	keyNavUndo = 'U';
 	keyMouseSingleClick = 'F';
 	keyMouseDoubleClick = 'D';
 	keyMouseRightClick = 'G';
@@ -274,6 +276,16 @@ void SettingsWindow::CreateControls()
     textctrlMouseRight->SetMaxLength(1);
     itemBoxSizer29->Add(textctrlMouseRight, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
+    wxBoxSizer* itemBoxSizer30 = new wxBoxSizer(wxHORIZONTAL);
+    itemStaticBoxSizer4->Add(itemBoxSizer30, 0, wxGROW|wxLEFT|wxRIGHT, 5);
+
+    wxStaticText* itemStaticText31 = new wxStaticText( itemPanel2, wxID_STATIC, _("Undo key:"), wxDefaultPosition, wxDefaultSize, 0 );
+    itemBoxSizer30->Add(itemStaticText31, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+    textctrlKeyUndo = new wxTextCtrl( itemPanel2, ID_TEXTCTRL3, _("L"), wxDefaultPosition, wxDefaultSize, 0 );
+    textctrlKeyUndo->SetMaxLength(1);
+    itemBoxSizer30->Add(textctrlKeyUndo, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
     itemStaticBoxSizer4->Add(5, 5, 1, wxGROW|wxALL, 5);
 
     buttonSave = new wxButton( itemPanel2, ID_BUTTON_SAVE_SETTINGS, _("Save settings"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -294,6 +306,7 @@ void SettingsWindow::CreateControls()
 	textctrlKeyDown->SetValue(keyNavDown);
 	textctrlKeyLeft->SetValue(keyNavLeft);
 	textctrlKeyRight->SetValue(keyNavRight);
+	textctrlKeyUndo->SetValue(keyNavUndo);
 
 	textctrlMouseLeftClick->SetValue(keyMouseSingleClick);
 	textctrlMouseDoubleClick->SetValue(keyMouseDoubleClick);
@@ -462,6 +475,7 @@ void SettingsWindow::OnButtonSaveSettingsClick( wxCommandEvent& event )
 	keyNavDown = textctrlKeyDown->GetValue()[0];
 	keyNavLeft = textctrlKeyLeft->GetValue()[0];
 	keyNavRight = textctrlKeyRight->GetValue()[0];
+	keyNavUndo = textctrlKeyUndo->GetValue()[0];
 	keyMouseSingleClick = textctrlMouseLeftClick->GetValue()[0];
 	keyMouseDoubleClick = textctrlMouseDoubleClick->GetValue()[0];
 	keyMouseRightClick = textctrlMouseRight->GetValue()[0];

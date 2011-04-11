@@ -234,6 +234,9 @@ void SuperMouserApp::Activate()
     mainWindow_->SetFocus();
 
     click_left(currentPos_.x, currentPos_.y);
+        
+    ClearWindowStateHistory();
+    PushWindowState();
 
 	//mainWindow_->textctrl->SetFocus();
 }
@@ -252,6 +255,11 @@ void SuperMouserApp::Test(int code)
 		mainWindow_->GetHandle();
 	}
 
+	if (code == wxKeyCode(windowSettings_->keyNavUndo)) {
+        RestoreWindowState();
+    }
+
+
 	if (code == wxKeyCode(windowSettings_->keyNavLeft)) {
 #ifdef __WXGTK__
 		windowLeft_->Hide();
@@ -267,6 +275,8 @@ void SuperMouserApp::Test(int code)
 		}
 		currentPos_.x -= travelLeftRight_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft)));
+
+        PushWindowState();
 	}
 	if (code == wxKeyCode(windowSettings_->keyNavDown)) {
 #ifdef __WXGTK__
@@ -283,6 +293,8 @@ void SuperMouserApp::Test(int code)
 		}
 		currentPos_.y += travelUpDown_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown)));
+
+        PushWindowState();
 	}
 	if (code == wxKeyCode(windowSettings_->keyNavUp)) {
 #ifdef __WXGTK__
@@ -299,6 +311,8 @@ void SuperMouserApp::Test(int code)
 		}
 		currentPos_.y -= travelUpDown_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp)));
+
+        PushWindowState();
 	}
 	if (code == wxKeyCode(windowSettings_->keyNavRight)) {
 #ifdef __WXGTK__
@@ -314,6 +328,8 @@ void SuperMouserApp::Test(int code)
 		}
 		currentPos_.x += travelLeftRight_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight)));
+
+        PushWindowState();
 	}
 
 	move_to(currentPos_.x, currentPos_.y);
@@ -392,4 +408,57 @@ void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 	windowDown_->SetTransparent(trans);
 	windowLeft_->SetTransparent(trans);
 	windowRight_->SetTransparent(trans);
+}
+
+void SuperMouserApp::PushWindowState()
+{
+    WindowState thisState;
+    thisState.leftPos = windowLeft_->GetPosition();
+    thisState.rightPos = windowRight_->GetPosition();
+    thisState.upPos = windowUp_->GetPosition();
+    thisState.downPos = windowDown_->GetPosition();
+
+    thisState.leftSize = windowLeft_->GetSize();
+    thisState.rightSize = windowRight_->GetSize();
+    thisState.upSize = windowUp_->GetSize();
+    thisState.downSize = windowDown_->GetSize();
+
+    thisState.mousePosition = currentPos_;
+
+    windowStateHistory.push(thisState);
+}
+
+void SuperMouserApp::RestoreWindowState()
+{
+    if (!windowStateHistory.empty()) {
+        // First pop the current state, as we want to go back to the previous state
+        windowStateHistory.pop();
+    }
+
+    if (!windowStateHistory.empty()) {
+        WindowState previousState = windowStateHistory.top();
+
+        windowLeft_->SetPosition(previousState.leftPos);
+        windowRight_->SetPosition(previousState.rightPos);
+        windowUp_->SetPosition(previousState.upPos);
+        windowDown_->SetPosition(previousState.downPos);
+
+        windowLeft_->SetSize(previousState.leftSize);
+        windowRight_->SetSize(previousState.rightSize);
+        windowUp_->SetSize(previousState.upSize);
+        windowDown_->SetSize(previousState.downSize);
+
+        currentPos_.x = previousState.mousePosition.x;
+        currentPos_.y = previousState.mousePosition.y;
+        move_to(currentPos_.x, currentPos_.y);
+    } else {
+        //printf("Cannot undo.. stack empty\n");
+    }
+}
+
+void SuperMouserApp::ClearWindowStateHistory()
+{
+    while(!windowStateHistory.empty()) {
+        windowStateHistory.pop();
+    }
 }

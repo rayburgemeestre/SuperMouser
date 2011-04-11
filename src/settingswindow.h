@@ -132,6 +132,7 @@ public:
     wxTextCtrl* textctrlKeyUp;
     wxTextCtrl* textctrlKeyLeft;
     wxTextCtrl* textctrlKeyRight;
+    wxTextCtrl* textctrlKeyUndo;
     wxTextCtrl* textctrlKeyDown;
     wxTextCtrl* textctrlMouseLeftClick;
     wxTextCtrl* textctrlMouseDoubleClick;
@@ -154,6 +155,7 @@ public:
 	char keyNavDown;
 	char keyNavLeft;
 	char keyNavRight;
+	char keyNavUndo;
 	char keyMouseSingleClick;
 	char keyMouseDoubleClick;
 	char keyMouseRightClick;

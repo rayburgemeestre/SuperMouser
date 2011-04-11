@@ -22,6 +22,7 @@
 #include "cursorwindow.h"
 ////@end includes
 #include "abstractwindow.h"
+#include <stack>
 
 /*!
  * Forward declarations
@@ -46,6 +47,20 @@ enum State {
 	MouseRightClick,
 	MouseDoubleClick,
 	AbortMouserState
+};
+
+struct WindowState {
+    wxPoint leftPos;
+    wxPoint rightPos;
+    wxPoint upPos;
+    wxPoint downPos;
+
+    wxSize leftSize;
+    wxSize rightSize;
+    wxSize upSize;
+    wxSize downSize;
+
+    wxPoint mousePosition;
 };
 
 /*!
@@ -81,6 +96,10 @@ public:
 
 	void pre_click();
 
+	void PushWindowState();
+	void RestoreWindowState();
+	void ClearWindowStateHistory();
+
 ////@begin SuperMouserApp event handler declarations
 
 ////@end SuperMouserApp event handler declarations
@@ -91,6 +110,10 @@ public:
 
 ////@begin SuperMouserApp member variables
 ////@end SuperMouserApp member variables
+
+
+    std::stack<WindowState> windowStateHistory;
+     
 
 	wxTimer *timer_;
 	State state_;

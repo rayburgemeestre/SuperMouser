@@ -61,6 +61,9 @@ struct WindowState {
     wxSize downSize;
 
     wxPoint mousePosition;
+    
+    int travelUpDown;
+    int travelLeftRight;
 };
 
 /*!

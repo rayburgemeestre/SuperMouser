@@ -425,13 +425,18 @@ void SuperMouserApp::PushWindowState()
 
     thisState.mousePosition = currentPos_;
 
+    thisState.travelUpDown = travelUpDown_;
+    thisState.travelLeftRight = travelLeftRight_;
+
     windowStateHistory.push(thisState);
+
 }
 
 void SuperMouserApp::RestoreWindowState()
 {
-    if (!windowStateHistory.empty()) {
+    if (windowStateHistory.size() > 1) {
         // First pop the current state, as we want to go back to the previous state
+        // But never pop the original state, as we want to be able to always go back to that
         windowStateHistory.pop();
     }
 
@@ -451,6 +456,9 @@ void SuperMouserApp::RestoreWindowState()
         currentPos_.x = previousState.mousePosition.x;
         currentPos_.y = previousState.mousePosition.y;
         move_to(currentPos_.x, currentPos_.y);
+
+        travelUpDown_ = previousState.travelUpDown;
+        travelLeftRight_ = previousState.travelLeftRight;
     } else {
         //printf("Cannot undo.. stack empty\n");
     }

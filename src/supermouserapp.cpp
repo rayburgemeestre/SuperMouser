@@ -156,7 +156,7 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 			screenWidth_ = myDisplay.width;
 			screenHeight_ = myDisplay.height;
             
-            printf("width: %d / height: %d\n", screenWidth_, screenHeight_);
+            printf("Display: now: %d / %d\n", screenWidth_, screenHeight_);
 		}
 		counter++;
 	}
@@ -164,6 +164,7 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 
 void SuperMouserApp::ToggleDisplay()
 {
+    printf("Toggle display (current is %d / %d) ...\n", screenWidth_, screenHeight_);
 	int cursorX = currentPos_.x;
 	int cursorY = currentPos_.y;
 
@@ -180,7 +181,7 @@ void SuperMouserApp::ToggleDisplay()
     currentPos_.x = newdisplay.topLeft.x + (newdisplay.width * ratioX);
     currentPos_.y = newdisplay.topLeft.y + (newdisplay.height * ratioY);
 
-    printf("Move to: %d, %d\n", currentPos_.x, currentPos_.y); 
+    printf("Move mouse to: %d, %d\n", currentPos_.x, currentPos_.y); 
     
 	move_to(currentPos_.x, currentPos_.y);
 

@@ -134,13 +134,8 @@ void SuperMouserApp::InitDisplay()
 
 void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 {
-	POINT ptCursorPos;
-#ifdef __WXMSW__
-	GetCursorPos(&ptCursorPos);
-#endif
-
-	int cursorX = ptCursorPos.x;
-	int cursorY = ptCursorPos.y;
+	int cursorX = currentPos_.x;
+	int cursorY = currentPos_.y;
 
 	int counter = 0;
 	for (vector<Display>::iterator i = monitors.begin();
@@ -160,6 +155,8 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 
 			screenWidth_ = myDisplay.width;
 			screenHeight_ = myDisplay.height;
+            
+            printf("width: %d / height: %d\n", screenWidth_, screenHeight_);
 		}
 		counter++;
 	}
@@ -167,14 +164,8 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 
 void SuperMouserApp::ToggleDisplay()
 {
-	POINT ptCursorPos;
-	#ifdef __WXMSW__
-	GetCursorPos(&ptCursorPos);
-	#endif
-
-	int cursorX = ptCursorPos.x;
-	int cursorY = ptCursorPos.y;
-
+	int cursorX = currentPos_.x;
+	int cursorY = currentPos_.y;
 
 	Display display = monitors[currentMonitorIdx];
 
@@ -185,14 +176,17 @@ void SuperMouserApp::ToggleDisplay()
 	double ratioY = (static_cast<double>(cursorY) - static_cast<double>(display.topLeft.y)) / static_cast<double>(display.height);
 
 	Display newdisplay = monitors[currentMonitorIdx];
+    
+    currentPos_.x = newdisplay.topLeft.x + (newdisplay.width * ratioX);
+    currentPos_.y = newdisplay.topLeft.y + (newdisplay.height * ratioY);
 
-	SetCurrentDisplay(true);
-	#ifdef __WXMSW__
-	SetCursorPos(newdisplay.topLeft.x + (newdisplay.width * ratioX), newdisplay.topLeft.y + (newdisplay.height * ratioY));
-	#endif
+    printf("Move to: %d, %d\n", currentPos_.x, currentPos_.y); 
+    
+	move_to(currentPos_.x, currentPos_.y);
 
+    SetCurrentDisplay(true);
+    
 	Activate();
-
 }
 
 /*
@@ -315,13 +309,11 @@ void SuperMouserApp::Test(int code)
 {
 	Display display = monitors[currentMonitorIdx];
 
-#ifdef __WXMSW__
 	if (code == wxKeyCode('M')) {
 		ToggleDisplay();
 		Activate();
 		return;
 	}
-#endif
 
 	if (code == wxKeyCode(windowSettings_->keyNavUndo)) {
         RestoreWindowState();

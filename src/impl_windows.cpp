@@ -24,7 +24,6 @@
 
 #include "AbstractWindow.h"
 
-
 void init_screensize(int *width, int *height)
 {
 	wxDisplaySize(width, height);
@@ -32,32 +31,32 @@ void init_screensize(int *width, int *height)
 
 void register_hotkey(AbstractWindow *window)
 {
-    window->RegisterHotKey(wxID_ANY, wxMOD_CONTROL | wxMOD_SHIFT, 'M');
+	window->RegisterHotKey(wxID_ANY, wxMOD_CONTROL | wxMOD_SHIFT, 'M');
 }
 
-void move_to(int x, int y) 
+void move_to(int x, int y)
 {
-    SetCursorPos(x, y);
+	SetCursorPos(x, y);
 }
 
-void click_left(int x, int y) 
+void click_left(int x, int y)
 {
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 }
 
-void click_right(int x, int y) 
+void click_right(int x, int y)
 {
-    mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
 }
 
-void click_double(int x, int y) 
+void click_double(int x, int y)
 {
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-    GetDoubleClickTime;
-    mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-    mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+	GetDoubleClickTime;
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 }
 #endif // __WXMSW__

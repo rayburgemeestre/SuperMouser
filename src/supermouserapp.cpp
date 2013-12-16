@@ -38,14 +38,15 @@
  */
 
 ////@begin implement app
-IMPLEMENT_APP( SuperMouserApp )
+
+IMPLEMENT_APP(SuperMouserApp)
 ////@end implement app
 
 /*
  * SuperMouserApp event table definition
  */
 
-BEGIN_EVENT_TABLE( SuperMouserApp, wxApp )
+BEGIN_EVENT_TABLE(SuperMouserApp, wxApp)
 
 ////@begin SuperMouserApp event table entries
 ////@end SuperMouserApp event table entries
@@ -61,7 +62,7 @@ END_EVENT_TABLE()
  * SuperMouserApp type definition
  */
 
-IMPLEMENT_CLASS( SuperMouserApp, wxApp )
+IMPLEMENT_CLASS(SuperMouserApp, wxApp)
 
 
 /*
@@ -70,20 +71,19 @@ IMPLEMENT_CLASS( SuperMouserApp, wxApp )
 
 SuperMouserApp::SuperMouserApp()
 {
-    Init();
+	Init();
 }
-
 
 void SuperMouserApp::Init()
 {
-////@begin SuperMouserApp member initialisation
-////@end SuperMouserApp member initialisation
+	////@begin SuperMouserApp member initialisation
+	////@end SuperMouserApp member initialisation
 
 	state_ = WaitForShortcut;
 	screenWidth_ = 0;
 	screenHeight_ = 0;
 
-    init_screensize(&screenWidth_, &screenHeight_);
+	init_screensize(&screenWidth_, &screenHeight_);
 
 	mainWindow_ = NULL;
 	windowUp_ = NULL;
@@ -99,13 +99,13 @@ void SuperMouserApp::Init()
 
 void SuperMouserApp::InitDisplay()
 {
-	#if wxUSE_DISPLAY
+#if wxUSE_DISPLAY
 	unsigned count = wxDisplay::GetCount();
 
-	if ( ! count) {
+	if (!count) {
 		// Use the current resolution as a fallback.. required in Linux mint 16 anyways
 		// Will add multiple monitor support for this at work, where I have two monitors to test with..
-		
+
 		int width = 0, height = 0;
 		init_screensize(&width, &height);
 
@@ -119,11 +119,10 @@ void SuperMouserApp::InitDisplay()
 		return;
 	}
 
-	for (unsigned i=0; i<count; i++)
-	{
+	for (unsigned i = 0; i < count; i++) {
 		wxDisplay display(i);
 		wxRect r = display.GetGeometry();
-		
+
 #if 1 == 1
 		Display myDisplay;
 		myDisplay.topLeft = wxPoint(r.GetLeft(), r.GetTop());
@@ -147,7 +146,7 @@ void SuperMouserApp::InitDisplay()
 		monitors.push_back(myDisplay);
 #endif
 	}
-	#endif
+#endif
 }
 
 void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
@@ -157,24 +156,24 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 
 	int counter = 0;
 	for (vector<Display>::iterator i = monitors.begin();
-		 i != monitors.end();
-		 ++i
-	) {
+			i != monitors.end();
+			++i
+			) {
 		Display &myDisplay = (*i);
 		int screenX1 = myDisplay.topLeft.x;
 		int screenY1 = myDisplay.topLeft.y;
 		int screenX2 = myDisplay.topLeft.x + myDisplay.width;
 		int screenY2 = myDisplay.topLeft.y + myDisplay.height;
 		if (cursorX > myDisplay.topLeft.x && cursorX < myDisplay.bottomRight.x &&
-			cursorY > myDisplay.topLeft.y && cursorY < myDisplay.bottomRight.y
-		) {
+				cursorY > myDisplay.topLeft.y && cursorY < myDisplay.bottomRight.y
+				) {
 			if (!ignoreCursor)
 				currentMonitorIdx = counter;
 
 			screenWidth_ = myDisplay.width;
 			screenHeight_ = myDisplay.height;
-            
-            printf("Display: now: %d / %d\n", screenWidth_, screenHeight_);
+
+			printf("Display: now: %d / %d\n", screenWidth_, screenHeight_);
 		}
 		counter++;
 	}
@@ -182,7 +181,7 @@ void SuperMouserApp::SetCurrentDisplay(bool ignoreCursor)
 
 void SuperMouserApp::ToggleDisplay()
 {
-    printf("Toggle display (current is %d / %d) ...\n", screenWidth_, screenHeight_);
+	printf("Toggle display (current is %d / %d) ...\n", screenWidth_, screenHeight_);
 	int cursorX = currentPos_.x;
 	int cursorY = currentPos_.y;
 
@@ -191,20 +190,20 @@ void SuperMouserApp::ToggleDisplay()
 	int n = monitors.size();
 	currentMonitorIdx = (currentMonitorIdx + 1) < n ? (currentMonitorIdx + 1) : 0;
 
-	double ratioX = (static_cast<double>(cursorX) - static_cast<double>(display.topLeft.x)) / static_cast<double>(display.width);
-	double ratioY = (static_cast<double>(cursorY) - static_cast<double>(display.topLeft.y)) / static_cast<double>(display.height);
+	double ratioX = (static_cast<double> (cursorX) - static_cast<double> (display.topLeft.x)) / static_cast<double> (display.width);
+	double ratioY = (static_cast<double> (cursorY) - static_cast<double> (display.topLeft.y)) / static_cast<double> (display.height);
 
 	Display newdisplay = monitors[currentMonitorIdx];
-    
-    currentPos_.x = newdisplay.topLeft.x + (newdisplay.width * ratioX);
-    currentPos_.y = newdisplay.topLeft.y + (newdisplay.height * ratioY);
 
-    printf("Move mouse to: %d, %d\n", currentPos_.x, currentPos_.y); 
-    
+	currentPos_.x = newdisplay.topLeft.x + (newdisplay.width * ratioX);
+	currentPos_.y = newdisplay.topLeft.y + (newdisplay.height * ratioY);
+
+	printf("Move mouse to: %d, %d\n", currentPos_.x, currentPos_.y);
+
 	move_to(currentPos_.x, currentPos_.y);
 
-    SetCurrentDisplay(true);
-    
+	SetCurrentDisplay(true);
+
 	Activate();
 }
 
@@ -213,8 +212,8 @@ void SuperMouserApp::ToggleDisplay()
  */
 
 bool SuperMouserApp::OnInit()
-{    
-////@begin SuperMouserApp initialisation
+{
+	////@begin SuperMouserApp initialisation
 	// Remove the comment markers above and below this block
 	// to make permanent changes to the code.
 
@@ -230,9 +229,9 @@ bool SuperMouserApp::OnInit()
 #if wxUSE_GIF
 	wxImage::AddHandler(new wxGIFHandler);
 #endif
-	CursorWindow* mainWindow = new CursorWindow( NULL );
+	CursorWindow* mainWindow = new CursorWindow(NULL);
 	mainWindow->Show(true);
-////@end SuperMouserApp initialisation
+	////@end SuperMouserApp initialisation
 
 	mainWindow->Show(false);
 	mainWindow->SetApplication(this);
@@ -251,46 +250,45 @@ bool SuperMouserApp::OnInit()
 	/*windowUp_->SetBackgroundColour(wxColour("red"));
 	windowDown_->SetBackgroundColour(wxColour("grey"));
 	windowLeft_->SetBackgroundColour(wxColour("yellow"));
-	*/
+	 */
 
 
 	windowUp_->SetTransparent(128);
-    windowDown_->SetTransparent(128);
-    windowLeft_->SetTransparent(128);
-    windowRight_->SetTransparent(128);
+	windowDown_->SetTransparent(128);
+	windowLeft_->SetTransparent(128);
+	windowRight_->SetTransparent(128);
 
-    windowSettings_ = new SettingsWindow(NULL);
-    windowSettings_->SetApplication(this);
+	windowSettings_ = new SettingsWindow(NULL);
+	windowSettings_->SetApplication(this);
 
-	#ifdef __WXMSW__
-        windowSettings_->Show();
-	#else
-		register_hotkey(mainWindow_, (HotkeyHandler *)this);
-        windowSettings_->Show();
-	#endif
-    
-    return true;
+#ifdef __WXMSW__
+	windowSettings_->Show();
+#else
+	register_hotkey(mainWindow_, (HotkeyHandler *)this);
+	windowSettings_->Show();
+#endif
+
+	return true;
 }
-
 
 /*
  * Cleanup for SuperMouserApp
  */
 
 int SuperMouserApp::OnExit()
-{    
-    mainWindow_->Destroy();
-    windowUp_->Destroy();
-    windowDown_->Destroy();
-    windowLeft_->Destroy();
-    windowRight_->Destroy();
+{
+	mainWindow_->Destroy();
+	windowUp_->Destroy();
+	windowDown_->Destroy();
+	windowLeft_->Destroy();
+	windowRight_->Destroy();
 
 	windowSettings_->RemoveTrayIcon();
 	windowSettings_->Destroy();
 
-////@begin SuperMouserApp cleanup
+	////@begin SuperMouserApp cleanup
 	return wxApp::OnExit();
-////@end SuperMouserApp cleanup
+	////@end SuperMouserApp cleanup
 }
 
 void SuperMouserApp::OnHotKey(wxKeyEvent& event)
@@ -306,36 +304,36 @@ void SuperMouserApp::HandleHotkey()
 
 void SuperMouserApp::Activate()
 {
-    state_ = InMouserState;
+	state_ = InMouserState;
 
-    beginPos_ = wxGetMousePosition();
-    currentPos_ = wxGetMousePosition();
+	beginPos_ = wxGetMousePosition();
+	currentPos_ = wxGetMousePosition();
 
-    travelUpDown_ = -1;
-    travelLeftRight_ = -1;
+	travelUpDown_ = -1;
+	travelLeftRight_ = -1;
 
-    windowLeft_->Hide();
-    windowRight_->Hide();
-    windowUp_->Hide();
-    windowDown_->Hide();
+	windowLeft_->Hide();
+	windowRight_->Hide();
+	windowUp_->Hide();
+	windowDown_->Hide();
 
-    mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-    //mainWindow_->SetSize(5, 5);
+	mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
+	//mainWindow_->SetSize(5, 5);
 
 #ifdef __WXGTK__
 	mainWindow_->Hide();
 #endif
 	mainWindow_->Show();
-    mainWindow_->SetFocus();
+	mainWindow_->SetFocus();
 #ifdef __WXGTK__
-    mainWindow_->textctrl->SetFocus();
+	mainWindow_->textctrl->SetFocus();
 #endif
 
-    click_left(currentPos_.x, currentPos_.y);
-        
-    ClearWindowStateHistory();
+	click_left(currentPos_.x, currentPos_.y);
 
-    PushWindowState();
+	ClearWindowStateHistory();
+
+	PushWindowState();
 }
 
 void SuperMouserApp::pre_click()
@@ -346,6 +344,7 @@ void SuperMouserApp::pre_click()
 	windowUp_->Hide();
 	windowDown_->Hide();
 }
+
 void SuperMouserApp::Test(int code)
 {
 	Display display = monitors[currentMonitorIdx];
@@ -357,8 +356,8 @@ void SuperMouserApp::Test(int code)
 	}
 
 	if (code == wxKeyCode(windowSettings_->keyNavUndo)) {
-        RestoreWindowState();
-    }
+		RestoreWindowState();
+	}
 
 	if (code == wxKeyCode(windowSettings_->keyNavLeft)) {
 #ifdef __WXGTK__
@@ -376,7 +375,7 @@ void SuperMouserApp::Test(int code)
 		currentPos_.x -= travelLeftRight_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavLeft)));
 
-        PushWindowState();
+		PushWindowState();
 	}
 	if (code == wxKeyCode(windowSettings_->keyNavDown)) {
 #ifdef __WXGTK__
@@ -394,18 +393,18 @@ void SuperMouserApp::Test(int code)
 		currentPos_.y += travelUpDown_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavDown)));
 
-        PushWindowState();
+		PushWindowState();
 	}
 	if (code == wxKeyCode(windowSettings_->keyNavUp)) {
 #ifdef __WXGTK__
 		windowUp_->Hide();
 #endif
 		windowUp_->SetSize(screenWidth_, screenHeight_ - currentPos_.y - 25 /* Goddamn cinnamon, taskbar * */);
-/**
- * * = cinnamon moves the window a bit up, as the taskbar blocks the window.. fucking annoying.
- *      this is a hardcoded fix so that the image won't be bumped up, but of course this only works
- *      if the taskbar is at the bottom :''(
- */
+		/**
+		 * * = cinnamon moves the window a bit up, as the taskbar blocks the window.. fucking annoying.
+		 *      this is a hardcoded fix so that the image won't be bumped up, but of course this only works
+		 *      if the taskbar is at the bottom :''(
+		 */
 		windowUp_->SetPosition(wxPoint(display.topLeft.x, currentPos_.y));
 		windowUp_->Show();
 
@@ -417,7 +416,7 @@ void SuperMouserApp::Test(int code)
 		currentPos_.y -= travelUpDown_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavUp)));
 
-        PushWindowState();
+		PushWindowState();
 	}
 	if (code == wxKeyCode(windowSettings_->keyNavRight)) {
 #ifdef __WXGTK__
@@ -434,13 +433,13 @@ void SuperMouserApp::Test(int code)
 		currentPos_.x += travelLeftRight_;
 		while (wxGetKeyState(wxKeyCode(windowSettings_->keyNavRight)));
 
-        PushWindowState();
+		PushWindowState();
 	}
 
 	move_to(currentPos_.x, currentPos_.y);
 #ifndef __WXMSW__
-    mainWindow_->Show(false);
-    mainWindow_->Show(true);
+	mainWindow_->Show(false);
+	mainWindow_->Show(true);
 #endif
 	mainWindow_->SetPosition(wxPoint(currentPos_.x + 2, currentPos_.y + 2));
 	mainWindow_->SetFocus();
@@ -469,12 +468,10 @@ void SuperMouserApp::Test(int code)
 	if (code == wxKeyCode(windowSettings_->keyMouseSingleClick)) {
 		pre_click();
 		click_left(currentPos_.x, currentPos_.y);
-	}
-	else if (code == wxKeyCode(windowSettings_->keyMouseRightClick)) {
+	} else if (code == wxKeyCode(windowSettings_->keyMouseRightClick)) {
 		pre_click();
 		click_right(currentPos_.x, currentPos_.y);
-	}
-	else if (code == wxKeyCode(windowSettings_->keyMouseDoubleClick)) {
+	} else if (code == wxKeyCode(windowSettings_->keyMouseDoubleClick)) {
 		pre_click();
 		click_double(currentPos_.x, currentPos_.y);
 	}
@@ -489,10 +486,10 @@ void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 
 	const wxColor &color = windowSettings_->colourctrl->GetColour();
 	windowLeft_->SetBackgroundColour(color);
-	windowRight_->SetBackgroundColour(color); 
+	windowRight_->SetBackgroundColour(color);
 	windowUp_->SetBackgroundColour(color);
 	windowDown_->SetBackgroundColour(color);
-	
+
 	wxByte trans(windowSettings_->sliderTransparency->GetValue());
 	if (!windowSettings_->checkboxTransparency->GetValue())
 		trans = 255;
@@ -505,61 +502,61 @@ void SuperMouserApp::SettingsCallback(int modifiers, char shortcutKey)
 
 void SuperMouserApp::PushWindowState()
 {
-    WindowState thisState;
-    thisState.leftPos = windowLeft_->GetPosition();
-    thisState.rightPos = windowRight_->GetPosition();
-    thisState.upPos = windowUp_->GetPosition();
-    thisState.downPos = windowDown_->GetPosition();
+	WindowState thisState;
+	thisState.leftPos = windowLeft_->GetPosition();
+	thisState.rightPos = windowRight_->GetPosition();
+	thisState.upPos = windowUp_->GetPosition();
+	thisState.downPos = windowDown_->GetPosition();
 
-    thisState.leftSize = windowLeft_->GetSize();
-    thisState.rightSize = windowRight_->GetSize();
-    thisState.upSize = windowUp_->GetSize();
-    thisState.downSize = windowDown_->GetSize();
+	thisState.leftSize = windowLeft_->GetSize();
+	thisState.rightSize = windowRight_->GetSize();
+	thisState.upSize = windowUp_->GetSize();
+	thisState.downSize = windowDown_->GetSize();
 
-    thisState.mousePosition = currentPos_;
+	thisState.mousePosition = currentPos_;
 
-    thisState.travelUpDown = travelUpDown_;
-    thisState.travelLeftRight = travelLeftRight_;
+	thisState.travelUpDown = travelUpDown_;
+	thisState.travelLeftRight = travelLeftRight_;
 
-    windowStateHistory.push(thisState);
+	windowStateHistory.push(thisState);
 
 }
 
 void SuperMouserApp::RestoreWindowState()
 {
-    if (windowStateHistory.size() > 1) {
-        // First pop the current state, as we want to go back to the previous state
-        // But never pop the original state, as we want to be able to always go back to that
-        windowStateHistory.pop();
-    }
+	if (windowStateHistory.size() > 1) {
+		// First pop the current state, as we want to go back to the previous state
+		// But never pop the original state, as we want to be able to always go back to that
+		windowStateHistory.pop();
+	}
 
-    if (!windowStateHistory.empty()) {
-        WindowState previousState = windowStateHistory.top();
+	if (!windowStateHistory.empty()) {
+		WindowState previousState = windowStateHistory.top();
 
-        windowLeft_->SetPosition(previousState.leftPos);
-        windowRight_->SetPosition(previousState.rightPos);
-        windowUp_->SetPosition(previousState.upPos);
-        windowDown_->SetPosition(previousState.downPos);
+		windowLeft_->SetPosition(previousState.leftPos);
+		windowRight_->SetPosition(previousState.rightPos);
+		windowUp_->SetPosition(previousState.upPos);
+		windowDown_->SetPosition(previousState.downPos);
 
-        windowLeft_->SetSize(previousState.leftSize);
-        windowRight_->SetSize(previousState.rightSize);
-        windowUp_->SetSize(previousState.upSize);
-        windowDown_->SetSize(previousState.downSize);
+		windowLeft_->SetSize(previousState.leftSize);
+		windowRight_->SetSize(previousState.rightSize);
+		windowUp_->SetSize(previousState.upSize);
+		windowDown_->SetSize(previousState.downSize);
 
-        currentPos_.x = previousState.mousePosition.x;
-        currentPos_.y = previousState.mousePosition.y;
-        move_to(currentPos_.x, currentPos_.y);
+		currentPos_.x = previousState.mousePosition.x;
+		currentPos_.y = previousState.mousePosition.y;
+		move_to(currentPos_.x, currentPos_.y);
 
-        travelUpDown_ = previousState.travelUpDown;
-        travelLeftRight_ = previousState.travelLeftRight;
-    } else {
-        //printf("Cannot undo.. stack empty\n");
-    }
+		travelUpDown_ = previousState.travelUpDown;
+		travelLeftRight_ = previousState.travelLeftRight;
+	} else {
+		//printf("Cannot undo.. stack empty\n");
+	}
 }
 
 void SuperMouserApp::ClearWindowStateHistory()
 {
-    while(!windowStateHistory.empty()) {
-        windowStateHistory.pop();
-    }
+	while (!windowStateHistory.empty()) {
+		windowStateHistory.pop();
+	}
 }

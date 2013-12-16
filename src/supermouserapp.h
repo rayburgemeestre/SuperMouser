@@ -56,24 +56,23 @@ enum State {
 };
 
 struct WindowState {
-    wxPoint leftPos;
-    wxPoint rightPos;
-    wxPoint upPos;
-    wxPoint downPos;
+	wxPoint leftPos;
+	wxPoint rightPos;
+	wxPoint upPos;
+	wxPoint downPos;
 
-    wxSize leftSize;
-    wxSize rightSize;
-    wxSize upSize;
-    wxSize downSize;
+	wxSize leftSize;
+	wxSize rightSize;
+	wxSize upSize;
+	wxSize downSize;
 
-    wxPoint mousePosition;
-    
-    int travelUpDown;
-    int travelLeftRight;
+	wxPoint mousePosition;
+
+	int travelUpDown;
+	int travelLeftRight;
 };
 
-struct Display
-{
+struct Display {
 	wxPoint topLeft;
 	wxPoint bottomRight;
 
@@ -85,31 +84,30 @@ struct Display
  * SuperMouserApp class declaration
  */
 
-class SuperMouserApp: public wxApp, public HotkeyHandler
-{    
-    DECLARE_CLASS( SuperMouserApp )
-    DECLARE_EVENT_TABLE()
+class SuperMouserApp : public wxApp, public HotkeyHandler {
+	DECLARE_CLASS(SuperMouserApp)
+	DECLARE_EVENT_TABLE()
 
 public:
-    /// Constructor
-    SuperMouserApp();
+	/// Constructor
+	SuperMouserApp();
 
-    void Init();
+	void Init();
 
-    /// Initialises the application
-    virtual bool OnInit();
+	/// Initialises the application
+	virtual bool OnInit();
 
-    /// Called on exit
-    virtual int OnExit();
+	/// Called on exit
+	virtual int OnExit();
 
 	//void OnKeyDown(wxKeyEvent& event);
-    void OnHotKey(wxKeyEvent& event);
+	void OnHotKey(wxKeyEvent& event);
 
 	void HandleHotkey();
 
 	void Activate();
 
-	void SettingsCallback( int modifiers, char shortcutKey );
+	void SettingsCallback(int modifiers, char shortcutKey);
 
 	void Test(int code);
 
@@ -123,20 +121,20 @@ public:
 	void SetCurrentDisplay(bool ignoreCursor = false);
 	void ToggleDisplay();
 
-////@begin SuperMouserApp event handler declarations
+	////@begin SuperMouserApp event handler declarations
 
-////@end SuperMouserApp event handler declarations
+	////@end SuperMouserApp event handler declarations
 
-////@begin SuperMouserApp member function declarations
+	////@begin SuperMouserApp member function declarations
 
-////@end SuperMouserApp member function declarations
+	////@end SuperMouserApp member function declarations
 
-////@begin SuperMouserApp member variables
-////@end SuperMouserApp member variables
+	////@begin SuperMouserApp member variables
+	////@end SuperMouserApp member variables
 
 
-    stack<WindowState> windowStateHistory;
-    vector<Display> monitors;
+	stack<WindowState> windowStateHistory;
+	vector<Display> monitors;
 	int currentMonitorIdx;
 	bool toggleDisplay;
 
@@ -154,8 +152,8 @@ public:
 	AbstractWindow* windowDown_;
 	AbstractWindow* windowLeft_;
 	AbstractWindow* windowRight_;
-    
-    SettingsWindow * windowSettings_;
+
+	SettingsWindow * windowSettings_;
 };
 
 /*!
@@ -168,4 +166,4 @@ DECLARE_APP(SuperMouserApp)
 
 
 #endif
-    // _SUPERMOUSERAPP_H_
+// _SUPERMOUSERAPP_H_

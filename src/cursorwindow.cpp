@@ -29,23 +29,22 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*
  * CursorWindow type definition
  */
 
-IMPLEMENT_CLASS( CursorWindow, wxFrame )
+IMPLEMENT_CLASS(CursorWindow, wxFrame)
 
 
 /*
  * CursorWindow event table definition
  */
 
-BEGIN_EVENT_TABLE( CursorWindow, wxFrame )
+BEGIN_EVENT_TABLE(CursorWindow, wxFrame)
 
 ////@begin CursorWindow event table entries
-    EVT_KEY_DOWN( CursorWindow::OnKeyDown )
-    EVT_TEXT( ID_TEXTCTRL, CursorWindow::OnTextctrlTextUpdated )
+EVT_KEY_DOWN(CursorWindow::OnKeyDown)
+EVT_TEXT(ID_TEXTCTRL, CursorWindow::OnTextctrlTextUpdated)
 ////@end CursorWindow event table entries
 
 END_EVENT_TABLE()
@@ -57,32 +56,30 @@ END_EVENT_TABLE()
 
 CursorWindow::CursorWindow()
 {
-    Init();
+	Init();
 }
 
-CursorWindow::CursorWindow( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+CursorWindow::CursorWindow(wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-    Init();
-    Create( parent, id, caption, pos, size, style );
+	Init();
+	Create(parent, id, caption, pos, size, style);
 }
-
 
 /*
  * CursorWindow creator
  */
 
-bool CursorWindow::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool CursorWindow::Create(wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin CursorWindow creation
-    wxFrame::Create( parent, id, caption, pos, size, style );
+	////@begin CursorWindow creation
+	wxFrame::Create(parent, id, caption, pos, size, style);
 
-    this->SetBackgroundColour(wxColour(255, 0, 0));
-    CreateControls();
-    Centre();
-////@end CursorWindow creation
-    return true;
+	this->SetBackgroundColour(wxColour(255, 0, 0));
+	CreateControls();
+	Centre();
+	////@end CursorWindow creation
+	return true;
 }
-
 
 /*
  * CursorWindow destructor
@@ -90,10 +87,9 @@ bool CursorWindow::Create( wxWindow* parent, wxWindowID id, const wxString& capt
 
 CursorWindow::~CursorWindow()
 {
-////@begin CursorWindow destruction
-////@end CursorWindow destruction
+	////@begin CursorWindow destruction
+	////@end CursorWindow destruction
 }
-
 
 /*
  * Member initialisation
@@ -101,35 +97,33 @@ CursorWindow::~CursorWindow()
 
 void CursorWindow::Init()
 {
-////@begin CursorWindow member initialisation
-    textctrl = NULL;
-////@end CursorWindow member initialisation
+	////@begin CursorWindow member initialisation
+	textctrl = NULL;
+	////@end CursorWindow member initialisation
 
 	app_ = NULL;
 }
-
 
 /*
  * Control creation for CursorWindow
  */
 
 void CursorWindow::CreateControls()
-{    
-////@begin CursorWindow content construction
-    CursorWindow* itemFrame1 = this;
+{
+	////@begin CursorWindow content construction
+	CursorWindow* itemFrame1 = this;
 
-    wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-    itemFrame1->SetSizer(itemBoxSizer2);
+	wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+	itemFrame1->SetSizer(itemBoxSizer2);
 
-    textctrl = new wxTextCtrl( itemFrame1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-    itemBoxSizer2->Add(textctrl, 1, wxALIGN_TOP|wxALL, 5);
+	textctrl = new wxTextCtrl(itemFrame1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	itemBoxSizer2->Add(textctrl, 1, wxALIGN_TOP | wxALL, 5);
 
-    // Connect events and objects
-    textctrl->Connect(ID_TEXTCTRL, wxEVT_CHAR, wxKeyEventHandler(CursorWindow::OnChar), NULL, this);
-    textctrl->Connect(ID_TEXTCTRL, wxEVT_KEY_DOWN, wxKeyEventHandler(CursorWindow::OnKeyDown), NULL, this);
-////@end CursorWindow content construction
+	// Connect events and objects
+	textctrl->Connect(ID_TEXTCTRL, wxEVT_CHAR, wxKeyEventHandler(CursorWindow::OnChar), NULL, this);
+	textctrl->Connect(ID_TEXTCTRL, wxEVT_KEY_DOWN, wxKeyEventHandler(CursorWindow::OnKeyDown), NULL, this);
+	////@end CursorWindow content construction
 }
-
 
 /*
  * Should we show tooltips?
@@ -137,55 +131,53 @@ void CursorWindow::CreateControls()
 
 bool CursorWindow::ShowToolTips()
 {
-    return true;
+	return true;
 }
 
 /*
  * Get bitmap resources
  */
 
-wxBitmap CursorWindow::GetBitmapResource( const wxString& name )
+wxBitmap CursorWindow::GetBitmapResource(const wxString& name)
 {
-    // Bitmap retrieval
-////@begin CursorWindow bitmap retrieval
-    wxUnusedVar(name);
-    return wxNullBitmap;
-////@end CursorWindow bitmap retrieval
+	// Bitmap retrieval
+	////@begin CursorWindow bitmap retrieval
+	wxUnusedVar(name);
+	return wxNullBitmap;
+	////@end CursorWindow bitmap retrieval
 }
 
 /*
  * Get icon resources
  */
 
-wxIcon CursorWindow::GetIconResource( const wxString& name )
+wxIcon CursorWindow::GetIconResource(const wxString& name)
 {
-    // Icon retrieval
-////@begin CursorWindow icon retrieval
-    wxUnusedVar(name);
-    return wxNullIcon;
-////@end CursorWindow icon retrieval
+	// Icon retrieval
+	////@begin CursorWindow icon retrieval
+	wxUnusedVar(name);
+	return wxNullIcon;
+	////@end CursorWindow icon retrieval
 }
-
 
 /*
  * wxEVT_COMMAND_TEXT_UPDATED event handler for ID_TEXTCTRL
  */
 
-void CursorWindow::OnTextctrlTextUpdated( wxCommandEvent& event )
+void CursorWindow::OnTextctrlTextUpdated(wxCommandEvent& event)
 {
 #ifdef __WXMAC__
-	app_->Test((int)textctrl->GetValue()[0]);
+	app_->Test((int) textctrl->GetValue()[0]);
 	textctrl->SetValue("");
 #endif
 	event.Skip();
 }
 
-
 /*
  * wxEVT_KEY_DOWN event handler for ID_TEXTCTRL
  */
 
-void CursorWindow::OnKeyDown( wxKeyEvent& event )
+void CursorWindow::OnKeyDown(wxKeyEvent& event)
 {
 	wxString value(wxString::Format("%d,", event.GetKeyCode()));
 	value.Append(textctrl->GetValue());
@@ -195,16 +187,15 @@ void CursorWindow::OnKeyDown( wxKeyEvent& event )
 
 void CursorWindow::SetApplication(SuperMouserApp *app)
 {
-    app_ = app;
+	app_ = app;
 }
-
 
 /*
  * wxEVT_CHAR event handler for ID_TEXTCTRL
  */
 
-void CursorWindow::OnChar( wxKeyEvent& event )
+void CursorWindow::OnChar(wxKeyEvent& event)
 {
-    ///app_->Test(event.GetKeyCode());
+	///app_->Test(event.GetKeyCode());
 }
 

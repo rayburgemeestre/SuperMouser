@@ -1,7 +1,6 @@
 #pragma once
 
-class HotkeyHandler
-{
+class HotkeyHandler {
 public:
 
 	virtual void HandleHotkey() = 0;

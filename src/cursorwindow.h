@@ -44,65 +44,63 @@ class SuperMouserApp;
 #define SYMBOL_CURSORWINDOW_POSITION wxDefaultPosition
 ////@end control identifiers
 
-
 /*!
  * CursorWindow class declaration
  */
 
-class CursorWindow: public wxFrame
-{    
-    DECLARE_CLASS( CursorWindow )
-    DECLARE_EVENT_TABLE()
+class CursorWindow : public wxFrame {
+	DECLARE_CLASS(CursorWindow)
+	DECLARE_EVENT_TABLE()
 
 public:
-    /// Constructors
-    CursorWindow();
-    CursorWindow( wxWindow* parent, wxWindowID id = SYMBOL_CURSORWINDOW_IDNAME, const wxString& caption = SYMBOL_CURSORWINDOW_TITLE, const wxPoint& pos = SYMBOL_CURSORWINDOW_POSITION, const wxSize& size = SYMBOL_CURSORWINDOW_SIZE, long style = SYMBOL_CURSORWINDOW_STYLE );
+	/// Constructors
+	CursorWindow();
+	CursorWindow(wxWindow* parent, wxWindowID id = SYMBOL_CURSORWINDOW_IDNAME, const wxString& caption = SYMBOL_CURSORWINDOW_TITLE, const wxPoint& pos = SYMBOL_CURSORWINDOW_POSITION, const wxSize& size = SYMBOL_CURSORWINDOW_SIZE, long style = SYMBOL_CURSORWINDOW_STYLE);
 
-    bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CURSORWINDOW_IDNAME, const wxString& caption = SYMBOL_CURSORWINDOW_TITLE, const wxPoint& pos = SYMBOL_CURSORWINDOW_POSITION, const wxSize& size = SYMBOL_CURSORWINDOW_SIZE, long style = SYMBOL_CURSORWINDOW_STYLE );
+	bool Create(wxWindow* parent, wxWindowID id = SYMBOL_CURSORWINDOW_IDNAME, const wxString& caption = SYMBOL_CURSORWINDOW_TITLE, const wxPoint& pos = SYMBOL_CURSORWINDOW_POSITION, const wxSize& size = SYMBOL_CURSORWINDOW_SIZE, long style = SYMBOL_CURSORWINDOW_STYLE);
 
-    /// Destructor
-    ~CursorWindow();
+	/// Destructor
+	~CursorWindow();
 
-    /// Initialises member variables
-    void Init();
+	/// Initialises member variables
+	void Init();
 
-    /// Creates the controls and sizers
-    void CreateControls();
+	/// Creates the controls and sizers
+	void CreateControls();
 
 	void SetApplication(SuperMouserApp *app);
-    
-////@begin CursorWindow event handler declarations
 
-    /// wxEVT_KEY_DOWN event handler for ID_CURSORWINDOW
-    void OnKeyDown( wxKeyEvent& event );
+	////@begin CursorWindow event handler declarations
 
-    /// wxEVT_COMMAND_TEXT_UPDATED event handler for ID_TEXTCTRL
-    void OnTextctrlTextUpdated( wxCommandEvent& event );
+	/// wxEVT_KEY_DOWN event handler for ID_CURSORWINDOW
+	void OnKeyDown(wxKeyEvent& event);
 
-    /// wxEVT_CHAR event handler for ID_TEXTCTRL
-    void OnChar( wxKeyEvent& event );
+	/// wxEVT_COMMAND_TEXT_UPDATED event handler for ID_TEXTCTRL
+	void OnTextctrlTextUpdated(wxCommandEvent& event);
 
-////@end CursorWindow event handler declarations
+	/// wxEVT_CHAR event handler for ID_TEXTCTRL
+	void OnChar(wxKeyEvent& event);
 
-////@begin CursorWindow member function declarations
+	////@end CursorWindow event handler declarations
 
-    /// Retrieves bitmap resources
-    wxBitmap GetBitmapResource( const wxString& name );
+	////@begin CursorWindow member function declarations
 
-    /// Retrieves icon resources
-    wxIcon GetIconResource( const wxString& name );
-////@end CursorWindow member function declarations
+	/// Retrieves bitmap resources
+	wxBitmap GetBitmapResource(const wxString& name);
 
-    /// Should we show tooltips?
-    static bool ShowToolTips();
+	/// Retrieves icon resources
+	wxIcon GetIconResource(const wxString& name);
+	////@end CursorWindow member function declarations
 
-////@begin CursorWindow member variables
-    wxTextCtrl* textctrl;
-////@end CursorWindow member variables
+	/// Should we show tooltips?
+	static bool ShowToolTips();
+
+	////@begin CursorWindow member variables
+	wxTextCtrl* textctrl;
+	////@end CursorWindow member variables
 
 	SuperMouserApp *app_;
 };
 
 #endif
-    // _CURSORWINDOW_H_
+// _CURSORWINDOW_H_

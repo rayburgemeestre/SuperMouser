@@ -44,65 +44,63 @@
 
 class SuperMouserApp;
 
-
 /*!
  * AbstractWindow class declaration
  */
 
-class AbstractWindow: public wxFrame
-{    
-    DECLARE_CLASS( AbstractWindow )
-    DECLARE_EVENT_TABLE()
+class AbstractWindow : public wxFrame {
+	DECLARE_CLASS(AbstractWindow)
+	DECLARE_EVENT_TABLE()
 
 public:
-    /// Constructors
-    AbstractWindow();
-    AbstractWindow( wxWindow* parent, wxWindowID id = SYMBOL_ABSTRACTWINDOW_IDNAME, const wxString& caption = SYMBOL_ABSTRACTWINDOW_TITLE, const wxPoint& pos = SYMBOL_ABSTRACTWINDOW_POSITION, const wxSize& size = SYMBOL_ABSTRACTWINDOW_SIZE, long style = SYMBOL_ABSTRACTWINDOW_STYLE );
+	/// Constructors
+	AbstractWindow();
+	AbstractWindow(wxWindow* parent, wxWindowID id = SYMBOL_ABSTRACTWINDOW_IDNAME, const wxString& caption = SYMBOL_ABSTRACTWINDOW_TITLE, const wxPoint& pos = SYMBOL_ABSTRACTWINDOW_POSITION, const wxSize& size = SYMBOL_ABSTRACTWINDOW_SIZE, long style = SYMBOL_ABSTRACTWINDOW_STYLE);
 
-    bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ABSTRACTWINDOW_IDNAME, const wxString& caption = SYMBOL_ABSTRACTWINDOW_TITLE, const wxPoint& pos = SYMBOL_ABSTRACTWINDOW_POSITION, const wxSize& size = SYMBOL_ABSTRACTWINDOW_SIZE, long style = SYMBOL_ABSTRACTWINDOW_STYLE );
+	bool Create(wxWindow* parent, wxWindowID id = SYMBOL_ABSTRACTWINDOW_IDNAME, const wxString& caption = SYMBOL_ABSTRACTWINDOW_TITLE, const wxPoint& pos = SYMBOL_ABSTRACTWINDOW_POSITION, const wxSize& size = SYMBOL_ABSTRACTWINDOW_SIZE, long style = SYMBOL_ABSTRACTWINDOW_STYLE);
 
-    /// Destructor
-    ~AbstractWindow();
+	/// Destructor
+	~AbstractWindow();
 
-    /// Initialises member variables
-    void Init();
+	/// Initialises member variables
+	void Init();
 
-    /// Creates the controls and sizers
-    void CreateControls();
-	
+	/// Creates the controls and sizers
+	void CreateControls();
+
 	void SetApplication(SuperMouserApp *app);
 
-////@begin AbstractWindow event handler declarations
+	////@begin AbstractWindow event handler declarations
 
-    /// wxEVT_CHAR event handler for ID_ABSTRACTWINDOW
-    void OnChar( wxKeyEvent& event );
+	/// wxEVT_CHAR event handler for ID_ABSTRACTWINDOW
+	void OnChar(wxKeyEvent& event);
 
-    /// wxEVT_KEY_DOWN event handler for ID_ABSTRACTWINDOW
-    void OnKeyDown( wxKeyEvent& event );
+	/// wxEVT_KEY_DOWN event handler for ID_ABSTRACTWINDOW
+	void OnKeyDown(wxKeyEvent& event);
 
-    /// wxEVT_KEY_UP event handler for ID_ABSTRACTWINDOW
-    void OnKeyUp( wxKeyEvent& event );
+	/// wxEVT_KEY_UP event handler for ID_ABSTRACTWINDOW
+	void OnKeyUp(wxKeyEvent& event);
 
-////@end AbstractWindow event handler declarations
+	////@end AbstractWindow event handler declarations
 
-////@begin AbstractWindow member function declarations
+	////@begin AbstractWindow member function declarations
 
-    /// Retrieves bitmap resources
-    wxBitmap GetBitmapResource( const wxString& name );
+	/// Retrieves bitmap resources
+	wxBitmap GetBitmapResource(const wxString& name);
 
-    /// Retrieves icon resources
-    wxIcon GetIconResource( const wxString& name );
-////@end AbstractWindow member function declarations
+	/// Retrieves icon resources
+	wxIcon GetIconResource(const wxString& name);
+	////@end AbstractWindow member function declarations
 
-    /// Should we show tooltips?
-    static bool ShowToolTips();
+	/// Should we show tooltips?
+	static bool ShowToolTips();
 
-////@begin AbstractWindow member variables
-    wxTextCtrl* textctrl;
-////@end AbstractWindow member variables
+	////@begin AbstractWindow member variables
+	wxTextCtrl* textctrl;
+	////@end AbstractWindow member variables
 
 	SuperMouserApp *app_;
 };
 
 #endif
-    // _ABSTRACTWINDOW_H_
+// _ABSTRACTWINDOW_H_

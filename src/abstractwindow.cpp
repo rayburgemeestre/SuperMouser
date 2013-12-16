@@ -29,24 +29,23 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*
  * AbstractWindow type definition
  */
 
-IMPLEMENT_CLASS( AbstractWindow, wxFrame )
+IMPLEMENT_CLASS(AbstractWindow, wxFrame)
 
 
 /*
  * AbstractWindow event table definition
  */
 
-BEGIN_EVENT_TABLE( AbstractWindow, wxFrame )
+BEGIN_EVENT_TABLE(AbstractWindow, wxFrame)
 
 ////@begin AbstractWindow event table entries
-    EVT_CHAR( AbstractWindow::OnChar )
-    EVT_KEY_DOWN( AbstractWindow::OnKeyDown )
-    EVT_KEY_UP( AbstractWindow::OnKeyUp )
+EVT_CHAR(AbstractWindow::OnChar)
+EVT_KEY_DOWN(AbstractWindow::OnKeyDown)
+EVT_KEY_UP(AbstractWindow::OnKeyUp)
 ////@end AbstractWindow event table entries
 
 END_EVENT_TABLE()
@@ -58,34 +57,32 @@ END_EVENT_TABLE()
 
 AbstractWindow::AbstractWindow()
 {
-    Init();
+	Init();
 }
 
-AbstractWindow::AbstractWindow( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+AbstractWindow::AbstractWindow(wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-    Init();
-    Create( parent, id, caption, pos, size, style );
+	Init();
+	Create(parent, id, caption, pos, size, style);
 }
-
 
 /*
  * AbstractWindow creator
  */
 
-bool AbstractWindow::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool AbstractWindow::Create(wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin AbstractWindow creation
-    wxFrame::Create( parent, id, caption, pos, size, style );
+	////@begin AbstractWindow creation
+	wxFrame::Create(parent, id, caption, pos, size, style);
 
-    this->SetBackgroundColour(wxColour(0, 64, 128));
-    CreateControls();
-    Centre();
-////@end AbstractWindow creation
+	this->SetBackgroundColour(wxColour(0, 64, 128));
+	CreateControls();
+	Centre();
+	////@end AbstractWindow creation
 
 	// SetTransparent(128);
-    return true;
+	return true;
 }
-
 
 /*
  * AbstractWindow destructor
@@ -93,10 +90,9 @@ bool AbstractWindow::Create( wxWindow* parent, wxWindowID id, const wxString& ca
 
 AbstractWindow::~AbstractWindow()
 {
-////@begin AbstractWindow destruction
-////@end AbstractWindow destruction
+	////@begin AbstractWindow destruction
+	////@end AbstractWindow destruction
 }
-
 
 /*
  * Member initialisation
@@ -104,32 +100,30 @@ AbstractWindow::~AbstractWindow()
 
 void AbstractWindow::Init()
 {
-////@begin AbstractWindow member initialisation
-    textctrl = NULL;
-////@end AbstractWindow member initialisation
+	////@begin AbstractWindow member initialisation
+	textctrl = NULL;
+	////@end AbstractWindow member initialisation
 }
-
 
 /*
  * Control creation for AbstractWindow
  */
 
 void AbstractWindow::CreateControls()
-{    
-////@begin AbstractWindow content construction
-    AbstractWindow* itemFrame1 = this;
+{
+	////@begin AbstractWindow content construction
+	AbstractWindow* itemFrame1 = this;
 
-    wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-    itemFrame1->SetSizer(itemBoxSizer2);
+	wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+	itemFrame1->SetSizer(itemBoxSizer2);
 
-    textctrl = new wxTextCtrl( itemFrame1, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-    itemBoxSizer2->Add(textctrl, 0, wxGROW|wxALL, 5);
+	textctrl = new wxTextCtrl(itemFrame1, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	itemBoxSizer2->Add(textctrl, 0, wxGROW | wxALL, 5);
 
-    // Connect events and objects
-    textctrl->Connect(ID_TEXTCTRL8, wxEVT_KEY_DOWN, wxKeyEventHandler(AbstractWindow::OnKeyDown), NULL, this);
-////@end AbstractWindow content construction
+	// Connect events and objects
+	textctrl->Connect(ID_TEXTCTRL8, wxEVT_KEY_DOWN, wxKeyEventHandler(AbstractWindow::OnKeyDown), NULL, this);
+	////@end AbstractWindow content construction
 }
-
 
 /*
  * Should we show tooltips?
@@ -137,44 +131,43 @@ void AbstractWindow::CreateControls()
 
 bool AbstractWindow::ShowToolTips()
 {
-    return true;
+	return true;
 }
 
 /*
  * Get bitmap resources
  */
 
-wxBitmap AbstractWindow::GetBitmapResource( const wxString& name )
+wxBitmap AbstractWindow::GetBitmapResource(const wxString& name)
 {
-    // Bitmap retrieval
-////@begin AbstractWindow bitmap retrieval
-    wxUnusedVar(name);
-    return wxNullBitmap;
-////@end AbstractWindow bitmap retrieval
+	// Bitmap retrieval
+	////@begin AbstractWindow bitmap retrieval
+	wxUnusedVar(name);
+	return wxNullBitmap;
+	////@end AbstractWindow bitmap retrieval
 }
 
 /*
  * Get icon resources
  */
 
-wxIcon AbstractWindow::GetIconResource( const wxString& name )
+wxIcon AbstractWindow::GetIconResource(const wxString& name)
 {
-    // Icon retrieval
-////@begin AbstractWindow icon retrieval
-    wxUnusedVar(name);
-    return wxNullIcon;
-////@end AbstractWindow icon retrieval
+	// Icon retrieval
+	////@begin AbstractWindow icon retrieval
+	wxUnusedVar(name);
+	return wxNullIcon;
+	////@end AbstractWindow icon retrieval
 }
-
 
 /*
  * wxEVT_CHAR event handler for ID_ABSTRACTWINDOW
  */
 
-void AbstractWindow::OnChar( wxKeyEvent& event )
+void AbstractWindow::OnChar(wxKeyEvent& event)
 {
 #ifndef __WXGTK__
-    event.StopPropagation();
+	event.StopPropagation();
 #endif
 }
 
@@ -189,24 +182,26 @@ void AbstractWindow::SetApplication(SuperMouserApp *app)
  * wxEVT_KEY_DOWN event handler for ID_ABSTRACTWINDOW
  */
 #include <iostream>
-void AbstractWindow::OnKeyDown( wxKeyEvent& event )
+
+void AbstractWindow::OnKeyDown(wxKeyEvent& event)
 {
-	if ( ! app_)
+	if (!app_)
 		return;
-		
+
 #ifdef __WXGTK__
-    app_->Test(event.GetKeyCode());
+	app_->Test(event.GetKeyCode());
 #else
 	event.StopPropagation();
 #endif
 }
+
 /*
  * wxEVT_KEY_UP event handler for ID_ABSTRACTWINDOW
  */
 
-void AbstractWindow::OnKeyUp( wxKeyEvent& event )
+void AbstractWindow::OnKeyUp(wxKeyEvent& event)
 {
 #ifndef __WXGTK__
-    event.StopPropagation();
+	event.StopPropagation();
 #endif
 }

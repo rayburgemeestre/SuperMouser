@@ -38,8 +38,7 @@
  */
 
 ////@begin implement app
-
-IMPLEMENT_APP(SuperMouserApp)
+IMPLEMENT_APP( SuperMouserApp )
 ////@end implement app
 
 /*
@@ -229,7 +228,7 @@ bool SuperMouserApp::OnInit()
 #if wxUSE_GIF
 	wxImage::AddHandler(new wxGIFHandler);
 #endif
-	CursorWindow* mainWindow = new CursorWindow(NULL);
+	CursorWindow* mainWindow = new CursorWindow( NULL );
 	mainWindow->Show(true);
 	////@end SuperMouserApp initialisation
 
@@ -460,7 +459,7 @@ void SuperMouserApp::Test(int code)
 	}
 
 	if (code == wxKeyCode('Q')) {
-		wxMessageBox("Exiting");
+		wxMessageBox(_("Exiting"));
 		Exit();
 		return;
 	}

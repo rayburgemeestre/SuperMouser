@@ -42,3 +42,14 @@ To fix this make sure this file exists, you should create a symlink to build-car
     ln -s build-carbon-debug GCCBuildReleaseMac
 
 Now you can build the project.
+
+
+### CMake (experimental)
+
+Tried it only on linux..
+
+* Please install wxWidgets version 3.0.x, and make sure wx-config --libs for example returns the libs
+  (I use dialogblocks to compile wxWidgets, and then symlink to the /usr/bin/wx-config to
+   /usr/local/src/wxWidgets-3.0.0/GCCBuildReleaseGTK2Unicode/wx-config)
+* cmake .
+* make

@@ -81,11 +81,21 @@ struct Display {
 };
 
 /*!
+ * Application instance declaration 
+ */
+
+////@begin declare app
+DECLARE_APP(SuperMouserApp)
+////@end declare app
+
+
+/*!
  * SuperMouserApp class declaration
  */
 
-class SuperMouserApp : public wxApp, public HotkeyHandler {
-	DECLARE_CLASS(SuperMouserApp)
+class SuperMouserApp: public wxApp
+{    
+	DECLARE_CLASS( SuperMouserApp )
 	DECLARE_EVENT_TABLE()
 
 public:
@@ -121,16 +131,17 @@ public:
 	void SetCurrentDisplay(bool ignoreCursor = false);
 	void ToggleDisplay();
 
-	////@begin SuperMouserApp event handler declarations
+////@begin SuperMouserApp event handler declarations
 
-	////@end SuperMouserApp event handler declarations
+////@end SuperMouserApp event handler declarations
 
-	////@begin SuperMouserApp member function declarations
+////@begin SuperMouserApp member function declarations
 
-	////@end SuperMouserApp member function declarations
+////@end SuperMouserApp member function declarations
 
-	////@begin SuperMouserApp member variables
-	////@end SuperMouserApp member variables
+////@begin SuperMouserApp member variables
+////@end SuperMouserApp member variables
+
 
 
 	stack<WindowState> windowStateHistory;
@@ -155,15 +166,6 @@ public:
 
 	SettingsWindow * windowSettings_;
 };
-
-/*!
- * Application instance declaration 
- */
-
-////@begin declare app
-DECLARE_APP(SuperMouserApp)
-////@end declare app
-
 
 #endif
 // _SUPERMOUSERAPP_H_

@@ -8,6 +8,7 @@
 
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h> // EXIT_FAILURE
 
 Display *dpy;
 Window root;

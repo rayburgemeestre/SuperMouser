@@ -51,6 +51,7 @@ class wxTaskBarIcon;
 #define ID_TEXTCTRL5 10009
 #define ID_TEXTCTRL6 10000
 #define ID_TEXTCTRL7 10010
+#define ID_TEXTCTRL8 10012
 #define ID_BUTTON_SAVE_SETTINGS 10011
 #define ID_STATUSBAR 10003
 #define SYMBOL_SETTINGSWINDOW_STYLE wxCAPTION|wxSYSTEM_MENU|wxCLOSE_BOX
@@ -64,80 +65,82 @@ class wxTaskBarIcon;
  * SettingsWindow class declaration
  */
 
-class SettingsWindow : public wxFrame {
-	DECLARE_CLASS(SettingsWindow)
-	DECLARE_EVENT_TABLE()
+class SettingsWindow: public wxFrame
+{    
+    DECLARE_CLASS( SettingsWindow )
+    DECLARE_EVENT_TABLE()
 
 public:
-	/// Constructors
-	SettingsWindow();
-	SettingsWindow(wxWindow* parent, wxWindowID id = SYMBOL_SETTINGSWINDOW_IDNAME, const wxString& caption = SYMBOL_SETTINGSWINDOW_TITLE, const wxPoint& pos = SYMBOL_SETTINGSWINDOW_POSITION, const wxSize& size = SYMBOL_SETTINGSWINDOW_SIZE, long style = SYMBOL_SETTINGSWINDOW_STYLE);
+    /// Constructors
+    SettingsWindow();
+    SettingsWindow( wxWindow* parent, wxWindowID id = SYMBOL_SETTINGSWINDOW_IDNAME, const wxString& caption = SYMBOL_SETTINGSWINDOW_TITLE, const wxPoint& pos = SYMBOL_SETTINGSWINDOW_POSITION, const wxSize& size = SYMBOL_SETTINGSWINDOW_SIZE, long style = SYMBOL_SETTINGSWINDOW_STYLE );
 
-	bool Create(wxWindow* parent, wxWindowID id = SYMBOL_SETTINGSWINDOW_IDNAME, const wxString& caption = SYMBOL_SETTINGSWINDOW_TITLE, const wxPoint& pos = SYMBOL_SETTINGSWINDOW_POSITION, const wxSize& size = SYMBOL_SETTINGSWINDOW_SIZE, long style = SYMBOL_SETTINGSWINDOW_STYLE);
+    bool Create( wxWindow* parent, wxWindowID id = SYMBOL_SETTINGSWINDOW_IDNAME, const wxString& caption = SYMBOL_SETTINGSWINDOW_TITLE, const wxPoint& pos = SYMBOL_SETTINGSWINDOW_POSITION, const wxSize& size = SYMBOL_SETTINGSWINDOW_SIZE, long style = SYMBOL_SETTINGSWINDOW_STYLE );
 
-	/// Destructor
-	~SettingsWindow();
+    /// Destructor
+    ~SettingsWindow();
 
-	/// Initialises member variables
-	void Init();
+    /// Initialises member variables
+    void Init();
 
-	/// Creates the controls and sizers
-	void CreateControls();
-
+    /// Creates the controls and sizers
+    void CreateControls();
+	
 	void UpdateShortcutKeys();
 
 	void SetApplication(SuperMouserApp *app);
 
 	void RemoveTrayIcon();
 
-	////@begin SettingsWindow event handler declarations
+////@begin SettingsWindow event handler declarations
 
-	/// wxEVT_CLOSE_WINDOW event handler for ID_SETTINGSWINDOW
-	void OnCloseWindow(wxCloseEvent& event);
+    /// wxEVT_CLOSE_WINDOW event handler for ID_SETTINGSWINDOW
+    void OnCloseWindow( wxCloseEvent& event );
 
 #if defined(__WXMSW__) || defined(__WXGTK__)
-	/// wxEVT_KEY_DOWN event handler for ID_TEXTCTRL1
-	void OnKeyDown(wxKeyEvent& event);
+    /// wxEVT_KEY_DOWN event handler for ID_TEXTCTRL1
+    void OnKeyDown( wxKeyEvent& event );
 
-	/// wxEVT_KEY_UP event handler for ID_TEXTCTRL1
-	void OnKeyUp(wxKeyEvent& event);
+    /// wxEVT_KEY_UP event handler for ID_TEXTCTRL1
+    void OnKeyUp( wxKeyEvent& event );
 
 #endif
-	/// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SAVE_SETTINGS
-	void OnButtonSaveSettingsClick(wxCommandEvent& event);
+    /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SAVE_SETTINGS
+    void OnButtonSaveSettingsClick( wxCommandEvent& event );
 
-	////@end SettingsWindow event handler declarations
+////@end SettingsWindow event handler declarations
 
-	////@begin SettingsWindow member function declarations
+////@begin SettingsWindow member function declarations
 
-	/// Retrieves bitmap resources
-	wxBitmap GetBitmapResource(const wxString& name);
+    /// Retrieves bitmap resources
+    wxBitmap GetBitmapResource( const wxString& name );
 
-	/// Retrieves icon resources
-	wxIcon GetIconResource(const wxString& name);
-	////@end SettingsWindow member function declarations
+    /// Retrieves icon resources
+    wxIcon GetIconResource( const wxString& name );
+////@end SettingsWindow member function declarations
 
-	/// Should we show tooltips?
-	static bool ShowToolTips();
+    /// Should we show tooltips?
+    static bool ShowToolTips();
 
-	////@begin SettingsWindow member variables
+////@begin SettingsWindow member variables
 #if defined(__WXMSW__) || defined(__WXGTK__)
-	wxTextCtrl* textctrlControlKeys;
+    wxTextCtrl* textctrlControlKeys;
 #endif
-	wxColourPickerCtrl* colourctrl;
-	wxCheckBox* checkboxTransparency;
-	wxSlider* sliderTransparency;
-	wxTextCtrl* textctrlKeyUp;
-	wxTextCtrl* textctrlKeyLeft;
-	wxTextCtrl* textctrlKeyRight;
-	wxTextCtrl* textctrlKeyUndo;
-	wxTextCtrl* textctrlKeyDown;
-	wxTextCtrl* textctrlMouseLeftClick;
-	wxTextCtrl* textctrlMouseDoubleClick;
-	wxTextCtrl* textctrlMouseRight;
-	wxButton* buttonSave;
-	wxStatusBar* statusbar;
-	////@end SettingsWindow member variables
+    wxColourPickerCtrl* colourctrl;
+    wxCheckBox* checkboxTransparency;
+    wxSlider* sliderTransparency;
+    wxTextCtrl* textctrlKeyUp;
+    wxTextCtrl* textctrlKeyLeft;
+    wxTextCtrl* textctrlKeyRight;
+    wxTextCtrl* textctrlKeyDown;
+    wxTextCtrl* textctrlMouseLeftClick;
+    wxTextCtrl* textctrlMouseDoubleClick;
+    wxTextCtrl* textctrlMouseRight;
+    wxTextCtrl* textctrlKeyUndo;
+    wxButton* buttonSave;
+    wxStatusBar* statusbar;
+////@end SettingsWindow member variables
+
 
 	bool isDownControl;
 	bool isDownAlt;

@@ -27,6 +27,9 @@ using std::stack;
 #include <vector>
 using std::vector;
 
+// Interfaces
+#include "hotkeyhandler.h"
+
 /*!
  * Forward declarations
  */
@@ -82,7 +85,7 @@ struct Display
  * SuperMouserApp class declaration
  */
 
-class SuperMouserApp: public wxApp
+class SuperMouserApp: public wxApp, public HotkeyHandler
 {    
     DECLARE_CLASS( SuperMouserApp )
     DECLARE_EVENT_TABLE()
@@ -101,6 +104,8 @@ public:
 
 	//void OnKeyDown(wxKeyEvent& event);
     void OnHotKey(wxKeyEvent& event);
+
+	void HandleHotkey();
 
 	void Activate();
 

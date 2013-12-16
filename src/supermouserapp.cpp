@@ -101,6 +101,24 @@ void SuperMouserApp::InitDisplay()
 {
 	#if wxUSE_DISPLAY
 	unsigned count = wxDisplay::GetCount();
+
+	if ( ! count) {
+		// Use the current resolution as a fallback.. required in Linux mint 16 anyways
+		// Will add multiple monitor support for this at work, where I have two monitors to test with..
+		
+		int width = 0, height = 0;
+		init_screensize(&width, &height);
+
+		Display myDisplay;
+		myDisplay.topLeft = wxPoint(0, 0);
+		myDisplay.bottomRight = wxPoint(width, height);
+		myDisplay.width = width;
+		myDisplay.height = height;
+		monitors.push_back(myDisplay);
+
+		return;
+	}
+
 	for (unsigned i=0; i<count; i++)
 	{
 		wxDisplay display(i);
@@ -225,6 +243,17 @@ bool SuperMouserApp::OnInit()
 	windowLeft_ = new AbstractWindow(NULL);
 	windowRight_ = new AbstractWindow(NULL);
 
+	windowUp_->SetApplication(this);
+	windowDown_->SetApplication(this);
+	windowLeft_->SetApplication(this);
+	windowRight_->SetApplication(this);
+
+	/*windowUp_->SetBackgroundColour(wxColour("red"));
+	windowDown_->SetBackgroundColour(wxColour("grey"));
+	windowLeft_->SetBackgroundColour(wxColour("yellow"));
+	*/
+
+
 	windowUp_->SetTransparent(128);
     windowDown_->SetTransparent(128);
     windowLeft_->SetTransparent(128);
@@ -236,7 +265,7 @@ bool SuperMouserApp::OnInit()
 	#ifdef __WXMSW__
         windowSettings_->Show();
 	#else
-		register_hotkey(mainWindow_, this);
+		register_hotkey(mainWindow_, (HotkeyHandler *)this);
         windowSettings_->Show();
 	#endif
     
@@ -266,6 +295,11 @@ int SuperMouserApp::OnExit()
 
 void SuperMouserApp::OnHotKey(wxKeyEvent& event)
 {
+	HandleHotkey();
+}
+
+void SuperMouserApp::HandleHotkey()
+{
 	SetCurrentDisplay();
 	Activate();
 }
@@ -286,10 +320,16 @@ void SuperMouserApp::Activate()
     windowDown_->Hide();
 
     mainWindow_->SetPosition(wxPoint(currentPos_.x - 2, currentPos_.y - 2));
-    mainWindow_->SetSize(5, 5);
+    //mainWindow_->SetSize(5, 5);
 
+#ifdef __WXGTK__
+	mainWindow_->Hide();
+#endif
 	mainWindow_->Show();
     mainWindow_->SetFocus();
+#ifdef __WXGTK__
+    mainWindow_->textctrl->SetFocus();
+#endif
 
     click_left(currentPos_.x, currentPos_.y);
         
@@ -360,7 +400,12 @@ void SuperMouserApp::Test(int code)
 #ifdef __WXGTK__
 		windowUp_->Hide();
 #endif
-		windowUp_->SetSize(screenWidth_, screenHeight_ - currentPos_.y);
+		windowUp_->SetSize(screenWidth_, screenHeight_ - currentPos_.y - 25 /* Goddamn cinnamon, taskbar * */);
+/**
+ * * = cinnamon moves the window a bit up, as the taskbar blocks the window.. fucking annoying.
+ *      this is a hardcoded fix so that the image won't be bumped up, but of course this only works
+ *      if the taskbar is at the bottom :''(
+ */
 		windowUp_->SetPosition(wxPoint(display.topLeft.x, currentPos_.y));
 		windowUp_->Show();
 
@@ -401,6 +446,9 @@ void SuperMouserApp::Test(int code)
 	mainWindow_->SetFocus();
 
 #ifdef __WXMAC__
+	mainWindow_->textctrl->SetFocus();
+#endif
+#ifdef __WXGTK__
 	mainWindow_->textctrl->SetFocus();
 #endif
 

@@ -44,7 +44,7 @@ ICNSDEST=$(OUTPUTPATH)/$(PROGRAM).app/Contents/Resources/wxmac.icns
 
 # releaselinux
 else
-WXWIN=/Users/joost/Downloads/wxWidgets-2.8.12/
+WXWIN=/usr/local/src/wxWidgets-3.0.0
 TOOLCHAINNAME=gtk2
 WXVERSION:=$(shell echo `$(WXWIN)/GCCBuildReleaseGTK2/wx-config --version`)
 CXX=g++
@@ -57,9 +57,10 @@ RESOURCEOBJECT=
 OUTPUTPATH=GCCReleaseLinux
 OBJECTPATH=GCCReleaseLinux
 BUILDPATHS=$(OBJECTPATH)
+EXTRADEPENDENCIES=
 PROGRAM=SuperMouser
 LIBS=$(shell $(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --exec-prefix="$(WXWIN)/GCCBuildReleaseGTK2" --libs std --cxxflags)
-LINKERFLAGS=
+LINKERFLAGS= -lX11 -lXrandr
 WARNINGFLAGS=-Wall -Wno-write-strings
 OPTFLAGS=-O2
 DEBUGFLAGS=
@@ -67,13 +68,13 @@ LIBPATH=
 CPPINC:=$(shell $(WXWIN)/GCCBuildReleaseGTK2/wx-config --inplace --cxxflags)
 GCCFLAGS=
 LDFLAGS=$(LIBS) $(LIBPATH) $(LINKERFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
+CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)  -std=c++11
 LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.8"
 MACPACKAGEINFO=
 endif
 
-OBJECTS=$(OBJECTPATH)/abstractwindow.o $(OBJECTPATH)/impl_gtk2.o $(OBJECTPATH)/impl_osx.o $(OBJECTPATH)/impl_windows.o $(OBJECTPATH)/settingswindow.o $(OBJECTPATH)/supermouserapp.o $(RESOURCEOBJECT)
+OBJECTS=$(OBJECTPATH)/abstractwindow.o $(OBJECTPATH)/cursorwindow.o $(OBJECTPATH)/impl_gtk2.o $(OBJECTPATH)/impl_osx.o $(OBJECTPATH)/impl_windows.o $(OBJECTPATH)/settingswindow.o $(OBJECTPATH)/supermouserapp.o $(RESOURCEOBJECT)
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
 
@@ -90,7 +91,7 @@ clean:
 help:
 	@echo "Usage: make -f Makefile CONFIG=[debugmac|releaselinux] [all|clean|help]"
 
-$(OUTPUTPATH)/$(PROGRAM):	$(OBJECTS)
+$(OUTPUTPATH)/$(PROGRAM):	$(OBJECTS) $(EXTRADEPENDENCIES)
 	$(LINKER) -o $@ $(OBJECTS) $(LDFLAGS)
 
 
@@ -111,22 +112,25 @@ $(OUTPUTPATH)/$(PROGRAM).app/Contents/PkgInfo: $(OUTPUTPATH)/$(PROGRAM) $(INFOPL
 	ln -f $(OUTPUTPATH)/$(PROGRAM) $(OUTPUTPATH)/$(PROGRAM).app/Contents/MacOS/$(PROGRAM)
 	cp -f $(ICNSSOURCE) $(ICNSDEST)
 
-$(OBJECTPATH)/abstractwindow.o:	src/abstractwindow.cpp src/abstractwindow.h
+$(OBJECTPATH)/abstractwindow.o:	src/abstractwindow.cpp src/abstractwindow.h src/supermouserapp.h src/cursorwindow.h src/hotkeyhandler.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/abstractwindow.cpp
 
-$(OBJECTPATH)/impl_gtk2.o:	src/impl_gtk2.cpp src/peripheral_api.h
+$(OBJECTPATH)/cursorwindow.o:	src/cursorwindow.cpp src/cursorwindow.h src/supermouserapp.h src/abstractwindow.h src/hotkeyhandler.h
+	$(CXX) -c -o $@ $(CPPFLAGS) src/cursorwindow.cpp
+
+$(OBJECTPATH)/impl_gtk2.o:	src/impl_gtk2.cpp src/peripheral_api.h src/hotkeyhandler.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_gtk2.cpp
 
-$(OBJECTPATH)/impl_osx.o:	src/impl_osx.cpp src/peripheral_api.h src/supermouserapp.h src/abstractwindow.h
+$(OBJECTPATH)/impl_osx.o:	src/impl_osx.cpp src/peripheral_api.h src/abstractwindow.h src/supermouserapp.h src/cursorwindow.h src/hotkeyhandler.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_osx.cpp
 
-$(OBJECTPATH)/impl_windows.o:	src/impl_windows.cpp src/AbstractWindow.h
+$(OBJECTPATH)/impl_windows.o:	src/impl_windows.cpp
 	$(CXX) -c -o $@ $(CPPFLAGS) src/impl_windows.cpp
 
-$(OBJECTPATH)/settingswindow.o:	src/settingswindow.cpp src/settingswindow.h src/abstractwindow.h
+$(OBJECTPATH)/settingswindow.o:	src/settingswindow.cpp src/settingswindow.h src/cursorwindow.h src/supermouserapp.h src/abstractwindow.h src/hotkeyhandler.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/settingswindow.cpp
 
-$(OBJECTPATH)/supermouserapp.o:	src/supermouserapp.cpp src/supermouserapp.h src/abstractwindow.h src/peripheral_api.h src/settingswindow.h
+$(OBJECTPATH)/supermouserapp.o:	src/supermouserapp.cpp src/supermouserapp.h src/cursorwindow.h src/abstractwindow.h src/hotkeyhandler.h src/peripheral_api.h src/settingswindow.h
 	$(CXX) -c -o $@ $(CPPFLAGS) src/supermouserapp.cpp
 
 .PHONY:	all clean

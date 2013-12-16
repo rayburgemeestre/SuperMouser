@@ -45,9 +45,7 @@ BEGIN_EVENT_TABLE( CursorWindow, wxFrame )
 
 ////@begin CursorWindow event table entries
     EVT_KEY_DOWN( CursorWindow::OnKeyDown )
-
     EVT_TEXT( ID_TEXTCTRL, CursorWindow::OnTextctrlTextUpdated )
-
 ////@end CursorWindow event table entries
 
 END_EVENT_TABLE()
@@ -124,7 +122,6 @@ void CursorWindow::CreateControls()
     itemFrame1->SetSizer(itemBoxSizer2);
 
     textctrl = new wxTextCtrl( itemFrame1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-    textctrl->Show(false);
     itemBoxSizer2->Add(textctrl, 1, wxALIGN_TOP|wxALL, 5);
 
     // Connect events and objects

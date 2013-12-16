@@ -8,8 +8,8 @@ extern void click_right(int x, int y);
 extern void click_double(int x, int y);
 
 class CursorWindow;
-class SuperMouserApp;
+class HotkeyHandler;
 
-extern void register_hotkey(CursorWindow *window, SuperMouserApp *superMouser);
+extern void register_hotkey(CursorWindow *window, HotkeyHandler *superMouser);
 extern void init_screensize(int *width, int *height);
 #endif // __PERIPHERAL_API_H__

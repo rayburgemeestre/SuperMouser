@@ -34,12 +34,15 @@
 
 ////@begin control identifiers
 #define ID_ABSTRACTWINDOW 10000
+#define ID_TEXTCTRL8 10017
 #define SYMBOL_ABSTRACTWINDOW_STYLE wxFRAME_NO_TASKBAR|wxSTAY_ON_TOP|wxNO_BORDER|wxWANTS_CHARS
 #define SYMBOL_ABSTRACTWINDOW_TITLE _("AbstractWindow")
 #define SYMBOL_ABSTRACTWINDOW_IDNAME ID_ABSTRACTWINDOW
 #define SYMBOL_ABSTRACTWINDOW_SIZE wxSize(400, 300)
 #define SYMBOL_ABSTRACTWINDOW_POSITION wxDefaultPosition
 ////@end control identifiers
+
+class SuperMouserApp;
 
 
 /*!
@@ -66,6 +69,8 @@ public:
 
     /// Creates the controls and sizers
     void CreateControls();
+	
+	void SetApplication(SuperMouserApp *app);
 
 ////@begin AbstractWindow event handler declarations
 
@@ -93,7 +98,10 @@ public:
     static bool ShowToolTips();
 
 ////@begin AbstractWindow member variables
+    wxTextCtrl* textctrl;
 ////@end AbstractWindow member variables
+
+	SuperMouserApp *app_;
 };
 
 #endif

@@ -47,7 +47,6 @@ BEGIN_EVENT_TABLE( AbstractWindow, wxFrame )
     EVT_CHAR( AbstractWindow::OnChar )
     EVT_KEY_DOWN( AbstractWindow::OnKeyDown )
     EVT_KEY_UP( AbstractWindow::OnKeyUp )
-
 ////@end AbstractWindow event table entries
 
 END_EVENT_TABLE()
@@ -106,6 +105,7 @@ AbstractWindow::~AbstractWindow()
 void AbstractWindow::Init()
 {
 ////@begin AbstractWindow member initialisation
+    textctrl = NULL;
 ////@end AbstractWindow member initialisation
 }
 
@@ -119,6 +119,14 @@ void AbstractWindow::CreateControls()
 ////@begin AbstractWindow content construction
     AbstractWindow* itemFrame1 = this;
 
+    wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+    itemFrame1->SetSizer(itemBoxSizer2);
+
+    textctrl = new wxTextCtrl( itemFrame1, ID_TEXTCTRL8, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+    itemBoxSizer2->Add(textctrl, 0, wxGROW|wxALL, 5);
+
+    // Connect events and objects
+    textctrl->Connect(ID_TEXTCTRL8, wxEVT_KEY_DOWN, wxKeyEventHandler(AbstractWindow::OnKeyDown), NULL, this);
 ////@end AbstractWindow content construction
 }
 
@@ -165,28 +173,40 @@ wxIcon AbstractWindow::GetIconResource( const wxString& name )
 
 void AbstractWindow::OnChar( wxKeyEvent& event )
 {
+#ifndef __WXGTK__
     event.StopPropagation();
+#endif
 }
 
+#include "supermouserapp.h"
+
+void AbstractWindow::SetApplication(SuperMouserApp *app)
+{
+	app_ = app;
+}
 
 /*
  * wxEVT_KEY_DOWN event handler for ID_ABSTRACTWINDOW
  */
-
+#include <iostream>
 void AbstractWindow::OnKeyDown( wxKeyEvent& event )
 {
-    event.StopPropagation();
+	if ( ! app_)
+		return;
+		
+#ifdef __WXGTK__
+    app_->Test(event.GetKeyCode());
+#else
+	event.StopPropagation();
+#endif
 }
-
-
 /*
  * wxEVT_KEY_UP event handler for ID_ABSTRACTWINDOW
  */
 
 void AbstractWindow::OnKeyUp( wxKeyEvent& event )
 {
+#ifndef __WXGTK__
     event.StopPropagation();
+#endif
 }
-
-
-

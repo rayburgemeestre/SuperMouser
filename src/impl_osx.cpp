@@ -42,7 +42,7 @@ OSStatus OnHotKeyEvent(EventHandlerCallRef nextHandler,EventRef theEvent,void *u
     return noErr;
 }
 
-void register_hotkey(CursorWindow *window, SuperMouserApp *superMouser)
+void register_hotkey(CursorWindow *window, HotKeyHandler *superMouser)
 {
     EventHotKeyRef gMyHotKeyRef;
     EventHotKeyID gMyHotKeyID;
